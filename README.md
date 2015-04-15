@@ -1,2 +1,2 @@
 # brew-chat
-A simple chat application.
+A simple chat application for us to use.
