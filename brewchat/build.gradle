@@ -1,6 +1,8 @@
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 
+def tag = 'git describe --tags --always'.execute([], project.rootDir).text.trim()
+
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
@@ -10,7 +12,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
-        versionName "1.0"
+        versionName "${tag}"
     }
     buildTypes {
         release {
