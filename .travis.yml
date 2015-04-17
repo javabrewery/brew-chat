@@ -1,15 +1,18 @@
-language: android 
-android: 
-    components: 
-        - platform-tools
-        - tools
-        - build-tools-21.1.1
-        - android-21
-        - extra
-        - sys-img-armeabi-v7a-android-21
+language: android
+android:
+  components:
+  - platform-tools
+  - tools
+  - build-tools-21.1.1
+  - android-21
+  - extra
+  - sys-img-armeabi-v7a-android-21
 before_script:
-    - chmod +x gradlew
+- chmod +x gradlew
 script:
-    - ./gradlew build check
+- "./gradlew build check"
 after_success:
-    - echo "Done!" 
+- "./gradlew testfairyDebug"
+env:
+  global:
+    secure: VmwhStMJxcX6XzLLTs+hODslflnBQL0m5Vgj6BbWl5VDdFBH6UUjPj+kgJ8bg93fHGICDb4V/QAVfYWm41zReE1yMCot5TzliySTo6bszTW3Ac93NU+1eIlu+DjhE3t//q8nndl9jW7JWeI70Q8ViEreWCPj+JcCRnhrChtqiCc=
