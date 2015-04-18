@@ -1,8 +1,12 @@
 package com.example.brewchat;
 
 import android.os.StrictMode;
+import android.util.Log;
+
+import com.facebook.stetho.Stetho;
 
 public class Application extends android.app.Application {
+    private static final String TAG = "Application";
 
     @Override
     public void onCreate() {
@@ -18,6 +22,15 @@ public class Application extends android.app.Application {
                     .detectAll()
                     .penaltyLog()
                     .build());
+            //Enable Stetho for debugging
+            Stetho.initialize(
+                    Stetho.newInitializerBuilder(this)
+                            .enableDumpapp(
+                                    Stetho.defaultDumperPluginsProvider(this))
+                            .enableWebKitInspector(
+                                    Stetho.defaultInspectorModulesProvider(this))
+                            .build());
+            Log.d(TAG, "Stetho and StrictMode Initialized");
         }
     }
 }
