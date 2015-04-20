@@ -10,9 +10,9 @@ android:
 before_script:
 - chmod +x gradlew
 script:
-- ./gradlew build check
+- "./gradlew build check"
 after_success:
-- echo "Done!"
-notifications:
-  slack:
-    secure: FhQF4qMoTw/w1Q0eRCW1bmtX/4K6bMH/XEI5yNgPlcoBbmbgceSenrqMknkuixtNwGd/ljGUSKC+aJZXMHRhPvIWBM0nVw7YzzseCFsdDvJyVUhTogZnvE+RV4Ptq6gdXFMSWFTx1XXwEUcn8gG1JycearMvAR0+RGBh63zE0J0=
+- "./gradlew testfairyDebug"
+env:
+  global:
+    secure: ZLrpCizsXYAhODX5LbP+M9t74FS80UCo/5QU/WQhWimJURXNAj94mVH8+/3ZQrUYZmK0xuF0kB34dA28fK3suv3+QOvDuvoRk7wwrrchPrcYTvw8RTrt1z3Aqw9sBKbx+Epq89WFY/Q7H/Coz1/gn8gEDccZnh1L2N9tzkTxHlM=
