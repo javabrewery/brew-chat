@@ -1,4 +1,4 @@
-package com.example.brewchat.Adapters;
+package com.example.brewchat.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.brewchat.Domain.ChatGroup;
+import com.example.brewchat.domain.ChatGroup;
 import com.example.brewchat.R;
 
 import java.util.ArrayList;

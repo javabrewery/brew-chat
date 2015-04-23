@@ -3,5 +3,5 @@
     android:id="@+id/chat_manager_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.brewchat.Activities.ChatManagerActivity"
+    tools:context="com.example.brewchat.activities.ChatManagerActivity"
     tools:ignore="MergeRootFrame" />

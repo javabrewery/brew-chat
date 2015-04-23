@@ -1,4 +1,4 @@
-package com.example.brewchat.Domain;
+package com.example.brewchat.domain;
 
 /**
  * Business Object for tracking chat groups

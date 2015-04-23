@@ -1,6 +1,6 @@
 package com.example.brewchat.mockers;
 
-import com.example.brewchat.Domain.ChatGroup;
+import com.example.brewchat.domain.ChatGroup;
 
 import java.util.ArrayList;
 

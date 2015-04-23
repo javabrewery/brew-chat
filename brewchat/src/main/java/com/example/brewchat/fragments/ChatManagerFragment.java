@@ -1,4 +1,4 @@
-package com.example.brewchat.Fragments;
+package com.example.brewchat.fragments;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.brewchat.mockers.MockerUtil;
 
-import com.example.brewchat.Adapters.ChatGroupRecyclerAdapter;
+import com.example.brewchat.adapters.ChatGroupRecyclerAdapter;
 import com.example.brewchat.R;
 
 /**
