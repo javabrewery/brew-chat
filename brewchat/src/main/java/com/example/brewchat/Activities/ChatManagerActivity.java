@@ -1,21 +1,18 @@
 package com.example.brewchat.Activities;
 
 import android.net.Uri;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
-
 import com.example.brewchat.Fragments.ChatManagerFragment;
 import com.example.brewchat.R;
 
-public class ChatManagerActivity extends ActionBarActivity implements ChatManagerFragment.OnFragmentInteractionListener {
+public class ChatManagerActivity extends AppCompatActivity implements ChatManagerFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +66,7 @@ public class ChatManagerActivity extends ActionBarActivity implements ChatManage
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_chat_manager, container, false);
-            return rootView;
+            return inflater.inflate(R.layout.fragment_chat_manager, container, false);
         }
     }
 }

@@ -4,5 +4,6 @@
     <string name="brew_chat_title">Brew \nChat</string>
     <string name="login_string">Login</string>
     <string name="title_activity_chat_manager">ChatManagerActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="username_hint_string">Username</string>
+    <string name="password_hint_string">Password</string>
 </resources>

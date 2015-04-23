@@ -1,7 +1,6 @@
 package com.example.brewchat.Fragments;
 
 import android.app.Activity;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,24 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.brewchat.Domain.ChatGroup;
 import com.example.brewchat.mockers.MockerUtil;
 
 import com.example.brewchat.Adapters.ChatGroupRecyclerAdapter;
 import com.example.brewchat.R;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 /**
- * Created by josh on 4/22/15.
+ * Created by Josh
  */
 
 public class ChatManagerFragment extends Fragment{
 
     private OnFragmentInteractionListener mListener;
-    private RecyclerView recyclerView;
-    private ChatGroupRecyclerAdapter adapter;
 
 
     public static ChatManagerFragment newInstance(Bundle savedInstanceState) {
@@ -44,9 +37,6 @@ public class ChatManagerFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        if (getArguments() != null) {
-
-        }
     }
 
     @Override
@@ -55,9 +45,10 @@ public class ChatManagerFragment extends Fragment{
 
         View layout = inflater.inflate(R.layout.chat_manager_fragment, container, false);
 
-        recyclerView = (RecyclerView) layout.findViewById(R.id.chatgroup_recycler_view);
+        RecyclerView recyclerView = (RecyclerView) layout.findViewById(R.id.chatgroup_recycler_view);
 
-        adapter = new ChatGroupRecyclerAdapter(getActivity(), MockerUtil.makeMockChatGroups());
+        //Fill with mocked data for testing UI
+        ChatGroupRecyclerAdapter adapter = new ChatGroupRecyclerAdapter(getActivity(), MockerUtil.makeMockChatGroups());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 

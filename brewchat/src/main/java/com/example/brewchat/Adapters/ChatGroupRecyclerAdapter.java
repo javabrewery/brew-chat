@@ -1,6 +1,5 @@
 package com.example.brewchat.Adapters;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,11 +11,12 @@ import com.example.brewchat.Domain.ChatGroup;
 import com.example.brewchat.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by josh on 4/22/15.
+ *
+ * RecyclerAdapter for displaying ChatGroups
  */
 public class ChatGroupRecyclerAdapter extends RecyclerView.Adapter<ChatGroupRecyclerAdapter.MyViewHolder> {
 
@@ -33,9 +33,8 @@ public class ChatGroupRecyclerAdapter extends RecyclerView.Adapter<ChatGroupRecy
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = inflater.inflate(R.layout.chat_group_card_layout, parent, false);
-        MyViewHolder holder = new MyViewHolder(view);
+        return (new MyViewHolder(view));
 
-        return holder;
     }
 
     @Override

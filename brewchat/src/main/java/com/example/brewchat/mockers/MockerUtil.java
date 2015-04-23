@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 /**
  * Created by josh on 4/22/15.
+ *
+ * Mocks data for use in UI
  */
 public class MockerUtil {
 

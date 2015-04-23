@@ -1,8 +1,12 @@
 package com.example.brewchat.Domain;
 
 /**
- * Created by josh on 4/22/15.
+ * Business Object for tracking chat groups
+ * Currently has some dummy values for injection into UI
+ *
+ * Created by Josh
  */
+
 public class ChatGroup {
 
     private String title;
