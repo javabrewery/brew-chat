@@ -1,4 +1,4 @@
-package com.example.brewchat.Activities;
+package com.example.brewchat.activities;
 
 import android.content.Intent;
 import android.os.Bundle;

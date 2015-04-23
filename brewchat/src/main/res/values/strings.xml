@@ -6,4 +6,5 @@
     <string name="title_activity_chat_manager">ChatManagerActivity</string>
     <string name="username_hint_string">Username</string>
     <string name="password_hint_string">Password</string>
+    <string name="title_activity_group_chat">GroupChatActivity</string>
 </resources>
