@@ -3,19 +3,27 @@
     package="com.example.brewchat" >
 
     <application
+        android:name=".Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name=".Application">
+        android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.ChatManagerActivity"
+            android:label="@string/title_activity_chat_manager" >
+        </activity>
+        <activity
+            android:name=".activities.GroupChatActivity"
+            android:label="@string/title_activity_group_chat" >
         </activity>
     </application>
 
