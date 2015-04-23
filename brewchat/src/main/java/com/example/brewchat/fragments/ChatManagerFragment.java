@@ -25,12 +25,10 @@ public class ChatManagerFragment extends Fragment{
 
 
     public static ChatManagerFragment newInstance(Bundle savedInstanceState) {
-
         return new ChatManagerFragment();
     }
 
     public ChatManagerFragment() {
-
     }
 
     @Override

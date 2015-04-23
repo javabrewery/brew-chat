@@ -1,16 +1,19 @@
 package com.example.brewchat.domain;
 
+import java.io.Serializable;
+
 /**
  * Business Object for tracking chat groups
  * Currently has some dummy values for injection into UI
- *
+ * <p/>
  * Created by Josh
  */
 
-public class ChatGroup {
+public class ChatGroup implements Serializable {
 
     private String title;
     private String chatInfo;
+    private ChatHistory history;
 
     public String getTitle() {
         return title;
@@ -28,5 +31,12 @@ public class ChatGroup {
         this.chatInfo = chatInfo;
     }
 
+    public ChatHistory getChatHistory() {
+        return history;
+    }
+
+    public void setChatHistory(ChatHistory history) {
+        this.history = history;
+    }
 
 }

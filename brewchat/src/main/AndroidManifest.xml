@@ -21,6 +21,10 @@
             android:name=".activities.ChatManagerActivity"
             android:label="@string/title_activity_chat_manager" >
         </activity>
+        <activity
+            android:name=".activities.GroupChatActivity"
+            android:label="@string/title_activity_group_chat" >
+        </activity>
     </application>
 
 </manifest>
