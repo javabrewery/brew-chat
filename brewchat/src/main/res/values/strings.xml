@@ -7,6 +7,4 @@
     <string name="username_hint_string">Username</string>
     <string name="password_hint_string">Password</string>
     <string name="title_activity_group_chat">GroupChatActivity</string>
-
-    <string name="hello_world">Hello world!</string>
 </resources>
