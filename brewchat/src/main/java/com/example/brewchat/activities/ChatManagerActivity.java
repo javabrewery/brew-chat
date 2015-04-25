@@ -1,19 +1,21 @@
 package com.example.brewchat.activities;
 
-import android.net.Uri;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.brewchat.Application;
 import com.example.brewchat.R;
 import com.example.brewchat.fragments.ChatManagerFragment;
 
 public class ChatManagerActivity extends AppCompatActivity {
+    private static final String TAG = "ChatManagerActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,4 +53,29 @@ public class ChatManagerActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Logout"); // Sets title for your alertbox
+        alertDialog.setMessage("Are you sure you want to Logout ?"); // Message to be displayed on alertbox
+        /* When positive (yes/ok) is clicked */
+        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                ((Application)getApplication()).getChatService().logout();
+                Log.d(TAG,"User logged out");
+                finish();
+                Toast.makeText(ChatManagerActivity.this, "Successfully Logged Out", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        /* When negative (No/cancel) button is clicked*/
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
+    }
 }
+
+

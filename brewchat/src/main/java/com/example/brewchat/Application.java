@@ -8,9 +8,6 @@ import com.facebook.stetho.Stetho;
 public class Application extends android.app.Application {
     private static final String TAG = "Application";
 
-    final String APP_ID = "22306";
-    final String AUTH_KEY = "S2pgg2kV3cfLUAm";
-    final String AUTH_SECRET = "am-HzubL-aMmekY";
 
     ChatService chatService;
 
@@ -39,7 +36,8 @@ public class Application extends android.app.Application {
             Log.d(TAG, "Stetho and StrictMode Initialized");
         }
 
-        this.chatService = new ChatService(getApplicationContext(), APP_ID, AUTH_KEY, AUTH_SECRET);
+        this.chatService = new ChatService(getApplicationContext(), getString(R.string.app_id),getString(R.string.auth_key),
+                getString(R.string.auth_secret));
     }
 
     public ChatService getChatService() {

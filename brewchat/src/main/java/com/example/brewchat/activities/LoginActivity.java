@@ -6,21 +6,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import com.example.brewchat.Application;
 import com.example.brewchat.R;
 import com.example.brewchat.UserLoggedEvent;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 
 public class LoginActivity extends AppCompatActivity {
 
+    @InjectView(R.id.login_username_edittext) EditText username;
+    @InjectView(R.id.login_password_edittext) EditText password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
-
+        ButterKnife.inject(this);
         EventBus.getDefault().register(this);
     }
 
@@ -46,13 +52,12 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
-
         super.onDestroy();
     }
 
     //Simply for navigation purposes during Dev
     public void goToChatFragment(View view) {
-        ((Application)getApplication()).getChatService().login("user5", "12345678");
+        ((Application)getApplication()).getChatService().login(username.getText().toString(), password.getText().toString());
     }
 
     @SuppressWarnings("unused")

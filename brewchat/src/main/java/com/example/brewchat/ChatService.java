@@ -65,7 +65,7 @@ public class ChatService implements ConnectionListener,
     }
 
     public void login(String username, String password) {
-        final QBUser user = new QBUser("user5", "12345678");
+        final QBUser user = new QBUser(username, password);
 
         QBAuth.createSession(user, new QBEntityCallbackImpl<QBSession>() {
             @Override
@@ -99,6 +99,14 @@ public class ChatService implements ConnectionListener,
                 Log.d(TAG, errors.toString());
             }
         });
+    }
+
+    public void logout(){
+        try {
+            QBChatService.getInstance().logout();
+        } catch (SmackException.NotConnectedException e) {
+            e.printStackTrace();
+        }
     }
 
     // ConnectionListener
