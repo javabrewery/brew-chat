@@ -62,5 +62,5 @@
         android:layout_marginTop="45dp"
         android:layout_below="@+id/login_password_edittext"
         android:layout_centerHorizontal="true"
-        android:onClick="goToChatFragment"/>
+        android:onClick="buttonAuth"/>
 </RelativeLayout>

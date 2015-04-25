@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.brewchat.activities.LoginActivity;
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.model.QBSession;
 import com.quickblox.chat.QBChat;
@@ -90,6 +91,7 @@ public class ChatService implements ConnectionListener,
                     @Override
                     public void onError(List errors) {
                         Log.d(TAG, errors.toString());
+                        new LoginActivity().error();
                     }
                 });
             }
