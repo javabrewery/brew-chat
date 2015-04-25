@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.example.brewchat.Application;
 import com.example.brewchat.R;
-import com.example.brewchat.UserLoggedEvent;
+import com.example.brewchat.events.UserLoggedEvent;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @SuppressWarnings("unused")
-    public void goToChatFragment(UserLoggedEvent event) {
+    public void onEvent(UserLoggedEvent event) {
         Intent intent = new Intent(this, ChatManagerActivity.class);
         startActivity(intent);
     }

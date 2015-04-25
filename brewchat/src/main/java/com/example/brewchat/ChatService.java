@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.brewchat.activities.LoginActivity;
+import com.example.brewchat.events.UserLoggedEvent;
+import com.example.brewchat.events.UserSignedUpEvent;
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.model.QBSession;
 import com.quickblox.chat.QBChat;
@@ -25,6 +27,7 @@ import com.quickblox.chat.model.QBPresence;
 import com.quickblox.chat.model.QBPrivacyListItem;
 import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.core.QBSettings;
+import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 
 import org.jivesoftware.smack.ConnectionListener;
@@ -110,9 +113,23 @@ public class ChatService implements ConnectionListener,
             e.printStackTrace();
         }
     }
+    //Basic Sign up
+    public void register( String username, String password){
+        final QBUser user = new QBUser(username, password);
 
-    public void register(String username, String password){
+        QBUsers.signUp(user, new QBEntityCallbackImpl<QBUser>() {
+            @Override
+            public void onSuccess(QBUser user, Bundle args) {
+                EventBus.getDefault().post(new UserSignedUpEvent());
+                Log.d(TAG,"User signed up" );
+            }
 
+            @Override
+            public void onError(List<String> errors) {
+                //Add toast to show error in signing up
+                Log.e(TAG,"Error in signup");
+            }
+        });
     }
 
     // ConnectionListener
