@@ -10,11 +10,12 @@ import android.view.View;
 import com.example.brewchat.Application;
 import com.example.brewchat.R;
 import com.example.brewchat.UserLoggedEvent;
+import com.example.brewchat.interfaces.RegisterDialogListener;
 
 import de.greenrobot.event.EventBus;
 
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements RegisterDialogListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,5 +53,10 @@ public class LoginActivity extends AppCompatActivity {
     public void onEvent(UserLoggedEvent event) {
         Intent intent = new Intent(this, ChatManagerActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onCreateAccount(String username, String password) {
+
     }
 }
