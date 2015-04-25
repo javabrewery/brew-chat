@@ -7,7 +7,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.brewchat.Application;
 import com.example.brewchat.R;
+import com.example.brewchat.UserLoggedEvent;
+
+import de.greenrobot.event.EventBus;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -16,8 +20,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
-    }
 
+        EventBus.getDefault().register(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -38,8 +43,20 @@ public class LoginActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+
+        super.onDestroy();
+    }
+
     //Simply for navigation purposes during Dev
     public void goToChatFragment(View view) {
+        ((Application)getApplication()).getChatService().login("user5", "12345678");
+    }
+
+    @SuppressWarnings("unused")
+    public void onEvent(UserLoggedEvent event) {
         Intent intent = new Intent(this, ChatManagerActivity.class);
         startActivity(intent);
     }

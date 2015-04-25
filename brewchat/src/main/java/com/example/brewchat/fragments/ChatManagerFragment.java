@@ -10,18 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.brewchat.mockers.MockerUtil;
-
-import com.example.brewchat.adapters.ChatGroupRecyclerAdapter;
 import com.example.brewchat.R;
+import com.example.brewchat.adapters.ChatGroupRecyclerAdapter;
+import com.example.brewchat.mockers.MockerUtil;
 
 /**
  * Created by Josh
  */
 
 public class ChatManagerFragment extends Fragment{
-
-    private OnFragmentInteractionListener mListener;
 
 
     public static ChatManagerFragment newInstance(Bundle savedInstanceState) {
@@ -53,25 +50,6 @@ public class ChatManagerFragment extends Fragment{
         return layout;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
 }
