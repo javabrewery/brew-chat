@@ -37,6 +37,7 @@
         android:inputType="textPersonName"
         android:hint="@string/username_hint_string"
         android:ems="10"
+        android:text="User5"
         android:id="@+id/login_username_edittext"
         android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true" />
@@ -46,6 +47,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
+        android:text="12345678"
         android:hint="@string/password_hint_string"
         android:id="@+id/login_password_edittext"
         android:layout_below="@+id/login_username_edittext"
