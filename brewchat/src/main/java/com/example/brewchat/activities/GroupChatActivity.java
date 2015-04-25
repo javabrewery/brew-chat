@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import com.example.brewchat.R;
 import com.example.brewchat.adapters.ChatHistoryRecyclerAdapter;
 import com.example.brewchat.domain.ChatGroup;
+import com.example.brewchat.fragments.NavigationDrawerFragment;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -21,6 +22,8 @@ public class GroupChatActivity extends AppCompatActivity {
     @InjectView(R.id.messages_recyclerview)
     RecyclerView messagesRecyclerView;
 
+    private NavigationDrawerFragment navigationDrawerFragment;
+
     private ChatGroup chatGroup;
 
     @Override
@@ -31,6 +34,13 @@ public class GroupChatActivity extends AppCompatActivity {
         messagesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         chatGroup = (ChatGroup) getIntent().getExtras().getSerializable(EXTRA_CHAT_GROUP);
         messagesRecyclerView.setAdapter(new ChatHistoryRecyclerAdapter(this, chatGroup.getChatHistory()));
+
+        navigationDrawerFragment = new NavigationDrawerFragment();
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.navigation_drawer_container, navigationDrawerFragment)
+                .commit();
+
     }
 
 

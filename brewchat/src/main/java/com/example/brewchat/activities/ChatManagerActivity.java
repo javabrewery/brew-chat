@@ -1,28 +1,33 @@
 package com.example.brewchat.activities;
 
-import android.net.Uri;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import com.example.brewchat.fragments.ChatManagerFragment;
+
 import com.example.brewchat.R;
+import com.example.brewchat.fragments.ChatManagerFragment;
+import com.example.brewchat.fragments.NavigationDrawerFragment;
 
 public class ChatManagerActivity extends AppCompatActivity {
+
+    private ChatManagerFragment chatManagerFragment;
+    private NavigationDrawerFragment navigationDrawerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_manager);
         if (savedInstanceState == null) {
-            Fragment fragment = new ChatManagerFragment();
+            chatManagerFragment = new ChatManagerFragment();
+            navigationDrawerFragment = new NavigationDrawerFragment();
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.chat_manager_container, fragment)
+                    .add(R.id.chat_manager_container, chatManagerFragment)
+                    .commit();
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.navigation_drawer_container, navigationDrawerFragment)
                     .commit();
         }
     }
