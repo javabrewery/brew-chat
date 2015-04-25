@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The off-white android is using as the default background color -->
+    <color name="background_white">#EEEEEE</color>
+</resources>
