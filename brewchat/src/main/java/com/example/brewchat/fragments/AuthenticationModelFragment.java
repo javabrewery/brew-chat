@@ -10,8 +10,6 @@ import com.quickblox.auth.model.QBSession;
 import com.quickblox.chat.QBChatService;
 import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.core.QBSettings;
-import com.quickblox.core.exception.QBResponseException;
-import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 
 import java.util.List;
@@ -50,13 +48,8 @@ public class AuthenticationModelFragment extends Fragment{
     public void login(String username, String password){
         Log.d(TAG,"Creating User");
         final QBUser user = new QBUser(username, password);
-        try {
-            QBUsers.signIn(user);
-        } catch (QBResponseException e) {
-            e.printStackTrace();
-        }
         Log.d(TAG,"User Created");
-        QBAuth.createSession(user, new QBEntityCallbackImpl<QBSession>() {
+        QBAuth.createSession(new QBEntityCallbackImpl<QBSession>() {
             @Override
             public void onSuccess(QBSession session, Bundle params) {
                 Log.d(TAG,"Creating Session");
