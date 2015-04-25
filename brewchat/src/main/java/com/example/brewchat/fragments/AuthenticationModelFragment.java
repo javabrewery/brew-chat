@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.example.brewchat.R;
 import com.example.brewchat.activities.LoginActivity;
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.model.QBSession;
@@ -37,7 +38,9 @@ public class AuthenticationModelFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        QBSettings.getInstance().fastConfigInit(APP_ID, AUTH_KEY, AUTH_SECRET);
+        QBSettings.getInstance().fastConfigInit(
+                getString(R.string.app_id), getString(R.string.auth_key),
+                getString(R.string.auth_secret));
         QBSettings.getInstance().setLogLevel(LogLevel.DEBUG);
         Log.d(TAG, "Initializing");
         if (!QBChatService.isInitialized()) {
