@@ -1,19 +1,18 @@
 package com.example.brewchat.fragments;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.brewchat.mockers.MockerUtil;
-
-import com.example.brewchat.adapters.ChatGroupRecyclerAdapter;
 import com.example.brewchat.R;
+import com.example.brewchat.adapters.ChatGroupRecyclerAdapter;
+import com.example.brewchat.mockers.MockerUtil;
 
 /**
  * Created by Josh
@@ -47,6 +46,9 @@ public class ChatManagerFragment extends Fragment{
         ChatGroupRecyclerAdapter adapter = new ChatGroupRecyclerAdapter(getActivity(), MockerUtil.makeMockChatGroups());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        Toolbar mainToolbar=(Toolbar)layout.findViewById(R.id.main_toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(mainToolbar);
 
         return layout;
     }
