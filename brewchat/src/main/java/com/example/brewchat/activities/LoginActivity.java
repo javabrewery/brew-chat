@@ -11,23 +11,28 @@ import android.widget.Toast;
 
 import com.example.brewchat.Application;
 import com.example.brewchat.R;
-import com.example.brewchat.events.UserLoggedEvent;
+import com.example.brewchat.UserLoggedEvent;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 
-public class LoginActivity extends AppCompatActivity {
-    @InjectView(R.id.login_username_edittext) EditText username;
-    @InjectView(R.id.login_password_edittext) EditText password;
-
+public class LoginActivity extends AppCompatActivity implements RegisterDialogListener,
+        LoginListener{
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
         EventBus.getDefault().register(this);
-        ButterKnife.inject(this);
+        if (savedInstanceState == null) {
+            Fragment fragment = new LoginFragment();
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.login_screen_frame, fragment)
+                    .commit();
+        }
     }
 
 
@@ -56,12 +61,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(UserLoggedEvent event) {
+    public void goToChatFragment(UserLoggedEvent event) {
         Intent intent = new Intent(this, ChatManagerActivity.class);
         startActivity(intent);
     }
 
     public void error(){
         Toast.makeText(LoginActivity.this, "Error in logging in", Toast.LENGTH_LONG).show();
+    }
+    
+    @Override
+    public void onCreateAccount(String username, String password) {
+        ((Application) getApplication()).getChatService().register(username, password);
+    }
+
+    public void showRegisterDialog(View view) {
+        RegisterDialogFragment fragment = new RegisterDialogFragment();
+        fragment.show(getSupportFragmentManager(), "RegisterDialogFragment");
     }
 }
