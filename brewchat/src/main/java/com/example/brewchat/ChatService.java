@@ -111,6 +111,10 @@ public class ChatService implements ConnectionListener,
         }
     }
 
+    public void register(String username, String password){
+
+    }
+
     // ConnectionListener
 
     @Override
