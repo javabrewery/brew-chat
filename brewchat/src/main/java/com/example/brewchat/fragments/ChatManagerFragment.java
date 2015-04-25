@@ -21,8 +21,6 @@ import com.example.brewchat.R;
 
 public class ChatManagerFragment extends Fragment{
 
-    private OnFragmentInteractionListener mListener;
-
 
     public static ChatManagerFragment newInstance(Bundle savedInstanceState) {
         return new ChatManagerFragment();
@@ -53,25 +51,6 @@ public class ChatManagerFragment extends Fragment{
         return layout;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
 }

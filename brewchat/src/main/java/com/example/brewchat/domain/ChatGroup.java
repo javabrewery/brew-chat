@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Business Object for tracking chat groups
  * Currently has some dummy values for injection into UI
- * <p/>
+ *
  * Created by Josh
  */
 
