@@ -57,8 +57,16 @@
         android:layout_height="wrap_content"
         android:text="@string/login_string"
         android:id="@+id/login_button"
-        android:layout_marginTop="45dp"
-        android:layout_below="@+id/login_password_edittext"
+        android:onClick="buttonAuth"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/register_button_text"
+        android:id="@+id/register_button"
+        android:layout_above="@+id/login_button"
         android:layout_centerHorizontal="true"
-        android:onClick="goToChatFragment"/>
+        android:onClick="showRegisterDialog"/>
 </RelativeLayout>

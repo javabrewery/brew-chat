@@ -56,7 +56,7 @@ public class RegisterDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_register_dialog, container, false);
+        View view = inflater.inflate(R.layout.register_user_dialog, container, false);
         ButterKnife.inject(this, view);
         return view;
     }
@@ -88,7 +88,7 @@ public class RegisterDialogFragment extends DialogFragment {
                 String confirmPassword = confirmPasswordEditText.getText().toString();
                 if (enteredPassword.equals(confirmPassword)) {
                     registerDialogListener.onCreateAccount(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString());
+                            enteredPassword);
                     dismiss();
                 } else {
                     Toast.makeText(getActivity(), "Passwords do not match",
