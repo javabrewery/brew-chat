@@ -10,10 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.brewchat.mockers.MockerUtil;
-
-import com.example.brewchat.adapters.ChatGroupRecyclerAdapter;
 import com.example.brewchat.R;
+import com.example.brewchat.adapters.ChatGroupRecyclerAdapter;
+import com.example.brewchat.mockers.MockerUtil;
 
 /**
  * Created by Josh
