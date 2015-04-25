@@ -1,37 +1,26 @@
-package com.example.brewchat.activities;
+package com.example.brewchat.ui;
 
-import android.net.Uri;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import com.example.brewchat.fragments.ChatManagerFragment;
+
 import com.example.brewchat.R;
 
-public class ChatManagerActivity extends AppCompatActivity {
+
+public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_manager);
-        if (savedInstanceState == null) {
-            Fragment fragment = new ChatManagerFragment();
-
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.chat_manager_container, fragment)
-                    .commit();
-        }
+        setContentView(R.layout.activity_main);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_chat_manager, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -49,5 +38,4 @@ public class ChatManagerActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }
