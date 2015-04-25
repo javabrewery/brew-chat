@@ -57,7 +57,6 @@
         android:layout_height="wrap_content"
         android:text="@string/login_string"
         android:id="@+id/login_button"
-        android:onClick="buttonAuth"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 

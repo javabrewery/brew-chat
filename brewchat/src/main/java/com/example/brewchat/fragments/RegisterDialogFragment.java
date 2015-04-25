@@ -3,7 +3,6 @@ package com.example.brewchat.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;

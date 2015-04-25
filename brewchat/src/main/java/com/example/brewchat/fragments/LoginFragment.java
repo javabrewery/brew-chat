@@ -18,6 +18,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
+ * Fragment that host login/register activities
+ *
  * Created by josh on 4/24/15.
  */
 

@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="top|center"
-        android:text="Register new account"
+        android:text="@string/register_header_string"
         android:id="@+id/register_header"/>
 
     <EditText
