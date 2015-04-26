@@ -67,6 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/create_button_text"
+        android:id="@+id/create_chat_create_button"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/create_chat_cancel_button"
         android:layout_toEndOf="@+id/create_chat_cancel_button" />

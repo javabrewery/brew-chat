@@ -2,7 +2,6 @@ package com.example.brewchat.activities;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,24 +11,55 @@ import android.widget.Toast;
 
 import com.example.brewchat.Application;
 import com.example.brewchat.R;
+import com.example.brewchat.domain.ChatGroup;
+import com.example.brewchat.events.GroupChatCreatedEvent;
 import com.example.brewchat.fragments.ChatManagerFragment;
+import com.example.brewchat.fragments.CreateChatDialogFragment;
+import com.example.brewchat.interfaces.AddChatGroupListener;
 
-public class ChatManagerActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+import de.greenrobot.event.EventBus;
+
+public class ChatManagerActivity extends AppCompatActivity implements AddChatGroupListener{
     private static final String TAG = "ChatManagerActivity";
+    ChatManagerFragment chatManagerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_manager);
         if (savedInstanceState == null) {
-            Fragment fragment = new ChatManagerFragment();
+            chatManagerFragment = new ChatManagerFragment();
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.chat_manager_container, fragment)
+                    .add(R.id.chat_manager_container, chatManagerFragment)
                     .commit();
         }
+
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @SuppressWarnings("unused")
+    public void onEvent(GroupChatCreatedEvent event) {
+        Toast.makeText(this,getString(R.string.chat_created_toast),Toast.LENGTH_LONG).show();
+        chatManagerFragment.addChatGroup(new ChatGroup(event.getName(), event.getUserIds()));
+    }
+
+    public void addChatGroup(String title, ArrayList<Integer> userIds) {
+        ((Application)getApplication()).getChatService().addChatGroup(title, userIds);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -48,10 +78,19 @@ public class ChatManagerActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }else if(id == R.id.action_add_group_chat){
+            showAddDialog();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void showAddDialog() {
+        CreateChatDialogFragment fragment = new CreateChatDialogFragment();
+        fragment.show(getSupportFragmentManager(), "CreateChatDialogFragment");
+    }
+
 
     @Override
     public void onBackPressed() {

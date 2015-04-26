@@ -1,6 +1,7 @@
 package com.example.brewchat.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Business Object for tracking chat groups
@@ -14,7 +15,12 @@ public class ChatGroup implements Serializable {
     private String title;
     private String chatInfo;
     private ChatHistory history;
+    private ArrayList<Integer> chatUsers;
 
+    public ChatGroup(String title, ArrayList<Integer> chatUsers){
+        this.title = title;
+        this.chatUsers = chatUsers;
+    }
     public String getTitle() {
         return title;
     }

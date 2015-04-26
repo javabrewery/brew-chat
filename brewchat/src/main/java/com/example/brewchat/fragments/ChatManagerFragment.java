@@ -10,14 +10,14 @@ import android.view.ViewGroup;
 
 import com.example.brewchat.R;
 import com.example.brewchat.adapters.ChatGroupRecyclerAdapter;
-import com.example.brewchat.mockers.MockerUtil;
+import com.example.brewchat.domain.ChatGroup;
 
 /**
  * Created by Josh
  */
 
 public class ChatManagerFragment extends Fragment{
-
+    ChatGroupRecyclerAdapter adapter;
 
     public static ChatManagerFragment newInstance(Bundle savedInstanceState) {
         return new ChatManagerFragment();
@@ -41,11 +41,14 @@ public class ChatManagerFragment extends Fragment{
         RecyclerView recyclerView = (RecyclerView) layout.findViewById(R.id.chatgroup_recycler_view);
 
         //Fill with mocked data for testing UI
-        ChatGroupRecyclerAdapter adapter = new ChatGroupRecyclerAdapter(getActivity(), MockerUtil.makeMockChatGroups());
+        adapter = new ChatGroupRecyclerAdapter(getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return layout;
+    }
+    public void addChatGroup(ChatGroup chatGroup){
+        adapter.addChatGroup(chatGroup);
     }
 
 
