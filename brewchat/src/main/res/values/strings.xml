@@ -19,4 +19,6 @@
     <string name="register_header_string">Register new account</string>
     <string name="logout_confirm_alert">Are you sure you want to Logout ?</string>
     <string name="logout_title_alert">Logout</string>
+    <string name="login_error_toast">Error in logging in</string>
+    <string name="account_created_toast">Account Created!</string>
 </resources>

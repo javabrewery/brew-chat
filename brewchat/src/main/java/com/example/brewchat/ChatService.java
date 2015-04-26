@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.brewchat.activities.LoginActivity;
+import com.example.brewchat.events.AuthenticationErrorEvent;
 import com.example.brewchat.events.UserLoggedEvent;
 import com.example.brewchat.events.UserSignedUpEvent;
 import com.quickblox.auth.QBAuth;
@@ -58,7 +58,7 @@ public class ChatService implements ConnectionListener,
 
         QBSettings.getInstance().fastConfigInit(appId, authKey, authSecret);
 
-        QBChatService.setDebugEnabled(true);
+//        QBChatService.setDebugEnabled(true);
 
         if (!QBChatService.isInitialized()) {
             QBChatService.init(context);
@@ -75,7 +75,7 @@ public class ChatService implements ConnectionListener,
             @Override
             public void onError(List errors) {
                 Log.d(TAG, errors.toString());
-                new LoginActivity().error();
+                EventBus.getDefault().post(new AuthenticationErrorEvent(errors));
             }
         });
     }
@@ -102,12 +102,10 @@ public class ChatService implements ConnectionListener,
                     @Override
                     public void onError(List errors) {
                         Log.d(TAG, errors.toString());
-                        new LoginActivity().error();
+                        EventBus.getDefault().post(new AuthenticationErrorEvent(errors));
                     }
                 });
             }
-
-
 
     public void logout() {
         try {

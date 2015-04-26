@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.brewchat.Application;
 import com.example.brewchat.R;
+import com.example.brewchat.events.AuthenticationErrorEvent;
 import com.example.brewchat.events.UserLoggedEvent;
 import com.example.brewchat.events.UserSignedUpEvent;
 import com.example.brewchat.fragments.LoginFragment;
@@ -81,12 +82,12 @@ public class LoginActivity extends AppCompatActivity implements RegisterDialogLi
 
     @SuppressWarnings("unused")
     public void onEvent(UserSignedUpEvent event) {
-        Toast.makeText(this,"Account Created!",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,getString(R.string.account_created_toast),Toast.LENGTH_LONG).show();
         loginFragment.updateTextFields(event.getUsername());
     }
 
-    public void error(){
-        Toast.makeText(this, "Error in logging in", Toast.LENGTH_LONG).show();
+    public void onEvent(AuthenticationErrorEvent event){
+        Toast.makeText(this, getString(R.string.login_error_toast), Toast.LENGTH_LONG).show();
     }
 
     @Override
