@@ -1,59 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/create_chat_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/create_chat_header"
-        android:id="@+id/create_chat_header"
-        android:gravity="center_horizontal"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_margin="8dp"/>
+        android:layout_margin="8dp"
+        android:gravity="center_horizontal"
+        android:text="@string/create_chat_header" />
 
     <EditText
+        android:id="@+id/create_chat_name_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/create_chat_name_editText"
         android:layout_below="@+id/create_chat_header"
         android:layout_centerHorizontal="true"
-        android:hint="@string/create_group_name_hint"/>
+        android:hint="@string/create_group_name_hint" />
 
-    <EditText
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText2"
         android:layout_below="@+id/create_chat_name_editText"
-        android:layout_centerHorizontal="true"
-        android:hint="@string/create_group_add_users_hint"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/addUsersRelativeLayout">
 
-    <ImageButton
-        android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/create_chat_addusers_editText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/create_group_add_users_hint"/>
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_circle_white_18dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton"
-        android:layout_alignBottom="@+id/editText2"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_add_circle_white_18dp"/>
-
+        android:layout_below="@+id/addUsersRelativeLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cancel_button_text"
-        android:id="@+id/button"
-        android:layout_marginRight="63dp"
-        android:layout_marginEnd="63dp"
-        android:layout_below="@+id/editText2"
-        android:layout_toLeftOf="@+id/imageButton"
-        android:layout_toStartOf="@+id/imageButton" />
+        android:id="@+id/create_chat_cancel_button"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="99dp"
+        android:layout_marginStart="99dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/create_button_text"
-        android:id="@+id/button2"
-        android:layout_below="@+id/editText2"
-        android:layout_toLeftOf="@+id/button"
-        android:layout_toStartOf="@+id/button" />
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/create_chat_cancel_button"
+        android:layout_toEndOf="@+id/create_chat_cancel_button" />
+    </RelativeLayout>
+
 </RelativeLayout>
