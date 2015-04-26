@@ -2,7 +2,6 @@ package com.example.brewchat.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +11,7 @@ import android.widget.Toast;
 import com.example.brewchat.Application;
 import com.example.brewchat.R;
 import com.example.brewchat.events.UserLoggedEvent;
+import com.example.brewchat.events.UserSignedUpEvent;
 import com.example.brewchat.fragments.LoginFragment;
 import com.example.brewchat.fragments.RegisterDialogFragment;
 import com.example.brewchat.interfaces.LoginListener;
@@ -22,19 +22,30 @@ import de.greenrobot.event.EventBus;
 
 public class LoginActivity extends AppCompatActivity implements RegisterDialogListener,
         LoginListener{
-
+    LoginFragment loginFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
-        EventBus.getDefault().register(this);
         if (savedInstanceState == null) {
-            Fragment fragment = new LoginFragment();
+            loginFragment = new LoginFragment();
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.login_screen_frame, fragment)
+                    .add(R.id.login_screen_frame, loginFragment)
                     .commit();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 
 
@@ -68,8 +79,14 @@ public class LoginActivity extends AppCompatActivity implements RegisterDialogLi
         startActivity(intent);
     }
 
+    @SuppressWarnings("unused")
+    public void onEvent(UserSignedUpEvent event) {
+        Toast.makeText(this,"Account Created!",Toast.LENGTH_LONG).show();
+        loginFragment.updateTextFields(event.getUsername());
+    }
+
     public void error(){
-        Toast.makeText(LoginActivity.this, "Error in logging in", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Error in logging in", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -81,4 +98,5 @@ public class LoginActivity extends AppCompatActivity implements RegisterDialogLi
         RegisterDialogFragment fragment = new RegisterDialogFragment();
         fragment.show(getSupportFragmentManager(), "RegisterDialogFragment");
     }
+
 }
