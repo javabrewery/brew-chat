@@ -1,12 +1,5 @@
 package com.example.brewchat.mockers;
 
-import com.example.brewchat.domain.ChatGroup;
-import com.example.brewchat.domain.ChatHistory;
-import com.example.brewchat.domain.ChatMessage;
-import com.example.brewchat.domain.User;
-
-import java.util.ArrayList;
-
 /**
  * Created by josh on 4/22/15.
  * <p/>
@@ -14,7 +7,7 @@ import java.util.ArrayList;
  */
 public class MockerUtil {
 
-    public static ArrayList<ChatGroup> makeMockChatGroups() {
+    /* public static ArrayList<ChatGroup> makeMockChatGroups() {
 
         ArrayList<ChatGroup> chatGroups = new ArrayList<>();
 
@@ -35,6 +28,6 @@ public class MockerUtil {
 
         return chatGroups;
 
-    }
+    } */
 
 }
