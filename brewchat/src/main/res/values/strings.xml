@@ -2,23 +2,29 @@
     <string name="app_name">BrewChat</string>
     <string name="action_settings">Settings</string>
     <string name="brew_chat_title">Brew \nChat</string>
-    <string name="login_string">Login</string>
     <string name="title_activity_chat_manager">ChatManagerActivity</string>
-    <string name="username_hint_string">Username</string>
-    <string name="password_hint_string">Password</string>
-    <string name="title_activity_group_chat">GroupChatActivity</string>
+
+<!-- General String -->
+    <string name="cancel_button_text">Cancel</string>
+    <string name="create_button_text">Create</string>
+
+<!-- Registration Strings -->
+    <string name="register_button_text">Register</string>
+    <string name="register_header_string">Register new account</string>
     <string name="register_username_hint">Enter new username</string>
     <string name="register_password_hint">Enter password</string>
     <string name="register_confirm_password_hint">Confirm password</string>
-    <string name="register_cancel_button_text">Cancel</string>
-    <string name="register_create_button_text">Create</string>
+    <string name="account_created_toast">Account Created!</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="register_button_text">Register</string>
-    <string name="register_header_string">Register new account</string>
+<!-- Login/Logout Strings-->
     <string name="logout_confirm_alert">Are you sure you want to Logout ?</string>
     <string name="logout_title_alert">Logout</string>
     <string name="login_error_toast">Error in logging in</string>
-    <string name="account_created_toast">Account Created!</string>
+    <string name="username_hint_string">Username</string>
+    <string name="password_hint_string">Password</string>
+    <string name="login_string">Login</string>
+
+<!-- Chat Group String -->
+    <string name="create_chat_header">Create Chat Group</string>
+    <string name="title_activity_group_chat">GroupChatActivity</string>
 </resources>
