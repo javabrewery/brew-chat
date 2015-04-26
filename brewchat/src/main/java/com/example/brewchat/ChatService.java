@@ -50,7 +50,7 @@ public class ChatService implements ConnectionListener,
         QBSubscriptionListener {
 
     static final String TAG = ChatService.class.toString();
-
+    QBSession session;
     QBChatService chatService;
 
     public ChatService(Context context, String appId, String authKey, String authSecret) {
@@ -58,7 +58,7 @@ public class ChatService implements ConnectionListener,
 
         QBSettings.getInstance().fastConfigInit(appId, authKey, authSecret);
 
-        //QBChatService.setDebugEnabled(true);
+        QBChatService.setDebugEnabled(true);
 
         if (!QBChatService.isInitialized()) {
             QBChatService.init(context);
@@ -66,17 +66,25 @@ public class ChatService implements ConnectionListener,
             chatService.addConnectionListener(this);
         }
 
+        QBAuth.createSession(new QBEntityCallbackImpl<QBSession>() {
+            @Override
+            public void onSuccess(QBSession session, Bundle params) {
+                Log.d(TAG, session + " " + params);
+            }
+
+            @Override
+            public void onError(List errors) {
+                Log.d(TAG, errors.toString());
+                new LoginActivity().error();
+            }
+        });
     }
+
 
     public void login(String username, String password) {
         final QBUser user = new QBUser(username, password);
 
-        QBAuth.createSession(user, new QBEntityCallbackImpl<QBSession>() {
-            @Override
-            public void onSuccess(QBSession session, Bundle params) {
-                Log.d(TAG, session + " " + params);
-
-                user.setId(session.getUserId());
+        user.setId(session.getUserId());
 
                 QBChatService.getInstance().login(user, new QBEntityCallbackImpl() {
                     @Override
@@ -99,37 +107,34 @@ public class ChatService implements ConnectionListener,
                 });
             }
 
-            @Override
-            public void onError(List<String> errors) {
-                Log.d(TAG, errors.toString());
-            }
-        });
-    }
 
-    public void logout(){
+
+    public void logout() {
         try {
             QBChatService.getInstance().logout();
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
         }
     }
-    //Basic Sign up
-    public void register( String username, String password){
-        final QBUser user = new QBUser(username, password);
 
+    //Basic Sign up
+    public void register(String username, String password) {
+        final QBUser user = new QBUser(username, password);
         QBUsers.signUp(user, new QBEntityCallbackImpl<QBUser>() {
             @Override
             public void onSuccess(QBUser user, Bundle args) {
-                EventBus.getDefault().post(new UserSignedUpEvent());
-                Log.d(TAG,"User signed up" );
+                UserSignedUpEvent userSignedUpEvent = new UserSignedUpEvent(user.getLogin());
+                EventBus.getDefault().post(userSignedUpEvent);
+                Log.d(TAG, "User signed up");
             }
 
             @Override
             public void onError(List<String> errors) {
                 //Add toast to show error in signing up
-                Log.e(TAG,"Error in signup");
+                Log.e(TAG, "Error in signup");
             }
         });
+
     }
 
     // ConnectionListener
