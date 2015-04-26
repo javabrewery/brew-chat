@@ -88,6 +88,7 @@ public class RegisterDialogFragment extends DialogFragment {
                 if (enteredPassword.equals(confirmPassword)) {
                     registerDialogListener.onCreateAccount(usernameEditText.getText().toString(),
                             enteredPassword);
+
                     dismiss();
                 } else {
                     Toast.makeText(getActivity(), "Passwords do not match",

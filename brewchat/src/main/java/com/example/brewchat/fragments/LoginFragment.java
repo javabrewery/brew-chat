@@ -76,4 +76,7 @@ public class LoginFragment extends Fragment {
             }
         });
     }
+    public void updateTextFields(String username){
+        usernameEditText.setText(username);
+    }
 }
