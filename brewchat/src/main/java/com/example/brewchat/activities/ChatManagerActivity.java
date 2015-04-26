@@ -56,8 +56,8 @@ public class ChatManagerActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("Logout"); // Sets title for your alertbox
-        alertDialog.setMessage("Are you sure you want to Logout ?"); // Message to be displayed on alertbox
+        alertDialog.setTitle(getString(R.string.logout_title_alert)); // Sets title for your alertbox
+        alertDialog.setMessage(getString(R.string.logout_confirm_alert)); // Message to be displayed on alertbox
         /* When positive (yes/ok) is clicked */
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {

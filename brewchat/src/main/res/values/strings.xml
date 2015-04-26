@@ -17,4 +17,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="register_button_text">Register</string>
     <string name="register_header_string">Register new account</string>
+    <string name="logout_confirm_alert">Are you sure you want to Logout ?</string>
+    <string name="logout_title_alert">Logout</string>
 </resources>
