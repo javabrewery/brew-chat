@@ -1,7 +1,5 @@
 package com.example.brewchat.fragments;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,10 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.brewchat.mockers.MockerUtil;
-
-import com.example.brewchat.adapters.ChatGroupRecyclerAdapter;
 import com.example.brewchat.R;
+import com.example.brewchat.adapters.ChatGroupRecyclerAdapter;
+import com.example.brewchat.mockers.MockerUtil;
 
 /**
  * Created by Josh

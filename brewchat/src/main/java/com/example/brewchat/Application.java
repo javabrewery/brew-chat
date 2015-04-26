@@ -8,6 +8,9 @@ import com.facebook.stetho.Stetho;
 public class Application extends android.app.Application {
     private static final String TAG = "Application";
 
+
+    ChatService chatService;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -32,5 +35,12 @@ public class Application extends android.app.Application {
                             .build());
             Log.d(TAG, "Stetho and StrictMode Initialized");
         }
+
+        this.chatService = new ChatService(getApplicationContext(), getString(R.string.app_id),getString(R.string.auth_key),
+                getString(R.string.auth_secret));
+    }
+
+    public ChatService getChatService() {
+        return this.chatService;
     }
 }

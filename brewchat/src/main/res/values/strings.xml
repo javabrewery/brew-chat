@@ -7,4 +7,16 @@
     <string name="username_hint_string">Username</string>
     <string name="password_hint_string">Password</string>
     <string name="title_activity_group_chat">GroupChatActivity</string>
+    <string name="register_username_hint">Enter new username</string>
+    <string name="register_password_hint">Enter password</string>
+    <string name="register_confirm_password_hint">Confirm password</string>
+    <string name="register_cancel_button_text">Cancel</string>
+    <string name="register_create_button_text">Create</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="register_button_text">Register</string>
+    <string name="register_header_string">Register new account</string>
+    <string name="logout_confirm_alert">Are you sure you want to Logout ?</string>
+    <string name="logout_title_alert">Logout</string>
 </resources>
