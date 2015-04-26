@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.brewchat.events.AuthenticationErrorEvent;
+import com.example.brewchat.events.GroupChatCreatedEvent;
 import com.example.brewchat.events.UserLoggedEvent;
 import com.example.brewchat.events.UserSignedUpEvent;
 import com.quickblox.auth.QBAuth;
@@ -12,6 +13,7 @@ import com.quickblox.auth.model.QBSession;
 import com.quickblox.chat.QBChat;
 import com.quickblox.chat.QBChatService;
 import com.quickblox.chat.QBGroupChat;
+import com.quickblox.chat.QBGroupChatManager;
 import com.quickblox.chat.QBPrivateChat;
 import com.quickblox.chat.exception.QBChatException;
 import com.quickblox.chat.listeners.QBGroupChatManagerListener;
@@ -23,6 +25,8 @@ import com.quickblox.chat.listeners.QBPrivateChatManagerListener;
 import com.quickblox.chat.listeners.QBRosterListener;
 import com.quickblox.chat.listeners.QBSubscriptionListener;
 import com.quickblox.chat.model.QBChatMessage;
+import com.quickblox.chat.model.QBDialog;
+import com.quickblox.chat.model.QBDialogType;
 import com.quickblox.chat.model.QBPresence;
 import com.quickblox.chat.model.QBPrivacyListItem;
 import com.quickblox.core.QBEntityCallbackImpl;
@@ -34,6 +38,7 @@ import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPConnection;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -50,7 +55,6 @@ public class ChatService implements ConnectionListener,
         QBSubscriptionListener {
 
     static final String TAG = ChatService.class.toString();
-    QBSession session;
     QBChatService chatService;
 
     public ChatService(Context context, String appId, String authKey, String authSecret) {
@@ -58,7 +62,7 @@ public class ChatService implements ConnectionListener,
 
         QBSettings.getInstance().fastConfigInit(appId, authKey, authSecret);
 
-//        QBChatService.setDebugEnabled(true);
+        QBChatService.setDebugEnabled(true);
 
         if (!QBChatService.isInitialized()) {
             QBChatService.init(context);
@@ -66,26 +70,19 @@ public class ChatService implements ConnectionListener,
             chatService.addConnectionListener(this);
         }
 
-        QBAuth.createSession(new QBEntityCallbackImpl<QBSession>() {
-            @Override
-            public void onSuccess(QBSession session, Bundle params) {
-                Log.d(TAG, session + " " + params);
-            }
 
-            @Override
-            public void onError(List errors) {
-                Log.d(TAG, errors.toString());
-                EventBus.getDefault().post(new AuthenticationErrorEvent(errors));
-            }
-        });
     }
 
 
     public void login(String username, String password) {
         final QBUser user = new QBUser(username, password);
 
-        user.setId(session.getUserId());
+        QBAuth.createSession(user, new QBEntityCallbackImpl<QBSession>() {
+            @Override
+            public void onSuccess(QBSession session, Bundle params) {
+                Log.d(TAG, session + " " + params);
 
+                user.setId(session.getUserId());
                 QBChatService.getInstance().login(user, new QBEntityCallbackImpl() {
                     @Override
                     public void onSuccess() {
@@ -107,12 +104,45 @@ public class ChatService implements ConnectionListener,
                 });
             }
 
+            @Override
+            public void onError(List errors) {
+                Log.d(TAG, errors.toString());
+                EventBus.getDefault().post(new AuthenticationErrorEvent(errors));
+            }
+        });
+
+
+            }
+
     public void logout() {
         try {
             QBChatService.getInstance().logout();
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addChatGroup(String name, ArrayList<Integer> userIds){
+        QBDialog dialog = new QBDialog();
+        dialog.setName(name);
+        dialog.setType(QBDialogType.GROUP);
+        dialog.setOccupantsIds(userIds);
+
+        QBGroupChatManager groupChatManager = QBChatService.getInstance().getGroupChatManager();
+        groupChatManager.createDialog(dialog, new QBEntityCallbackImpl<QBDialog>() {
+            @Override
+            public void onSuccess(QBDialog dialog, Bundle args) {
+                GroupChatCreatedEvent groupChatCreatedEvent = new GroupChatCreatedEvent(dialog.getName(), dialog.getOccupants());
+                EventBus.getDefault().post(groupChatCreatedEvent);
+                Log.d(TAG, "Created new Group Chat");
+            }
+
+            @Override
+            public void onError(List<String> errors) {
+                //Toast saying error in creating group chat
+                Log.e(TAG, "Error in creating Group Chat");
+            }
+        });
     }
 
     //Basic Sign up
