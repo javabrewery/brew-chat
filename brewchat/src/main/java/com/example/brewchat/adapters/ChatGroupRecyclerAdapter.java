@@ -13,7 +13,6 @@ import com.example.brewchat.activities.GroupChatActivity;
 import com.example.brewchat.domain.ChatGroup;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by josh on 4/22/15.
@@ -24,9 +23,9 @@ public class ChatGroupRecyclerAdapter extends RecyclerView.Adapter<ChatGroupRecy
 
     Context context;
     LayoutInflater inflater;
-    List<ChatGroup> chatGroups;
+    ArrayList<ChatGroup> chatGroups = new ArrayList<ChatGroup>();
 
-    public ChatGroupRecyclerAdapter(Context context, ArrayList<ChatGroup> chatGroups) {
+    public ChatGroupRecyclerAdapter(Context context) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.chatGroups = chatGroups;
@@ -44,6 +43,10 @@ public class ChatGroupRecyclerAdapter extends RecyclerView.Adapter<ChatGroupRecy
         holder.title.setText(currentChatGroup.getTitle());
         holder.description.setText(currentChatGroup.getChatInfo());
         holder.itemView.setOnClickListener(new JoinChatClickListener(position));
+    }
+
+    public void addChatGroup(ChatGroup chatGroup){
+        chatGroups.add(chatGroup);
     }
 
     @Override

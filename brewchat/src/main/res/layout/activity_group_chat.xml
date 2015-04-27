@@ -41,6 +41,8 @@
                 android:background="@android:color/white"
                 android:id="@+id/message_textview"
                 android:layout_alignParentTop="true"
+                android:hint="@string/chat_enter_chat_string"
+                android:layout_toEndOf="@+id/add_attachment_button"
                 android:layout_toRightOf="@+id/add_attachment_button"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/send_button"
