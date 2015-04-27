@@ -3,6 +3,7 @@ package com.example.brewchat.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import com.example.brewchat.Application;
 import com.example.brewchat.R;
 import com.example.brewchat.events.AuthenticationErrorEvent;
+import com.example.brewchat.events.RegisterUserError;
 import com.example.brewchat.events.UserLoggedEvent;
 import com.example.brewchat.events.UserSignedUpEvent;
 import com.example.brewchat.fragments.LoginFragment;
@@ -88,6 +90,10 @@ public class LoginActivity extends AppCompatActivity implements RegisterDialogLi
 
     public void onEvent(AuthenticationErrorEvent event){
         Toast.makeText(this, getString(R.string.login_error_toast), Toast.LENGTH_LONG).show();
+    }
+
+    public void onEvent(RegisterUserError event) {
+        Toast.makeText(this, "Error in registration", Toast.LENGTH_LONG).show();
     }
 
     @Override

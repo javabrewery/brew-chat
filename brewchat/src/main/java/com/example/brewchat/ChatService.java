@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.brewchat.events.AuthenticationErrorEvent;
+import com.example.brewchat.events.CreateChatError;
 import com.example.brewchat.events.GroupChatCreatedEvent;
+import com.example.brewchat.events.RegisterUserError;
 import com.example.brewchat.events.UserLoggedEvent;
 import com.example.brewchat.events.UserSignedUpEvent;
 import com.quickblox.auth.QBAuth;
@@ -62,8 +64,9 @@ public class ChatService implements ConnectionListener,
 
         QBSettings.getInstance().fastConfigInit(appId, authKey, authSecret);
 
-        QBChatService.setDebugEnabled(true);
-
+        if (BuildConfig.DEBUG) {
+            QBChatService.setDebugEnabled(true);
+        }
         if (!QBChatService.isInitialized()) {
             QBChatService.init(context);
             chatService = QBChatService.getInstance();
@@ -139,7 +142,7 @@ public class ChatService implements ConnectionListener,
 
             @Override
             public void onError(List<String> errors) {
-                //Toast saying error in creating group chat
+                EventBus.getDefault().post(new CreateChatError(errors));
                 Log.e(TAG, "Error in creating Group Chat");
             }
         });
@@ -158,7 +161,8 @@ public class ChatService implements ConnectionListener,
 
             @Override
             public void onError(List<String> errors) {
-                //Add toast to show error in signing up
+
+                EventBus.getDefault().post(new RegisterUserError(errors));
                 Log.e(TAG, "Error in signup");
             }
         });

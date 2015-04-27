@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.brewchat.Application;
 import com.example.brewchat.R;
 import com.example.brewchat.domain.ChatGroup;
+import com.example.brewchat.events.CreateChatError;
 import com.example.brewchat.events.GroupChatCreatedEvent;
 import com.example.brewchat.fragments.ChatManagerFragment;
 import com.example.brewchat.fragments.CreateChatDialogFragment;
@@ -55,6 +56,11 @@ public class ChatManagerActivity extends AppCompatActivity implements AddChatGro
     public void onEvent(GroupChatCreatedEvent event) {
         Toast.makeText(this,getString(R.string.chat_created_toast),Toast.LENGTH_LONG).show();
         chatManagerFragment.addChatGroup(new ChatGroup(event.getName(), event.getUserIds()));
+    }
+
+    public void onEvent(CreateChatError event) {
+        //TODO make more informative error message
+        Toast.makeText(this,getString(R.string.create_chat_error_toast), Toast.LENGTH_LONG).show();
     }
 
     public void addChatGroup(String title, ArrayList<Integer> userIds) {
