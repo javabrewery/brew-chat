@@ -1,6 +1,8 @@
 package com.example.brewchat.activities;
 
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +25,12 @@ public class GroupChatActivity extends AppCompatActivity {
     @InjectView(R.id.messages_recyclerview)
     RecyclerView messagesRecyclerView;
 
+    @InjectView(R.id.main_drawer_layout)
+    DrawerLayout mainDrawerLayout;
+
+    @InjectView(R.id.main_toolbar)
+    Toolbar mainToolbar;
+
     private NavigationDrawerFragment navigationDrawerFragment;
 
     private ChatGroup chatGroup;
@@ -42,8 +50,15 @@ public class GroupChatActivity extends AppCompatActivity {
                 .replace(R.id.navigation_drawer_container, navigationDrawerFragment)
                 .commit();
 
-        setSupportActionBar((Toolbar) findViewById(R.id.main_toolbar));
+        setSupportActionBar(mainToolbar);
 
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mainDrawerLayout, mainToolbar, R.string.drawer_open, R.string.drawer_close
+        );
+        mainDrawerLayout.setDrawerListener(toggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        toggle.syncState();
     }
 
 

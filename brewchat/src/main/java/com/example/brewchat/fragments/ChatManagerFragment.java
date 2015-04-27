@@ -1,8 +1,8 @@
 package com.example.brewchat.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,8 +18,16 @@ import com.example.brewchat.mockers.MockerUtil;
  * Created by Josh
  */
 
-public class ChatManagerFragment extends Fragment{
+public class ChatManagerFragment extends Fragment {
 
+    Toolbar mainToolbar = null;
+
+    // Dummy listener, in case the activity doesn't implement it.
+    OnViewLoadedListener loadedListner = new OnViewLoadedListener() {
+        @Override
+        public void onViewLoaded() {
+        }
+    };
 
     public static ChatManagerFragment newInstance(Bundle savedInstanceState) {
         return new ChatManagerFragment();
@@ -47,12 +55,27 @@ public class ChatManagerFragment extends Fragment{
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        Toolbar mainToolbar=(Toolbar)layout.findViewById(R.id.main_toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(mainToolbar);
+        mainToolbar = (Toolbar) layout.findViewById(R.id.main_toolbar);
+
+        loadedListner.onViewLoaded();
 
         return layout;
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof OnViewLoadedListener)
+            loadedListner = (OnViewLoadedListener) activity;
+    }
+
+    public Toolbar getMainToolbar() {
+        return mainToolbar;
+    }
+
+    public interface OnViewLoadedListener {
+        public abstract void onViewLoaded();
+    }
 
 
 }

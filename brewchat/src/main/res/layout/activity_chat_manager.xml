@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:context="com.example.brewchat.activities.ChatManagerActivity">
+    tools:context="com.example.brewchat.activities.ChatManagerActivity"
+    android:id="@+id/main_drawer_layout">
 
     <FrameLayout
         android:id="@+id/chat_manager_container"

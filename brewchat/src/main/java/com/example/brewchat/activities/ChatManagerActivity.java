@@ -1,7 +1,10 @@
 package com.example.brewchat.activities;
 
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -9,7 +12,8 @@ import com.example.brewchat.R;
 import com.example.brewchat.fragments.ChatManagerFragment;
 import com.example.brewchat.fragments.NavigationDrawerFragment;
 
-public class ChatManagerActivity extends AppCompatActivity {
+public class ChatManagerActivity extends AppCompatActivity
+        implements ChatManagerFragment.OnViewLoadedListener {
 
     private ChatManagerFragment chatManagerFragment;
     private NavigationDrawerFragment navigationDrawerFragment;
@@ -55,4 +59,18 @@ public class ChatManagerActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onViewLoaded() {
+        Toolbar mainToolbar = chatManagerFragment.getMainToolbar();
+        setSupportActionBar(mainToolbar);
+
+        DrawerLayout mainDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mainDrawerLayout, mainToolbar, R.string.drawer_open, R.string.drawer_close
+        );
+        mainDrawerLayout.setDrawerListener(toggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        toggle.syncState();
+    }
 }
