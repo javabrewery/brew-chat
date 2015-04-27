@@ -30,4 +30,6 @@
     <string name="create_group_name_hint">Enter new group name</string>
     <string name="create_group_add_users_hint">Add users</string>
     <string name="chat_created_toast">New Group Chat Created</string>
+    <string name="chat_enter_chat_string">Enter Chat Here</string>
+    <string name="add_group_chat_menu_button_title">Add Group Chat</string>
 </resources>

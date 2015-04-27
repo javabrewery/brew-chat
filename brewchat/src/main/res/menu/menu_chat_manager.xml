@@ -9,7 +9,7 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/action_add_group_chat"
-        android:title="Add Group Chat"
+        android:title="@string/add_group_chat_menu_button_title"
         android:orderInCategory="100"
         app:showAsAction="never"
         android:src="@drawable/ic_add_circle_white_18dp"/>
