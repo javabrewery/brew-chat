@@ -13,6 +13,7 @@ import com.example.brewchat.Application;
 import com.example.brewchat.R;
 import com.example.brewchat.domain.ChatGroup;
 import com.example.brewchat.events.CreateChatError;
+import com.example.brewchat.events.GetGroupChatsErrorEvent;
 import com.example.brewchat.events.GetGroupChatsEvent;
 import com.example.brewchat.events.GroupChatCreatedEvent;
 import com.example.brewchat.fragments.ChatManagerFragment;
@@ -68,6 +69,13 @@ public class ChatManagerActivity extends AppCompatActivity implements AddChatGro
 
     public void onEvent(GetGroupChatsEvent event) {
         chatManagerFragment.setChatGroupList(event.getChatGroups());
+    }
+
+    public void onEvent(GetGroupChatsErrorEvent event) {
+        Toast.makeText(this, "Error pulling chats groups from server", Toast.LENGTH_LONG).show();
+        for(String error: event.getErrors()){
+            Log.e("ChatManagerActivity", error);
+        }
     }
 
     public void addChatGroup(String title, ArrayList<Integer> userIds) {
