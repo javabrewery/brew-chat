@@ -2,7 +2,7 @@ package com.example.brewchat.fragments;
 
 
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.brewchat.R;
+import com.example.brewchat.adapters.ChatHistoryRecyclerAdapter;
 import com.example.brewchat.domain.ChatGroup;
 
 import butterknife.ButterKnife;
@@ -21,6 +22,7 @@ import butterknife.InjectView;
 public class GroupChatFragment extends Fragment {
     public static final String EXTRA_CHAT_GROUP = "chatgroup";
     private ChatGroup chatGroup;
+    private ChatHistoryRecyclerAdapter chatHistoryRecyclerAdapter;
 
     @InjectView(R.id.messages_recyclerview)
     RecyclerView messagesRecyclerView;
@@ -47,8 +49,12 @@ public class GroupChatFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_group_chat, container, false);
 
-        ButterKnife.inject(view);
+        ButterKnife.inject(this, view);
+        //messagesRecyclerView = new RecyclerView();
         messagesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        chatHistoryRecyclerAdapter = new ChatHistoryRecyclerAdapter(getActivity(), chatGroup.getChatHistory());
+        messagesRecyclerView.setAdapter(chatHistoryRecyclerAdapter);
 
         return view;
     }
@@ -56,4 +62,6 @@ public class GroupChatFragment extends Fragment {
     public void setChatGroup(ChatGroup chatGroup) {
         this.chatGroup = chatGroup;
     }
+
+
 }

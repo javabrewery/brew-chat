@@ -10,6 +10,10 @@ import java.util.List;
 public class ChatHistory implements Serializable{
     private ArrayList<ChatMessage> messages = new ArrayList<>();
 
+    public void ChatHistory() {
+        this.messages = new ArrayList<>();
+    }
+
     public List<ChatMessage> getMessages() {
         return messages;
     }

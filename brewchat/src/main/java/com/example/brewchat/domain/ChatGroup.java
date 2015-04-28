@@ -20,6 +20,7 @@ public class ChatGroup implements Serializable {
     public ChatGroup(String title, ArrayList<Integer> chatUsers){
         this.title = title;
         this.chatUsers = chatUsers;
+        this.history = new ChatHistory();
     }
     public String getTitle() {
         return title;

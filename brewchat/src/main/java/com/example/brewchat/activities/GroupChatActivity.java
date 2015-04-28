@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import com.example.brewchat.R;
 import com.example.brewchat.adapters.ChatHistoryRecyclerAdapter;
 import com.example.brewchat.domain.ChatGroup;
+import com.example.brewchat.fragments.ChatManagerFragment;
 import com.example.brewchat.fragments.GroupChatFragment;
 
 import butterknife.ButterKnife;
@@ -33,8 +34,15 @@ public class GroupChatActivity extends AppCompatActivity {
         ButterKnife.inject(this);
         setSupportActionBar(toolbar);
 
-        groupChatFragment = GroupChatFragment.newInstance(getIntent().getExtras());
 
+
+        if (savedInstanceState == null) {
+            groupChatFragment = GroupChatFragment.newInstance(getIntent().getExtras());
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.chat_group_activity_container, groupChatFragment)
+                    .commit();
+        }
     }
 
 

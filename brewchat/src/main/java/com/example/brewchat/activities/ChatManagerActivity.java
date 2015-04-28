@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,16 +21,23 @@ import com.example.brewchat.interfaces.AddChatGroupListener;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 public class ChatManagerActivity extends AppCompatActivity implements AddChatGroupListener{
     private static final String TAG = "ChatManagerActivity";
     ChatManagerFragment chatManagerFragment;
 
+    @InjectView(R.id.app_bar)
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_manager);
+        ButterKnife.inject(this);
+        setSupportActionBar(toolbar);
         if (savedInstanceState == null) {
             chatManagerFragment = new ChatManagerFragment();
 
@@ -84,7 +92,7 @@ public class ChatManagerActivity extends AppCompatActivity implements AddChatGro
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        }else if(id == R.id.action_add_group_chat){
+        } else if(id == R.id.action_add_group_chat) {
             showAddDialog();
             return true;
         }
