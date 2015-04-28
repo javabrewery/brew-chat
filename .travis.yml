@@ -3,16 +3,17 @@ android:
   components:
   - platform-tools
   - tools
-  - build-tools-21.1.1
-  - android-21
+  - build-tools-22.0.1
+  - android-22
   - extra
-  - sys-img-armeabi-v7a-android-21
+  - sys-img-armeabi-v7a-android-22
 before_script:
 - chmod +x gradlew
 script:
 - ./gradlew build check
 after_success:
-- ./gradlew testfairyDebug
+- BRANCH=`git rev-parse --abbrev-ref HEAD`
+- if [ "$BRANCH" == "master" ]; then ./gradlew testfairyDebug; fi
 env:
   global:
     secure: ZLrpCizsXYAhODX5LbP+M9t74FS80UCo/5QU/WQhWimJURXNAj94mVH8+/3ZQrUYZmK0xuF0kB34dA28fK3suv3+QOvDuvoRk7wwrrchPrcYTvw8RTrt1z3Aqw9sBKbx+Epq89WFY/Q7H/Coz1/gn8gEDccZnh1L2N9tzkTxHlM=
