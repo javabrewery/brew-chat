@@ -49,6 +49,7 @@ public class ChatManagerFragment extends Fragment{
     }
     public void addChatGroup(ChatGroup chatGroup){
         adapter.addChatGroup(chatGroup);
+        adapter.notifyDataSetChanged();
     }
 
 
