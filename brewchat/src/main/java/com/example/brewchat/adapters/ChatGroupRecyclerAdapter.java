@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.brewchat.R;
 import com.example.brewchat.activities.GroupChatActivity;
 import com.example.brewchat.domain.ChatGroup;
+import com.example.brewchat.fragments.GroupChatFragment;
 
 import java.util.ArrayList;
 
@@ -78,7 +79,7 @@ public class ChatGroupRecyclerAdapter extends RecyclerView.Adapter<ChatGroupRecy
         @Override
         public void onClick(View view) {
             Intent i = new Intent(context, GroupChatActivity.class);
-            i.putExtra(GroupChatActivity.EXTRA_CHAT_GROUP, chatGroups.get(position));
+            i.putExtra(GroupChatFragment.EXTRA_CHAT_GROUP, chatGroups.get(position));
             context.startActivity(i);
         }
     }

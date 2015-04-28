@@ -6,20 +6,23 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.support.v7.widget.Toolbar;
 
 import com.example.brewchat.R;
 import com.example.brewchat.adapters.ChatHistoryRecyclerAdapter;
 import com.example.brewchat.domain.ChatGroup;
+import com.example.brewchat.fragments.GroupChatFragment;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class GroupChatActivity extends AppCompatActivity {
+    private GroupChatFragment groupChatFragment;
 
-    public static final String EXTRA_CHAT_GROUP = "chatgroup";
 
-    @InjectView(R.id.messages_recyclerview)
-    RecyclerView messagesRecyclerView;
+    @InjectView(R.id.app_bar)
+    Toolbar toolbar;
+
 
     private ChatGroup chatGroup;
 
@@ -28,9 +31,10 @@ public class GroupChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
         ButterKnife.inject(this);
-        messagesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        chatGroup = (ChatGroup) getIntent().getExtras().getSerializable(EXTRA_CHAT_GROUP);
-        messagesRecyclerView.setAdapter(new ChatHistoryRecyclerAdapter(this, chatGroup.getChatHistory()));
+        setSupportActionBar(toolbar);
+
+        groupChatFragment = GroupChatFragment.newInstance(getIntent().getExtras());
+
     }
 
 
