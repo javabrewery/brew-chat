@@ -14,6 +14,8 @@ import android.widget.EditText;
 import com.example.brewchat.R;
 import com.example.brewchat.interfaces.AddChatGroupListener;
 
+import junit.framework.Test;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -63,6 +65,11 @@ public class CreateChatDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.create_chat_dialog,container,false);
         ButterKnife.inject(this, view);
+
+        // for testing purposes, to save typing
+        editTextChatName.setText("Test group chat");
+        editTextAddUsers.setText("2965508,2965510,2965514");
+
         return view;
     }
 

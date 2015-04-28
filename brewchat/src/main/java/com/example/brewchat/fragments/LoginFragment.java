@@ -62,6 +62,11 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.login_fragment, container, false);
         ButterKnife.inject(this, view);
+
+        // for testing, set default values to save typing
+        usernameEditText.setText("user1");
+        passwordEditText.setText("12345678");
+
         return view;
     }
 
