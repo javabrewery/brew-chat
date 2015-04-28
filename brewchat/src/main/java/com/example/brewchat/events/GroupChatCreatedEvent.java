@@ -1,25 +1,24 @@
 package com.example.brewchat.events;
 
+import com.quickblox.chat.model.QBDialog;
+
 import java.util.ArrayList;
 
 /**
+ * Event for notifying creation of new QB chat group
+ *
  * Created by Ryan on 4/25/2015.
  */
 public class GroupChatCreatedEvent{
-    private String name;
-    private ArrayList<Integer> userIds;
 
-    public GroupChatCreatedEvent(String name, ArrayList<Integer> ids){
-        this.name = name;
-        this.userIds = userIds;
+    private QBDialog dialog;
 
+    public GroupChatCreatedEvent(QBDialog dialog){
+        this.dialog = dialog;
     }
 
-    public ArrayList<Integer> getUserIds() {
-        return userIds;
+    public QBDialog getDialog() {
+        return dialog;
     }
 
-    public String getName() {
-        return name;
-    }
 }

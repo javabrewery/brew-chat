@@ -13,10 +13,12 @@ import com.example.brewchat.Application;
 import com.example.brewchat.R;
 import com.example.brewchat.domain.ChatGroup;
 import com.example.brewchat.events.CreateChatError;
+import com.example.brewchat.events.GetGroupChatsEvent;
 import com.example.brewchat.events.GroupChatCreatedEvent;
 import com.example.brewchat.fragments.ChatManagerFragment;
 import com.example.brewchat.fragments.CreateChatDialogFragment;
 import com.example.brewchat.interfaces.AddChatGroupListener;
+import com.quickblox.chat.model.QBDialog;
 
 import java.util.ArrayList;
 
@@ -37,6 +39,7 @@ public class ChatManagerActivity extends AppCompatActivity implements AddChatGro
                     .add(R.id.chat_manager_container, chatManagerFragment)
                     .commit();
         }
+        ((Application)getApplication()).getChatService().getChatDialogs();
 
     }
 
@@ -55,12 +58,16 @@ public class ChatManagerActivity extends AppCompatActivity implements AddChatGro
     @SuppressWarnings("unused")
     public void onEvent(GroupChatCreatedEvent event) {
         Toast.makeText(this,getString(R.string.chat_created_toast),Toast.LENGTH_LONG).show();
-        chatManagerFragment.addChatGroup(new ChatGroup(event.getName(), event.getUserIds()));
+        chatManagerFragment.addChatGroup(event.getDialog());
     }
 
     public void onEvent(CreateChatError event) {
         //TODO make more informative error message
         Toast.makeText(this,getString(R.string.create_chat_error_toast), Toast.LENGTH_LONG).show();
+    }
+
+    public void onEvent(GetGroupChatsEvent event) {
+        chatManagerFragment.setChatGroupList(event.getChatGroups());
     }
 
     public void addChatGroup(String title, ArrayList<Integer> userIds) {

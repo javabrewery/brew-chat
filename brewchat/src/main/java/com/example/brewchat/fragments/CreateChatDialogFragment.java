@@ -23,6 +23,8 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 /**
+ * Dialog for constructing new QB chat group
+ *
  * Created by josh on 4/26/15.
  */
 public class CreateChatDialogFragment extends DialogFragment {
@@ -76,6 +78,7 @@ public class CreateChatDialogFragment extends DialogFragment {
         ArrayList<String> userStringIds = getUserStringIds();
         ArrayList<Integer> userIds = getUserIds(userStringIds);
         addChatGroupListener.addChatGroup(editTextChatName.getText().toString(), userIds);
+        dismiss();
     }
 
     @OnClick(R.id.create_chat_cancel_button)

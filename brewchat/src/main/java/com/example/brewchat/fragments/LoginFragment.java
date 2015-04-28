@@ -66,7 +66,7 @@ public class LoginFragment extends Fragment {
         // for testing, set default values to save typing
         usernameEditText.setText("user1");
         passwordEditText.setText("12345678");
-        
+
         return view;
     }
 

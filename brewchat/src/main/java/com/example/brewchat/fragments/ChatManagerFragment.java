@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import com.example.brewchat.R;
 import com.example.brewchat.adapters.ChatGroupRecyclerAdapter;
 import com.example.brewchat.domain.ChatGroup;
+import com.quickblox.chat.model.QBDialog;
+
+import java.util.ArrayList;
 
 /**
  * Created by Josh
@@ -47,8 +50,13 @@ public class ChatManagerFragment extends Fragment{
 
         return layout;
     }
-    public void addChatGroup(ChatGroup chatGroup){
+    public void addChatGroup(QBDialog chatGroup){
         adapter.addChatGroup(chatGroup);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void setChatGroupList(ArrayList<QBDialog> chatGroupList) {
+        adapter.setChatGroupList(chatGroupList);
         adapter.notifyDataSetChanged();
     }
 
