@@ -1,0 +1,125 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="320dp"
+    android:layout_height="match_parent"
+    tools:context="com.example.brewchat.fragments.NavigationDrawerFragment"
+    android:background="@color/background_white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:src="@drawable/navigation_drawer_header"
+            android:scaleType="centerCrop" />
+        <!-- Home -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/drawer_item_spacing"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:scaleType="center"
+                android:src="@drawable/ic_home_grey_800_24dp"
+                android:gravity="center_vertical" />
+
+            <TextView
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/drawer_item_spacing"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="Home"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+
+        <!-- Notifications -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/drawer_item_spacing"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:scaleType="center"
+                android:src="@drawable/ic_mms_grey_800_24dp"
+                android:gravity="center_vertical" />
+
+            <TextView
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/drawer_item_spacing"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="Notifications"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+
+        <!-- Contacts -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/drawer_item_spacing"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:scaleType="center"
+                android:src="@drawable/ic_contacts_grey_800_24dp"
+                android:gravity="center_vertical" />
+
+            <TextView
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/drawer_item_spacing"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="Contacts"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+
+        <!-- Logout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/drawer_item_spacing"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:scaleType="center"
+                android:src="@drawable/ic_exit_to_app_grey_800_24dp"
+                android:gravity="center_vertical" />
+
+            <TextView
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/drawer_item_spacing"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="Logout"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
