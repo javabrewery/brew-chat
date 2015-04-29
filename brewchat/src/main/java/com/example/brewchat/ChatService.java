@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.example.brewchat.events.AuthenticationErrorEvent;
 import com.example.brewchat.events.CreateChatError;
+import com.example.brewchat.events.GetGroupChatsErrorEvent;
+import com.example.brewchat.events.GetGroupChatsEvent;
 import com.example.brewchat.events.GroupChatCreatedEvent;
 import com.example.brewchat.events.RegisterUserError;
 import com.example.brewchat.events.UserLoggedEvent;
@@ -33,6 +35,7 @@ import com.quickblox.chat.model.QBPresence;
 import com.quickblox.chat.model.QBPrivacyListItem;
 import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.core.QBSettings;
+import com.quickblox.core.request.QBRequestGetBuilder;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 
@@ -115,7 +118,7 @@ public class ChatService implements ConnectionListener,
         });
 
 
-            }
+    }
 
     public void logout() {
         try {
@@ -125,7 +128,7 @@ public class ChatService implements ConnectionListener,
         }
     }
 
-    public void addChatGroup(String name, ArrayList<Integer> userIds){
+    public void addChatGroup(String name, ArrayList<Integer> userIds) {
         QBDialog dialog = new QBDialog();
         dialog.setName(name);
         dialog.setType(QBDialogType.GROUP);
@@ -135,7 +138,7 @@ public class ChatService implements ConnectionListener,
         groupChatManager.createDialog(dialog, new QBEntityCallbackImpl<QBDialog>() {
             @Override
             public void onSuccess(QBDialog dialog, Bundle args) {
-                GroupChatCreatedEvent groupChatCreatedEvent = new GroupChatCreatedEvent(dialog.getName(), dialog.getOccupants());
+                GroupChatCreatedEvent groupChatCreatedEvent = new GroupChatCreatedEvent(dialog);
                 EventBus.getDefault().post(groupChatCreatedEvent);
                 Log.d(TAG, "Created new Group Chat");
             }
@@ -167,6 +170,23 @@ public class ChatService implements ConnectionListener,
             }
         });
 
+    }
+
+    public void getChatDialogs() {
+        QBRequestGetBuilder requestGetBuilder = new QBRequestGetBuilder();
+        requestGetBuilder.setPagesLimit(100);
+
+        QBChatService.getChatDialogs(null, requestGetBuilder, new QBEntityCallbackImpl<ArrayList<QBDialog>>() {
+            @Override
+            public void onSuccess(ArrayList<QBDialog> dialogs, Bundle args) {
+                EventBus.getDefault().post(new GetGroupChatsEvent(dialogs));
+            }
+
+            @Override
+            public void onError(List<String> errors) {
+                EventBus.getDefault().post(new GetGroupChatsErrorEvent(errors));
+            }
+        });
     }
 
     // ConnectionListener
