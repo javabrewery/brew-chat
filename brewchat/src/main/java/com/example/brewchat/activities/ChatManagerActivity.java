@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,39 +11,38 @@ import android.widget.Toast;
 
 import com.example.brewchat.Application;
 import com.example.brewchat.R;
-import com.example.brewchat.domain.ChatGroup;
 import com.example.brewchat.events.CreateChatError;
+import com.example.brewchat.events.GetGroupChatsErrorEvent;
+import com.example.brewchat.events.GetGroupChatsEvent;
 import com.example.brewchat.events.GroupChatCreatedEvent;
 import com.example.brewchat.fragments.ChatManagerFragment;
 import com.example.brewchat.fragments.CreateChatDialogFragment;
+import com.example.brewchat.fragments.NavigationDrawerFragment;
 import com.example.brewchat.interfaces.AddChatGroupListener;
 
 import java.util.ArrayList;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
-public class ChatManagerActivity extends AppCompatActivity implements AddChatGroupListener{
+public class ChatManagerActivity extends AppCompatActivity implements AddChatGroupListener {
     private static final String TAG = "ChatManagerActivity";
     ChatManagerFragment chatManagerFragment;
-
-    @InjectView(R.id.app_bar)
-    Toolbar toolbar;
+    NavigationDrawerFragment navigationDrawerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_manager);
-        ButterKnife.inject(this);
-        setSupportActionBar(toolbar);
         if (savedInstanceState == null) {
             chatManagerFragment = new ChatManagerFragment();
+            navigationDrawerFragment = new NavigationDrawerFragment();
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.chat_manager_container, chatManagerFragment)
+                    .add(R.id.navigation_drawer_container, navigationDrawerFragment)
                     .commit();
         }
+        ((Application) getApplication()).getChatService().getChatDialogs();
 
     }
 
@@ -62,17 +60,28 @@ public class ChatManagerActivity extends AppCompatActivity implements AddChatGro
 
     @SuppressWarnings("unused")
     public void onEvent(GroupChatCreatedEvent event) {
-        Toast.makeText(this,getString(R.string.chat_created_toast),Toast.LENGTH_LONG).show();
-        chatManagerFragment.addChatGroup(new ChatGroup(event.getName(), event.getUserIds()));
+        Toast.makeText(this, getString(R.string.chat_created_toast), Toast.LENGTH_LONG).show();
+        chatManagerFragment.addChatGroup(event.getDialog());
     }
 
     public void onEvent(CreateChatError event) {
         //TODO make more informative error message
-        Toast.makeText(this,getString(R.string.create_chat_error_toast), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.create_chat_error_toast), Toast.LENGTH_LONG).show();
+    }
+
+    public void onEvent(GetGroupChatsEvent event) {
+        chatManagerFragment.setChatGroupList(event.getChatGroups());
+    }
+
+    public void onEvent(GetGroupChatsErrorEvent event) {
+        Toast.makeText(this, "Error pulling chats groups from server", Toast.LENGTH_LONG).show();
+        for (String error : event.getErrors()) {
+            Log.e("ChatManagerActivity", error);
+        }
     }
 
     public void addChatGroup(String title, ArrayList<Integer> userIds) {
-        ((Application)getApplication()).getChatService().addChatGroup(title, userIds);
+        ((Application) getApplication()).getChatService().addChatGroup(title, userIds);
     }
 
     @Override
@@ -92,7 +101,7 @@ public class ChatManagerActivity extends AppCompatActivity implements AddChatGro
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        } else if(id == R.id.action_add_group_chat) {
+        } else if (id == R.id.action_add_group_chat) {
             showAddDialog();
             return true;
         }
@@ -114,8 +123,8 @@ public class ChatManagerActivity extends AppCompatActivity implements AddChatGro
         /* When positive (yes/ok) is clicked */
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                ((Application)getApplication()).getChatService().logout();
-                Log.d(TAG,"User logged out");
+                ((Application) getApplication()).getChatService().logout();
+                Log.d(TAG, "User logged out");
                 finish();
                 Toast.makeText(ChatManagerActivity.this, "Successfully Logged Out", Toast.LENGTH_LONG).show();
             }

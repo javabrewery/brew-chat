@@ -14,8 +14,6 @@ import android.widget.EditText;
 import com.example.brewchat.R;
 import com.example.brewchat.interfaces.AddChatGroupListener;
 
-import junit.framework.Test;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +23,8 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 /**
+ * Dialog for constructing new QB chat group
+ *
  * Created by josh on 4/26/15.
  */
 public class CreateChatDialogFragment extends DialogFragment {
@@ -66,10 +66,9 @@ public class CreateChatDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.create_chat_dialog,container,false);
         ButterKnife.inject(this, view);
 
-        // for testing purposes, to save typing
+        // for testing purposes - saves typing
         editTextChatName.setText("Test group chat");
         editTextAddUsers.setText("2965508,2965510,2965514");
-
         return view;
     }
 
@@ -79,6 +78,7 @@ public class CreateChatDialogFragment extends DialogFragment {
         ArrayList<String> userStringIds = getUserStringIds();
         ArrayList<Integer> userIds = getUserIds(userStringIds);
         addChatGroupListener.addChatGroup(editTextChatName.getText().toString(), userIds);
+        dismiss();
     }
 
     @OnClick(R.id.create_chat_cancel_button)

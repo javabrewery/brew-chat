@@ -12,6 +12,12 @@ import android.view.ViewGroup;
 import com.example.brewchat.R;
 import com.example.brewchat.adapters.ChatHistoryRecyclerAdapter;
 import com.example.brewchat.domain.ChatGroup;
+import com.example.brewchat.interfaces.GetHistoryListener;
+import com.quickblox.chat.model.QBChatMessage;
+import com.quickblox.chat.model.QBDialog;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -21,8 +27,11 @@ import butterknife.InjectView;
  */
 public class GroupChatFragment extends Fragment {
     public static final String EXTRA_CHAT_GROUP = "chatgroup";
-    private ChatGroup chatGroup;
+    private QBDialog chatGroup;
+    private ArrayList<QBChatMessage> chatHistory;
     private ChatHistoryRecyclerAdapter chatHistoryRecyclerAdapter;
+    private GetHistoryListener getHistoryListener;
+
 
     @InjectView(R.id.messages_recyclerview)
     RecyclerView messagesRecyclerView;
@@ -32,9 +41,16 @@ public class GroupChatFragment extends Fragment {
 
     public static GroupChatFragment newInstance(Bundle bundle) {
         GroupChatFragment gcf = new GroupChatFragment();
-        gcf.setChatGroup((ChatGroup) bundle.getSerializable(EXTRA_CHAT_GROUP));
+        gcf.setChatGroup((QBDialog) bundle.getSerializable(EXTRA_CHAT_GROUP));
 
         return gcf;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getHistoryListener = (GetHistoryListener) getActivity();
+        getHistoryListener.getHistory(chatGroup);
     }
 
     @Override
@@ -50,18 +66,16 @@ public class GroupChatFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_group_chat, container, false);
 
         ButterKnife.inject(this, view);
-        //messagesRecyclerView = new RecyclerView();
         messagesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        chatHistoryRecyclerAdapter = new ChatHistoryRecyclerAdapter(getActivity(), chatGroup.getChatHistory());
+        chatHistoryRecyclerAdapter = new ChatHistoryRecyclerAdapter(getActivity(), chatHistory);
         messagesRecyclerView.setAdapter(chatHistoryRecyclerAdapter);
 
         return view;
     }
 
-    public void setChatGroup(ChatGroup chatGroup) {
+    public void setChatGroup(QBDialog chatGroup) {
         this.chatGroup = chatGroup;
     }
-
+    public void setChatHistory(ArrayList<QBChatMessage> chatHistory) {this.chatHistory = chatHistory;}
 
 }

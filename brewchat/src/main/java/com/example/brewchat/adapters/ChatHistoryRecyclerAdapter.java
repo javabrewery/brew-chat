@@ -9,6 +9,12 @@ import android.widget.TextView;
 
 import com.example.brewchat.R;
 import com.example.brewchat.domain.ChatHistory;
+import com.example.brewchat.domain.ChatMessage;
+import com.quickblox.chat.model.QBChatMessage;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Created by jon on 22/04/15.
@@ -16,12 +22,12 @@ import com.example.brewchat.domain.ChatHistory;
 public class ChatHistoryRecyclerAdapter extends RecyclerView.Adapter<ChatHistoryRecyclerAdapter.ChatHistoryViewHolder> {
 
     private Context context;
-    private ChatHistory history;
+    private ArrayList<QBChatMessage> messages;
     private LayoutInflater inflater;
 
-    public ChatHistoryRecyclerAdapter(Context context, ChatHistory history) {
+    public ChatHistoryRecyclerAdapter(Context context, ArrayList<QBChatMessage> messages) {
         this.context = context;
-        this.history = history;
+        this.messages = messages;
         inflater = LayoutInflater.from(context);
     }
 
@@ -33,13 +39,20 @@ public class ChatHistoryRecyclerAdapter extends RecyclerView.Adapter<ChatHistory
 
     @Override
     public void onBindViewHolder(ChatHistoryViewHolder holder, int position) {
-        holder.username.setText(history.getMessages().get(position).getSender().getName());
-        holder.message.setText(history.getMessages().get(position).getMessage());
+        if (messages == null) {
+
+        } else {
+            holder.username.setText(messages.get(position).getSenderId().toString());
+            holder.message.setText(messages.get(position).getBody());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return history.getMessages().size();
+        if (messages == null) {
+            return 0;
+        }
+        return messages.size();
     }
 
     class ChatHistoryViewHolder extends RecyclerView.ViewHolder {

@@ -8,23 +8,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 
+import com.example.brewchat.Application;
 import com.example.brewchat.R;
 import com.example.brewchat.adapters.ChatHistoryRecyclerAdapter;
 import com.example.brewchat.domain.ChatGroup;
+import com.example.brewchat.events.GetChatHistoryEvent;
+import com.example.brewchat.events.GetGroupChatsEvent;
 import com.example.brewchat.fragments.ChatManagerFragment;
 import com.example.brewchat.fragments.GroupChatFragment;
+import com.example.brewchat.interfaces.GetHistoryListener;
+import com.quickblox.chat.model.QBDialog;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class GroupChatActivity extends AppCompatActivity {
+public class GroupChatActivity extends AppCompatActivity implements GetHistoryListener {
     private GroupChatFragment groupChatFragment;
 
 
     @InjectView(R.id.app_bar)
     Toolbar toolbar;
 
-
+    public static String EXTRA_CHAT_GROUP = "chatgroup";
     private ChatGroup chatGroup;
 
     @Override
@@ -33,8 +38,6 @@ public class GroupChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group_chat);
         ButterKnife.inject(this);
         setSupportActionBar(toolbar);
-
-
 
         if (savedInstanceState == null) {
             groupChatFragment = GroupChatFragment.newInstance(getIntent().getExtras());
@@ -66,5 +69,14 @@ public class GroupChatActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void getHistory(QBDialog dialog) {
+        ((Application)getApplication()).getChatService().getChatHistory(dialog);
+    }
+
+    public void onEvent(GetChatHistoryEvent event) {
+        groupChatFragment.setChatHistory(event.getQbChatMessageArrayList());
     }
 }

@@ -1,19 +1,20 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context="com.example.brewchat.activities.ChatManagerActivity"
-tools:ignore="MergeRootFrame" >
-
-<include
-    android:id="@+id/app_bar"
-    layout="@layout/toolbar" />
-
-<FrameLayout
-    android:id="@+id/chat_manager_container"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_below="@id/app_bar"/>
+    tools:context="com.example.brewchat.activities.ChatManagerActivity"
+    android:id="@+id/main_drawer_layout">
 
-</RelativeLayout>
+    <FrameLayout
+        android:id="@+id/chat_manager_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="MergeRootFrame" />
+
+    <FrameLayout
+        android:id="@+id/navigation_drawer_container"
+        android:layout_width="320dp"
+        android:layout_height="match_parent"
+        tools:ignore="MergeRootFrame"
+        android:layout_gravity="start" />
+</android.support.v4.widget.DrawerLayout>

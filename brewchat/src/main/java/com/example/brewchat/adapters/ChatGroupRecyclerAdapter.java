@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.example.brewchat.R;
 import com.example.brewchat.activities.GroupChatActivity;
 import com.example.brewchat.domain.ChatGroup;
-import com.example.brewchat.fragments.GroupChatFragment;
+import com.quickblox.chat.model.QBDialog;
 
 import java.util.ArrayList;
 
@@ -24,12 +24,11 @@ public class ChatGroupRecyclerAdapter extends RecyclerView.Adapter<ChatGroupRecy
 
     Context context;
     LayoutInflater inflater;
-    ArrayList<ChatGroup> chatGroups = new ArrayList<ChatGroup>();
+    ArrayList<QBDialog> chatGroups = new ArrayList<>();
 
     public ChatGroupRecyclerAdapter(Context context) {
         this.context = context;
         inflater = LayoutInflater.from(context);
-        this.chatGroups = chatGroups;
     }
 
     @Override
@@ -40,14 +39,18 @@ public class ChatGroupRecyclerAdapter extends RecyclerView.Adapter<ChatGroupRecy
 
     @Override
     public void onBindViewHolder(ChatGroupRecyclerAdapter.MyViewHolder holder, int position) {
-        ChatGroup currentChatGroup = chatGroups.get(position);
-        holder.title.setText(currentChatGroup.getTitle());
-        holder.description.setText(currentChatGroup.getChatInfo());
+        QBDialog currentChatGroup = chatGroups.get(position);
+        holder.title.setText(currentChatGroup.getName());
+//        holder.description.setText(currentChatGroup.);
         holder.itemView.setOnClickListener(new JoinChatClickListener(position));
     }
 
-    public void addChatGroup(ChatGroup chatGroup){
+    public void addChatGroup(QBDialog chatGroup){
         chatGroups.add(chatGroup);
+    }
+
+    public void setChatGroupList(ArrayList<QBDialog> chatGroupList){
+        chatGroups.addAll(chatGroupList);
     }
 
     @Override
@@ -79,7 +82,7 @@ public class ChatGroupRecyclerAdapter extends RecyclerView.Adapter<ChatGroupRecy
         @Override
         public void onClick(View view) {
             Intent i = new Intent(context, GroupChatActivity.class);
-            i.putExtra(GroupChatFragment.EXTRA_CHAT_GROUP, chatGroups.get(position));
+            i.putExtra(GroupChatActivity.EXTRA_CHAT_GROUP, chatGroups.get(position));
             context.startActivity(i);
         }
     }
