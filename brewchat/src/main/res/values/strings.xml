@@ -33,4 +33,9 @@
     <string name="chat_enter_chat_string">Enter Chat Here</string>
     <string name="add_group_chat_menu_button_title">Add Group Chat</string>
     <string name="create_chat_error_toast">Error creating chat group</string>
+
+    <string name="home">Home</string>
+    <string name="notifications">Notifications</string>
+    <string name="contacts">Contacts</string>
+    <string name="logout">Logout</string>
 </resources>

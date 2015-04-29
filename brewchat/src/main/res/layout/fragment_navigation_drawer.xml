@@ -38,7 +38,7 @@
                 android:layout_height="@dimen/drawer_item_spacing"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:text="Home"
+                android:text="@string/home"
                 android:gravity="center_vertical" />
         </LinearLayout>
 
@@ -64,7 +64,7 @@
                 android:layout_height="@dimen/drawer_item_spacing"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:text="Notifications"
+                android:text="@string/notifications"
                 android:gravity="center_vertical" />
         </LinearLayout>
 
@@ -90,7 +90,7 @@
                 android:layout_height="@dimen/drawer_item_spacing"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:text="Contacts"
+                android:text="@string/contacts"
                 android:gravity="center_vertical" />
         </LinearLayout>
 
@@ -116,7 +116,7 @@
                 android:layout_height="@dimen/drawer_item_spacing"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:text="Logout"
+                android:text="@string/logout"
                 android:gravity="center_vertical" />
         </LinearLayout>
 

@@ -72,7 +72,6 @@ public class CreateChatDialogFragment extends DialogFragment {
         return view;
     }
 
-
     @OnClick(R.id.create_chat_create_button)
     public void createChat() {
         ArrayList<String> userStringIds = getUserStringIds();

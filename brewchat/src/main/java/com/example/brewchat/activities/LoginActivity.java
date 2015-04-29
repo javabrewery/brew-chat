@@ -3,7 +3,6 @@ package com.example.brewchat.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,10 +21,11 @@ import com.example.brewchat.interfaces.RegisterDialogListener;
 
 import de.greenrobot.event.EventBus;
 
-
 public class LoginActivity extends AppCompatActivity implements RegisterDialogListener,
         LoginListener{
+
     LoginFragment loginFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,10 +51,8 @@ public class LoginActivity extends AppCompatActivity implements RegisterDialogLi
         EventBus.getDefault().unregister(this);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -71,9 +69,18 @@ public class LoginActivity extends AppCompatActivity implements RegisterDialogLi
         return super.onOptionsItemSelected(item);
     }
 
-    //Simply for navigation purposes during Dev
     public void buttonAuth(String username, String password) {
-        ((Application)getApplication()).getChatService().login(username, password);
+        Application.getChatService().login(username, password);
+    }
+
+    public void showRegisterDialog(View view) {
+        RegisterDialogFragment fragment = new RegisterDialogFragment();
+        fragment.show(getSupportFragmentManager(), "RegisterDialogFragment");
+    }
+
+    @Override
+    public void onCreateAccount(String username, String password) {
+        Application.getChatService().register(username, password);
     }
 
     @SuppressWarnings("unused")
@@ -88,22 +95,14 @@ public class LoginActivity extends AppCompatActivity implements RegisterDialogLi
         loginFragment.updateTextFields(event.getUsername());
     }
 
+    @SuppressWarnings("unused")
     public void onEvent(AuthenticationErrorEvent event){
         Toast.makeText(this, getString(R.string.login_error_toast), Toast.LENGTH_LONG).show();
     }
 
+    @SuppressWarnings("unused")
     public void onEvent(RegisterUserError event) {
         Toast.makeText(this, "Error in registration", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onCreateAccount(String username, String password) {
-        ((Application)getApplication()).getChatService().register(username, password);
-    }
-
-    public void showRegisterDialog(View view) {
-        RegisterDialogFragment fragment = new RegisterDialogFragment();
-        fragment.show(getSupportFragmentManager(), "RegisterDialogFragment");
     }
 
 }

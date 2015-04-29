@@ -2,8 +2,6 @@ package com.example.brewchat.events;
 
 import com.quickblox.chat.model.QBDialog;
 
-import java.util.ArrayList;
-
 /**
  * Event for notifying creation of new QB chat group
  *

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.brewchat.events.AuthenticationErrorEvent;
+import com.example.brewchat.events.ChatServiceinitedEvent;
 import com.example.brewchat.events.CreateChatError;
 import com.example.brewchat.events.GetGroupChatsErrorEvent;
 import com.example.brewchat.events.GetGroupChatsEvent;
@@ -60,25 +61,31 @@ public class ChatService implements ConnectionListener,
         QBSubscriptionListener {
 
     static final String TAG = ChatService.class.toString();
+
     QBChatService chatService;
 
-    public ChatService(Context context, String appId, String authKey, String authSecret) {
-        Log.d(TAG, "ChatService: " + context);
+    public ChatService(final Context context, final String appId, final String authKey, final String authSecret) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-        QBSettings.getInstance().fastConfigInit(appId, authKey, authSecret);
+                QBSettings.getInstance().fastConfigInit(appId, authKey, authSecret);
 
-        if (BuildConfig.DEBUG) {
-            QBChatService.setDebugEnabled(true);
-        }
-        if (!QBChatService.isInitialized()) {
-            QBChatService.init(context);
-            chatService = QBChatService.getInstance();
-            chatService.addConnectionListener(this);
-        }
+                if (BuildConfig.DEBUG) {
+                    QBChatService.setDebugEnabled(true);
+                }
 
+                if (!QBChatService.isInitialized()) {
+                    QBChatService.init(context);
+                    chatService = QBChatService.getInstance();
+                    chatService.addConnectionListener(ChatService.this);
+                }
 
+                EventBus.getDefault().post(new ChatServiceinitedEvent());
+
+            }
+        }).start();
     }
-
 
     public void login(String username, String password) {
         final QBUser user = new QBUser(username, password);

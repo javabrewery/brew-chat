@@ -25,7 +25,9 @@ import java.util.ArrayList;
 import de.greenrobot.event.EventBus;
 
 public class ChatManagerActivity extends AppCompatActivity implements AddChatGroupListener {
-    private static final String TAG = "ChatManagerActivity";
+
+    private static final String TAG = ChatManagerActivity.class.getSimpleName();
+
     ChatManagerFragment chatManagerFragment;
     NavigationDrawerFragment navigationDrawerFragment;
 
@@ -42,8 +44,8 @@ public class ChatManagerActivity extends AppCompatActivity implements AddChatGro
                     .add(R.id.navigation_drawer_container, navigationDrawerFragment)
                     .commit();
         }
-        ((Application) getApplication()).getChatService().getChatDialogs();
 
+        Application.getChatService().getChatDialogs();
     }
 
     @Override
@@ -58,47 +60,16 @@ public class ChatManagerActivity extends AppCompatActivity implements AddChatGro
         EventBus.getDefault().unregister(this);
     }
 
-    @SuppressWarnings("unused")
-    public void onEvent(GroupChatCreatedEvent event) {
-        Toast.makeText(this, getString(R.string.chat_created_toast), Toast.LENGTH_LONG).show();
-        chatManagerFragment.addChatGroup(event.getDialog());
-    }
-
-    public void onEvent(CreateChatError event) {
-        //TODO make more informative error message
-        Toast.makeText(this, getString(R.string.create_chat_error_toast), Toast.LENGTH_LONG).show();
-    }
-
-    public void onEvent(GetGroupChatsEvent event) {
-        chatManagerFragment.setChatGroupList(event.getChatGroups());
-    }
-
-    public void onEvent(GetGroupChatsErrorEvent event) {
-        Toast.makeText(this, "Error pulling chats groups from server", Toast.LENGTH_LONG).show();
-        for (String error : event.getErrors()) {
-            Log.e("ChatManagerActivity", error);
-        }
-    }
-
-    public void addChatGroup(String title, ArrayList<Integer> userIds) {
-        ((Application) getApplication()).getChatService().addChatGroup(title, userIds);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_chat_manager, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_add_group_chat) {
@@ -114,6 +85,9 @@ public class ChatManagerActivity extends AppCompatActivity implements AddChatGro
         fragment.show(getSupportFragmentManager(), "CreateChatDialogFragment");
     }
 
+    public void addChatGroup(String title, ArrayList<Integer> userIds) {
+        Application.getChatService().addChatGroup(title, userIds);
+    }
 
     @Override
     public void onBackPressed() {
@@ -123,7 +97,7 @@ public class ChatManagerActivity extends AppCompatActivity implements AddChatGro
         /* When positive (yes/ok) is clicked */
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                ((Application) getApplication()).getChatService().logout();
+                Application.getChatService().logout();
                 Log.d(TAG, "User logged out");
                 finish();
                 Toast.makeText(ChatManagerActivity.this, "Successfully Logged Out", Toast.LENGTH_LONG).show();
@@ -137,6 +111,31 @@ public class ChatManagerActivity extends AppCompatActivity implements AddChatGro
             }
         });
         alertDialog.show();
+    }
+
+    @SuppressWarnings("unused")
+    public void onEvent(GroupChatCreatedEvent event) {
+        Toast.makeText(this, getString(R.string.chat_created_toast), Toast.LENGTH_LONG).show();
+        chatManagerFragment.addChatGroup(event.getDialog());
+    }
+
+    @SuppressWarnings("unused")
+    public void onEvent(CreateChatError event) {
+        //TODO make more informative error message
+        Toast.makeText(this, getString(R.string.create_chat_error_toast), Toast.LENGTH_LONG).show();
+    }
+
+    @SuppressWarnings("unused")
+    public void onEvent(GetGroupChatsEvent event) {
+        chatManagerFragment.setChatGroupList(event.getChatGroups());
+    }
+
+    @SuppressWarnings("unused")
+    public void onEvent(GetGroupChatsErrorEvent event) {
+        Toast.makeText(this, "Error pulling chats groups from server", Toast.LENGTH_LONG).show();
+        for (String error : event.getErrors()) {
+            Log.e("ChatManagerActivity", error);
+        }
     }
 }
 
