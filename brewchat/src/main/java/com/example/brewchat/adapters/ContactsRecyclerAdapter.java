@@ -44,7 +44,7 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
         else name = entry.getLogin();
         holder.contactName.setText(name);
 
-        // TODO look into contact images. Maybe via gravitar? https://en.gravatar.com/site/implement
+        // TODO look into contact images. Maybe via gravitar? https://en.gravatar.com/site/implement/
         holder.contactImage.setImageResource(R.drawable.ic_account_box_grey_800_48dp);
     }
 
