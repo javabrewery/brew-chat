@@ -1,0 +1,20 @@
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    tools:context="com.example.brewchat.activities.ContactsActivity"
+    android:id="@+id/main_drawer_layout">
+
+    <FrameLayout
+        android:id="@+id/contacts_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="MergeRootFrame"/>
+
+    <FrameLayout
+        android:id="@+id/navigation_drawer_container"
+        android:layout_width="320dp"
+        android:layout_height="match_parent"
+        tools:ignore="MergeRootFrame"
+        android:layout_gravity="start" />
+</android.support.v4.widget.DrawerLayout>
