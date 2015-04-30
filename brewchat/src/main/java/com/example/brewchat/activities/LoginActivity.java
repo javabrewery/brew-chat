@@ -2,7 +2,6 @@ package com.example.brewchat.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,9 +18,7 @@ import com.example.brewchat.fragments.RegisterDialogFragment;
 import com.example.brewchat.interfaces.LoginListener;
 import com.example.brewchat.interfaces.RegisterDialogListener;
 
-import de.greenrobot.event.EventBus;
-
-public class LoginActivity extends AppCompatActivity implements RegisterDialogListener,
+public class LoginActivity extends BaseActivity implements RegisterDialogListener,
         LoginListener{
 
     LoginFragment loginFragment;
@@ -37,18 +34,6 @@ public class LoginActivity extends AppCompatActivity implements RegisterDialogLi
                     .add(R.id.login_screen_frame, loginFragment)
                     .commit();
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override

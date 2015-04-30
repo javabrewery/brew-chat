@@ -1,7 +1,6 @@
 package com.example.brewchat.activities;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -14,7 +13,7 @@ import com.example.brewchat.domain.ChatGroup;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class GroupChatActivity extends AppCompatActivity {
+public class GroupChatActivity extends BaseActivity {
 
     public static final String EXTRA_CHAT_GROUP = "chatgroup";
 

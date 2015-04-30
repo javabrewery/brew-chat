@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * Created by Josh
  */
 
-public class ChatManagerFragment extends Fragment{
+public class ChatManagerFragment extends Fragment {
     ChatGroupRecyclerAdapter adapter;
 
     public static ChatManagerFragment newInstance(Bundle savedInstanceState) {

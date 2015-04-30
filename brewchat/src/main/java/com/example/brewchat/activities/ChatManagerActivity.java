@@ -3,7 +3,6 @@ package com.example.brewchat.activities;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,9 +21,7 @@ import com.example.brewchat.interfaces.AddChatGroupListener;
 
 import java.util.ArrayList;
 
-import de.greenrobot.event.EventBus;
-
-public class ChatManagerActivity extends AppCompatActivity implements AddChatGroupListener {
+public class ChatManagerActivity extends BaseActivity implements AddChatGroupListener {
 
     private static final String TAG = ChatManagerActivity.class.getSimpleName();
 
@@ -46,18 +43,6 @@ public class ChatManagerActivity extends AppCompatActivity implements AddChatGro
         }
 
         Application.getChatService().getChatDialogs();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
