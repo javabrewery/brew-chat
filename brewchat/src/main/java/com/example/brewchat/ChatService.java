@@ -12,6 +12,7 @@ import com.example.brewchat.events.GroupChatCreatedEvent;
 import com.example.brewchat.events.RegisterUserError;
 import com.example.brewchat.events.UserLoggedEvent;
 import com.example.brewchat.events.UserSignedUpEvent;
+import com.example.brewchat.events.UsersLoadedEvent;
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.model.QBSession;
 import com.quickblox.chat.QBChat;
@@ -19,6 +20,7 @@ import com.quickblox.chat.QBChatService;
 import com.quickblox.chat.QBGroupChat;
 import com.quickblox.chat.QBGroupChatManager;
 import com.quickblox.chat.QBPrivateChat;
+import com.quickblox.chat.QBRoster;
 import com.quickblox.chat.exception.QBChatException;
 import com.quickblox.chat.listeners.QBGroupChatManagerListener;
 import com.quickblox.chat.listeners.QBIsTypingListener;
@@ -33,8 +35,10 @@ import com.quickblox.chat.model.QBDialog;
 import com.quickblox.chat.model.QBDialogType;
 import com.quickblox.chat.model.QBPresence;
 import com.quickblox.chat.model.QBPrivacyListItem;
+import com.quickblox.chat.model.QBRosterEntry;
 import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.core.QBSettings;
+import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.request.QBRequestGetBuilder;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
@@ -75,8 +79,6 @@ public class ChatService implements ConnectionListener,
             chatService = QBChatService.getInstance();
             chatService.addConnectionListener(this);
         }
-
-
     }
 
 
@@ -149,6 +151,25 @@ public class ChatService implements ConnectionListener,
                 Log.e(TAG, "Error in creating Group Chat");
             }
         });
+    }
+
+    public void loadContacts() throws QBResponseException {
+        final QBRoster roster = QBChatService.getInstance().getRoster();
+        final ArrayList<QBUser> users = new ArrayList<>(roster.getEntryCount());
+        if (roster.getEntries().size() == 0) {
+            EventBus.getDefault().post(new UsersLoadedEvent(new ArrayList<QBUser>()));
+        }
+        for (QBRosterEntry entry : roster.getEntries()) {
+            QBUsers.getUser(entry.getUserId(), new QBEntityCallbackImpl<QBUser>() {
+                @Override
+                public void onSuccess(QBUser result, Bundle params) {
+                    users.add(result);
+                    if (users.size() == roster.getEntries().size()) {
+                        EventBus.getDefault().post(new UsersLoadedEvent(users));
+                    }
+                }
+            });
+        }
     }
 
     //Basic Sign up
