@@ -114,24 +114,24 @@ public class ChatManagerActivity extends AppCompatActivity implements AddChatGro
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(GroupChatCreatedEvent event) {
+    public void onEventMainThread(GroupChatCreatedEvent event) {
         Toast.makeText(this, getString(R.string.chat_created_toast), Toast.LENGTH_LONG).show();
         chatManagerFragment.addChatGroup(event.getDialog());
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(CreateChatError event) {
+    public void onEventMainThread(CreateChatError event) {
         //TODO make more informative error message
         Toast.makeText(this, getString(R.string.create_chat_error_toast), Toast.LENGTH_LONG).show();
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(GetGroupChatsEvent event) {
+    public void onEventMainThread(GetGroupChatsEvent event) {
         chatManagerFragment.setChatGroupList(event.getChatGroups());
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(GetGroupChatsErrorEvent event) {
+    public void onEventMainThread(GetGroupChatsErrorEvent event) {
         Toast.makeText(this, "Error pulling chats groups from server", Toast.LENGTH_LONG).show();
         for (String error : event.getErrors()) {
             Log.e("ChatManagerActivity", error);

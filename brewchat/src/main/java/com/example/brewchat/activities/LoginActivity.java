@@ -84,24 +84,24 @@ public class LoginActivity extends AppCompatActivity implements RegisterDialogLi
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(UserLoggedEvent event) {
+    public void onEventMainThread(UserLoggedEvent event) {
         Intent intent = new Intent(this, ChatManagerActivity.class);
         startActivity(intent);
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(UserSignedUpEvent event) {
+    public void onEventMainThread(UserSignedUpEvent event) {
         Toast.makeText(this,getString(R.string.account_created_toast),Toast.LENGTH_LONG).show();
         loginFragment.updateTextFields(event.getUsername());
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(AuthenticationErrorEvent event){
+    public void onEventMainThread(AuthenticationErrorEvent event){
         Toast.makeText(this, getString(R.string.login_error_toast), Toast.LENGTH_LONG).show();
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(RegisterUserError event) {
+    public void onEventMainThread(RegisterUserError event) {
         Toast.makeText(this, "Error in registration", Toast.LENGTH_LONG).show();
     }
 
