@@ -38,4 +38,8 @@
     <string name="notifications">Notifications</string>
     <string name="contacts">Contacts</string>
     <string name="logout">Logout</string>
+
+    <string name="title_activity_contacts">ContactsActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>
