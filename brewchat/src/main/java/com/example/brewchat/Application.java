@@ -6,10 +6,10 @@ import android.util.Log;
 import com.facebook.stetho.Stetho;
 
 public class Application extends android.app.Application {
-    private static final String TAG = "Application";
 
+    private static final String TAG = Application.class.getSimpleName();
 
-    ChatService chatService;
+    private static ChatService chatService;
 
     @Override
     public void onCreate() {
@@ -25,6 +25,7 @@ public class Application extends android.app.Application {
                     .detectAll()
                     .penaltyLog()
                     .build());
+
             //Enable Stetho for debugging
             Stetho.initialize(
                     Stetho.newInitializerBuilder(this)
@@ -33,14 +34,17 @@ public class Application extends android.app.Application {
                             .enableWebKitInspector(
                                     Stetho.defaultInspectorModulesProvider(this))
                             .build());
+
             Log.d(TAG, "Stetho and StrictMode Initialized");
         }
 
-        this.chatService = new ChatService(getApplicationContext(), getString(R.string.app_id),getString(R.string.auth_key),
+        chatService = new ChatService(getApplicationContext(),
+                getString(R.string.app_id),
+                getString(R.string.auth_key),
                 getString(R.string.auth_secret));
     }
 
-    public ChatService getChatService() {
-        return this.chatService;
+    public static ChatService getChatService() {
+        return Application.chatService;
     }
 }

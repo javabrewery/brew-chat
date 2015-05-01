@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.example.brewchat.R;
 import com.example.brewchat.activities.GroupChatActivity;
-import com.example.brewchat.domain.ChatGroup;
 import com.quickblox.chat.model.QBDialog;
 
 import java.util.ArrayList;

@@ -1,7 +1,6 @@
 package com.example.brewchat.activities;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -14,7 +13,7 @@ import com.example.brewchat.domain.ChatGroup;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class GroupChatActivity extends AppCompatActivity {
+public class GroupChatActivity extends BaseActivity {
 
     public static final String EXTRA_CHAT_GROUP = "chatgroup";
 
@@ -33,22 +32,16 @@ public class GroupChatActivity extends AppCompatActivity {
         messagesRecyclerView.setAdapter(new ChatHistoryRecyclerAdapter(this, chatGroup.getChatHistory()));
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_group_chat, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }

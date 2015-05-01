@@ -1,6 +1,5 @@
 package com.example.brewchat.fragments;
 
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -18,7 +17,6 @@ import com.example.brewchat.interfaces.RegisterDialogListener;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-
 public class RegisterDialogFragment extends DialogFragment {
 
     @InjectView(R.id.register_user_enter_username)
@@ -34,10 +32,8 @@ public class RegisterDialogFragment extends DialogFragment {
 
     RegisterDialogListener registerDialogListener;
 
-
     // TODO: Rename and change types and number of parameters
     public static RegisterDialogFragment newInstance(Bundle saveInstanceState) {
-
         return new RegisterDialogFragment();
     }
 
@@ -48,8 +44,7 @@ public class RegisterDialogFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        }
-
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
