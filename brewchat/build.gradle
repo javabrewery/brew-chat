@@ -1,5 +1,6 @@
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
+apply plugin: 'checkstyle'
 apply plugin: 'testfairy'
 
 def tag = 'git describe --tags --always'.execute([], project.rootDir).text.trim()
@@ -26,13 +27,26 @@ android {
 
     lintOptions {
         abortOnError true
-        textReport true
+        textReport true 
     }
 
     testfairyConfig {
         apiKey System.getenv("TESTFAIRY_KEY")
     }
 
+}
+
+task checkstyle(type: Checkstyle) {
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+    exclude '**/R.java'
+    exclude '**/BuildConfig.java'
+    def configProps = ['proj.module.dir': projectDir.absolutePath]
+    configProperties configProps
+    classpath = files()
+    ignoreFailures true
+    showViolations true
 }
 
 dependencies {
@@ -47,3 +61,4 @@ dependencies {
     compile files('libs/quickblox-android-sdk-chat-2.2.1.jar')
     compile files('libs/quickblox-android-sdk-core-2.2.1.jar')
 }
+
