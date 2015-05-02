@@ -8,11 +8,11 @@ import android.widget.Toast;
 
 import com.example.brewchat.Application;
 import com.example.brewchat.R;
-import com.example.brewchat.interfaces.LogoutListener;
+import com.example.brewchat.events.UserLogoutEvent;
 
 import de.greenrobot.event.EventBus;
 
-public class BaseActivity extends AppCompatActivity implements LogoutListener {
+public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
@@ -26,11 +26,11 @@ public class BaseActivity extends AppCompatActivity implements LogoutListener {
         EventBus.getDefault().unregister(this);
     }
 
-    public void logout(){
+    @SuppressWarnings("unused")
+    public void onEventMainThread(UserLogoutEvent event) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle(getString(R.string.logout_title_alert)); // Sets title for your alertbox
-        alertDialog.setMessage(getString(R.string.logout_confirm_alert)); // Message to be displayed on alertbox
-        /* When positive (yes/ok) is clicked */
+        alertDialog.setTitle(getString(R.string.logout_title_alert));
+        alertDialog.setMessage(getString(R.string.logout_confirm_alert));
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Application.getChatService().logout();
@@ -40,7 +40,6 @@ public class BaseActivity extends AppCompatActivity implements LogoutListener {
             }
         });
 
-        /* When negative (No/cancel) button is clicked*/
         alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -48,4 +47,5 @@ public class BaseActivity extends AppCompatActivity implements LogoutListener {
         });
         alertDialog.show();
     }
+
 }

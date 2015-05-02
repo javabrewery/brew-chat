@@ -18,11 +18,10 @@ import com.example.brewchat.fragments.ChatManagerFragment;
 import com.example.brewchat.fragments.CreateChatDialogFragment;
 import com.example.brewchat.fragments.NavigationDrawerFragment;
 import com.example.brewchat.interfaces.AddChatGroupListener;
-import com.example.brewchat.interfaces.LogoutListener;
 
 import java.util.ArrayList;
 
-public class ChatManagerActivity extends BaseActivity implements AddChatGroupListener, LogoutListener{
+public class ChatManagerActivity extends BaseActivity implements AddChatGroupListener {
 
     private static final String TAG = ChatManagerActivity.class.getSimpleName();
 
