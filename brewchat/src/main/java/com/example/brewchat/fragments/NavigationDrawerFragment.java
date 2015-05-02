@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 
 import com.example.brewchat.R;
 import com.example.brewchat.events.UserLogoutEvent;
-import com.example.brewchat.interfaces.LogoutListener;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -17,7 +16,6 @@ import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 public class NavigationDrawerFragment extends Fragment {
-    LogoutListener logoutListener;
     @InjectView(R.id.logout_button)
     LinearLayout logoutLinearLayout;
 
