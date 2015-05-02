@@ -26,17 +26,14 @@ public class BaseActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    @SuppressWarnings("unused")
-    public void onEventMainThread(UserLogoutEvent event) {
+
+    private void displayLogoutConfimationDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle(getString(R.string.logout_title_alert));
         alertDialog.setMessage(getString(R.string.logout_confirm_alert));
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                Application.getChatService().logout();
-                finish();
-                Log.d("Base Activity", "User logged out");
-                Toast.makeText(BaseActivity.this, "Successfully Logged Out", Toast.LENGTH_LONG).show();
+                logout();
             }
         });
 
@@ -46,6 +43,18 @@ public class BaseActivity extends AppCompatActivity {
             }
         });
         alertDialog.show();
+    }
+
+    private void logout() {
+        Application.getChatService().logout();
+        Log.d("Base Activity", "User logged out");
+        Toast.makeText(BaseActivity.this, "Successfully Logged Out", Toast.LENGTH_LONG).show();
+        finish();
+    }
+
+    @SuppressWarnings("unused")
+    public void onEventMainThread(UserLogoutEvent event) {
+        displayLogoutConfimationDialog();
     }
 
 }
