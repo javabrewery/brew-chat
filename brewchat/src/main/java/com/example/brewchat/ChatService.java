@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.brewchat.domain.ChatGroup;
 import com.example.brewchat.domain.User;
 import com.example.brewchat.events.AuthenticationErrorEvent;
 import com.example.brewchat.events.ChatServiceinitedEvent;
@@ -70,8 +71,6 @@ public class ChatService implements IChatService,
 
     static final String TAG = ChatService.class.toString();
 
-    QBChatService chatService;
-
     public ChatService(final Context context, final String appId, final String authKey, final String authSecret) {
         new Thread(new Runnable() {
             @Override
@@ -85,8 +84,7 @@ public class ChatService implements IChatService,
 
                 if (!QBChatService.isInitialized()) {
                     QBChatService.init(context);
-                    chatService = QBChatService.getInstance();
-                    chatService.addConnectionListener(ChatService.this);
+                    QBChatService.getInstance().addConnectionListener(ChatService.this);
                 }
                 EventBus.getDefault().post(new ChatServiceinitedEvent());
             }
@@ -99,7 +97,6 @@ public class ChatService implements IChatService,
         QBAuth.createSession(user, new QBEntityCallbackImpl<QBSession>() {
             @Override
             public void onSuccess(QBSession session, Bundle params) {
-                Log.d(TAG, session + " " + params);
                 EventBus.getDefault().post(new UserLoggedEvent());
                 try {
                     QBChatService.getInstance().startAutoSendPresence(30);
@@ -110,7 +107,6 @@ public class ChatService implements IChatService,
 
             @Override
             public void onError(List errors) {
-                Log.d(TAG, errors.toString());
                 EventBus.getDefault().post(new AuthenticationErrorEvent(errors));
             }
         });
@@ -135,15 +131,14 @@ public class ChatService implements IChatService,
         groupChatManager.createDialog(dialog, new QBEntityCallbackImpl<QBDialog>() {
             @Override
             public void onSuccess(QBDialog dialog, Bundle args) {
-                GroupChatCreatedEvent groupChatCreatedEvent = new GroupChatCreatedEvent(dialog);
-                EventBus.getDefault().post(groupChatCreatedEvent);
-                Log.d(TAG, "Created new Group Chat");
+                ChatGroup chatGroup = new ChatGroup(dialog.getName(), dialog.getOccupants());
+
+                EventBus.getDefault().post(new GroupChatCreatedEvent(chatGroup));
             }
 
             @Override
             public void onError(List<String> errors) {
                 EventBus.getDefault().post(new CreateChatError(errors));
-                Log.e(TAG, "Error in creating Group Chat");
             }
         });
     }
@@ -173,12 +168,12 @@ public class ChatService implements IChatService,
                             user.setLastRequestAt(result.getLastRequestAt());
                             users.add(user);
                         }
+
                         EventBus.getDefault().post(new UsersLoadedEvent(users));
                     }
 
                     @Override
                     public void onError(List<String> errors) {
-                        super.onError(errors);
                         EventBus.getDefault().post(new UsersLoadingErrorEvent(errors));
                     }
                 }
@@ -194,26 +189,20 @@ public class ChatService implements IChatService,
                     @Override
                     public void onSuccess(QBUser user, Bundle args) {
                         EventBus.getDefault().post(new UserSignedUpEvent(user.getLogin()));
-                        Log.d(TAG, "User signed up");
                     }
 
                     @Override
                     public void onError(List<String> errors) {
-
                         EventBus.getDefault().post(new RegisterUserError(errors));
-                        Log.e(TAG, "Error in signup");
                     }
                 });
             }
 
             @Override
             public void onError(List errors) {
-                Log.d(TAG, errors.toString());
                 EventBus.getDefault().post(new AuthenticationErrorEvent(errors));
             }
         });
-
-
     }
 
     public void getChatDialogs() {
@@ -223,7 +212,13 @@ public class ChatService implements IChatService,
         QBChatService.getChatDialogs(null, requestGetBuilder, new QBEntityCallbackImpl<ArrayList<QBDialog>>() {
             @Override
             public void onSuccess(ArrayList<QBDialog> dialogs, Bundle args) {
-                EventBus.getDefault().post(new GetGroupChatsEvent(dialogs));
+                ArrayList<ChatGroup> chatGroups = new ArrayList<>();
+
+                for (QBDialog dialog : dialogs) {
+                    chatGroups.add(new ChatGroup(dialog.getName(), dialog.getOccupants()));
+                }
+
+                EventBus.getDefault().post(new GetGroupChatsEvent(chatGroups));
             }
 
             @Override

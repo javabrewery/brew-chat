@@ -21,6 +21,7 @@ public class ChatGroup implements Serializable {
         this.title = title;
         this.chatUsers = chatUsers;
     }
+
     public String getTitle() {
         return title;
     }

@@ -29,7 +29,6 @@ public class ContactsFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,13 +56,11 @@ public class ContactsFragment extends Fragment {
         attached = false;
     }
 
-
     public void setContacts(List<User> contacts) {
         if (attached)
             recyclerView.setAdapter(new ContactsRecyclerAdapter(getActivity(), contacts));
         else
             delayedUpdatedContacts = contacts;
     }
-
 
 }

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.brewchat.R;
 import com.example.brewchat.adapters.ChatGroupRecyclerAdapter;
-import com.quickblox.chat.model.QBDialog;
+import com.example.brewchat.domain.ChatGroup;
 
 import java.util.ArrayList;
 
@@ -49,12 +49,12 @@ public class ChatManagerFragment extends Fragment {
 
         return layout;
     }
-    public void addChatGroup(QBDialog chatGroup){
+    public void addChatGroup(ChatGroup chatGroup){
         adapter.addChatGroup(chatGroup);
         adapter.notifyDataSetChanged();
     }
 
-    public void setChatGroupList(ArrayList<QBDialog> chatGroupList) {
+    public void setChatGroupList(ArrayList<ChatGroup> chatGroupList) {
         adapter.setChatGroupList(chatGroupList);
         adapter.notifyDataSetChanged();
     }

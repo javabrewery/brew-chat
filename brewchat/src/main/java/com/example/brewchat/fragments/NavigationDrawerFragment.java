@@ -42,5 +42,4 @@ public class NavigationDrawerFragment extends Fragment {
         EventBus.getDefault().post(new UserLogoutEvent());
     }
 
-
 }

@@ -39,10 +39,12 @@ public class ContactsActivity extends BaseActivity {
                 .commit();
     }
 
+    @SuppressWarnings("unused")
     public void onEvent(UsersLoadedEvent event) {
         contactsFragment.setContacts(event.getUsers());
     }
 
+    @SuppressWarnings("unused")
     public void onEvent(UsersLoadingErrorEvent event) {
         StringBuilder builder = new StringBuilder();
         for (String error : event.getErrors()) {
