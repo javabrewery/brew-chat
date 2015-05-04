@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.example.brewchat.events.AuthenticationErrorEvent;
 import com.example.brewchat.events.ChatServiceinitedEvent;
+import com.example.brewchat.events.UsersLoadingErrorEvent;
 import com.example.brewchat.events.CreateChatError;
 import com.example.brewchat.events.GetGroupChatsErrorEvent;
 import com.example.brewchat.events.GetGroupChatsEvent;
@@ -13,6 +14,7 @@ import com.example.brewchat.events.GroupChatCreatedEvent;
 import com.example.brewchat.events.RegisterUserError;
 import com.example.brewchat.events.UserLoggedEvent;
 import com.example.brewchat.events.UserSignedUpEvent;
+import com.example.brewchat.events.UsersLoadedEvent;
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.model.QBSession;
 import com.quickblox.chat.QBChat;
@@ -20,6 +22,7 @@ import com.quickblox.chat.QBChatService;
 import com.quickblox.chat.QBGroupChat;
 import com.quickblox.chat.QBGroupChatManager;
 import com.quickblox.chat.QBPrivateChat;
+import com.quickblox.chat.QBRoster;
 import com.quickblox.chat.exception.QBChatException;
 import com.quickblox.chat.listeners.QBGroupChatManagerListener;
 import com.quickblox.chat.listeners.QBIsTypingListener;
@@ -34,8 +37,11 @@ import com.quickblox.chat.model.QBDialog;
 import com.quickblox.chat.model.QBDialogType;
 import com.quickblox.chat.model.QBPresence;
 import com.quickblox.chat.model.QBPrivacyListItem;
+import com.quickblox.chat.model.QBRosterEntry;
 import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.core.QBSettings;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.core.request.QBPagedRequestBuilder;
 import com.quickblox.core.request.QBRequestGetBuilder;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
@@ -156,6 +162,31 @@ public class ChatService implements ConnectionListener,
                 Log.e(TAG, "Error in creating Group Chat");
             }
         });
+    }
+
+    public void loadContacts() throws QBResponseException {
+        QBRoster roster = QBChatService.getInstance().getRoster();
+        ArrayList<Integer> userIds = new ArrayList<>(roster.getEntries().size());
+        for (QBRosterEntry user : roster.getEntries()) userIds.add(user.getUserId());
+        if (roster.getEntries().size() == 0)
+            EventBus.getDefault().post(new UsersLoadedEvent(new ArrayList<QBUser>()));
+
+        QBUsers.getUsersByIDs(userIds, new QBPagedRequestBuilder(userIds.size(), 1),
+                new QBEntityCallbackImpl<ArrayList<QBUser>>() {
+                    @Override
+                    public void onSuccess(ArrayList<QBUser> result, Bundle params) {
+                        super.onSuccess(result, params);
+                        EventBus.getDefault().post(new UsersLoadedEvent(result));
+                    }
+
+                    @Override
+                    public void onError(List<String> errors) {
+                        // TODO send out error event
+                        super.onError(errors);
+                        EventBus.getDefault().post(new UsersLoadingErrorEvent(errors));
+                    }
+                }
+        );
     }
 
     //Basic Sign up

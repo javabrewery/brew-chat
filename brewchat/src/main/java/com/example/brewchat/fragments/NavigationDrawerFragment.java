@@ -1,5 +1,6 @@
 package com.example.brewchat.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,10 +15,19 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+import com.example.brewchat.activities.ContactsActivity;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class NavigationDrawerFragment extends Fragment {
     @InjectView(R.id.logout_button)
     LinearLayout logoutLinearLayout;
+
+    @OnClick(R.id.contacts_nav_item)
+    void contactsClicked() {
+        startActivity(new Intent(getActivity(), ContactsActivity.class));
+    }
 
     public NavigationDrawerFragment() {
     }
