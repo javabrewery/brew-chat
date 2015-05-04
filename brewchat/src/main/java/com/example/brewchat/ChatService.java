@@ -57,7 +57,8 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
-public class ChatService implements ConnectionListener,
+public class ChatService implements IChatService,
+        ConnectionListener,
         QBGroupChatManagerListener,
         QBParticipantListener,
         QBIsTypingListener,
@@ -147,7 +148,7 @@ public class ChatService implements ConnectionListener,
         });
     }
 
-    public void loadContacts() throws QBResponseException {
+    public void loadContacts() {
         QBRoster roster = QBChatService.getInstance().getRoster();
         ArrayList<Integer> userIds = new ArrayList<>(roster.getEntries().size());
         for (QBRosterEntry user : roster.getEntries()) userIds.add(user.getUserId());
@@ -339,18 +340,18 @@ public class ChatService implements ConnectionListener,
     // QBRosterListener
 
     @Override
-    public void entriesDeleted(Collection<Integer> integers) {
-        Log.d(TAG, "entriesDeleted: " + integers);
+    public void entriesDeleted(Collection<Integer> collection) {
+        Log.d(TAG, "entriesDeleted: " + collection);
     }
 
     @Override
-    public void entriesAdded(Collection<Integer> integers) {
-        Log.d(TAG, "entriesAdded: " + integers);
+    public void entriesAdded(Collection<Integer> collection) {
+        Log.d(TAG, "entriesAdded: " + collection);
     }
 
     @Override
-    public void entriesUpdated(Collection<Integer> integers) {
-        Log.d(TAG, "entriesUpdated: " + integers);
+    public void entriesUpdated(Collection<Integer> collection) {
+        Log.d(TAG, "entriesUpdated: " + collection);
     }
 
     @Override

@@ -10,7 +10,6 @@ import com.example.brewchat.events.UsersLoadedEvent;
 import com.example.brewchat.events.UsersLoadingErrorEvent;
 import com.example.brewchat.fragments.ContactsFragment;
 import com.example.brewchat.fragments.NavigationDrawerFragment;
-import com.quickblox.core.exception.QBResponseException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -31,11 +30,9 @@ public class ContactsActivity extends BaseActivity {
 
         contactsFragment = new ContactsFragment();
         navigationDrawerFragment = new NavigationDrawerFragment();
-        try {
-            ((Application) getApplicationContext()).getChatService().loadContacts();
-        } catch (QBResponseException e) {
-            e.printStackTrace();
-        }
+
+        ((Application) getApplicationContext()).getChatService().loadContacts();
+
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.contacts_container, contactsFragment)
                 .add(R.id.navigation_drawer_container, navigationDrawerFragment)
