@@ -40,6 +40,7 @@ import com.quickblox.chat.model.QBRosterEntry;
 import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.core.QBSettings;
 import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.core.request.QBPagedRequestBuilder;
 import com.quickblox.core.request.QBRequestGetBuilder;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
@@ -163,22 +164,27 @@ public class ChatService implements ConnectionListener,
     }
 
     public void loadContacts() throws QBResponseException {
-        final QBRoster roster = QBChatService.getInstance().getRoster();
-        final ArrayList<QBUser> users = new ArrayList<>(roster.getEntryCount());
-        if (roster.getEntries().size() == 0) {
+        QBRoster roster = QBChatService.getInstance().getRoster();
+        ArrayList<Integer> userIds = new ArrayList<>(roster.getEntries().size());
+        for (QBRosterEntry user : roster.getEntries()) userIds.add(user.getUserId());
+        if (roster.getEntries().size() == 0)
             EventBus.getDefault().post(new UsersLoadedEvent(new ArrayList<QBUser>()));
-        }
-        for (QBRosterEntry entry : roster.getEntries()) {
-            QBUsers.getUser(entry.getUserId(), new QBEntityCallbackImpl<QBUser>() {
-                @Override
-                public void onSuccess(QBUser result, Bundle params) {
-                    users.add(result);
-                    if (users.size() == roster.getEntries().size()) {
-                        EventBus.getDefault().post(new UsersLoadedEvent(users));
+
+        QBUsers.getUsersByIDs(userIds, new QBPagedRequestBuilder(userIds.size(), 1),
+                new QBEntityCallbackImpl<ArrayList<QBUser>>() {
+                    @Override
+                    public void onSuccess(ArrayList<QBUser> result, Bundle params) {
+                        super.onSuccess(result, params);
+                        EventBus.getDefault().post(new UsersLoadedEvent(result));
+                    }
+
+                    @Override
+                    public void onError(List<String> errors) {
+                        // TODO send out error event
+                        super.onError(errors);
                     }
                 }
-            });
-        }
+        );
     }
 
     //Basic Sign up
