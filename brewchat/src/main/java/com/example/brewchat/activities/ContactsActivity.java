@@ -2,20 +2,20 @@ package com.example.brewchat.activities;
 
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.example.brewchat.Application;
 import com.example.brewchat.R;
 import com.example.brewchat.events.UsersLoadedEvent;
+import com.example.brewchat.events.UsersLoadingErrorEvent;
 import com.example.brewchat.fragments.ContactsFragment;
 import com.example.brewchat.fragments.NavigationDrawerFragment;
 import com.quickblox.core.exception.QBResponseException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 
-public class ContactsActivity extends AppCompatActivity {
+public class ContactsActivity extends BaseActivity {
 
     private ContactsFragment contactsFragment;
     private NavigationDrawerFragment navigationDrawerFragment;
@@ -42,20 +42,17 @@ public class ContactsActivity extends AppCompatActivity {
                 .commit();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
     public void onEvent(UsersLoadedEvent event) {
         contactsFragment.setContacts(event.getUsers());
+    }
+
+    public void onEvent(UsersLoadingErrorEvent event) {
+        StringBuilder builder = new StringBuilder();
+        for (String error : event.getErrors()) {
+            builder.append(error);
+            builder.append("\n");
+        }
+        Toast.makeText(this, "Error loading users:\n" + builder.toString(), Toast.LENGTH_LONG).show();
     }
 
 }

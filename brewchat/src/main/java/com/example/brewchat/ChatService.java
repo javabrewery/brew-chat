@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.example.brewchat.events.AuthenticationErrorEvent;
 import com.example.brewchat.events.ChatServiceinitedEvent;
+import com.example.brewchat.events.UsersLoadingErrorEvent;
 import com.example.brewchat.events.CreateChatError;
 import com.example.brewchat.events.GetGroupChatsErrorEvent;
 import com.example.brewchat.events.GetGroupChatsEvent;
@@ -182,6 +183,7 @@ public class ChatService implements ConnectionListener,
                     public void onError(List<String> errors) {
                         // TODO send out error event
                         super.onError(errors);
+                        EventBus.getDefault().post(new UsersLoadingErrorEvent(errors));
                     }
                 }
         );
