@@ -14,7 +14,7 @@ public class ChatGroup implements Serializable {
 
     private String title;
     private String chatInfo;
-    private ChatHistory history;
+    private ChatHistory history = new ChatHistory();
     private ArrayList<Integer> chatUsers;
 
     public ChatGroup(String title, ArrayList<Integer> chatUsers){

@@ -38,11 +38,7 @@ public class Application extends android.app.Application {
             Log.d(TAG, "Stetho and StrictMode Initialized");
         }
 
-        chatService = new ChatService(getApplicationContext(),
-                getString(R.string.app_id),
-                getString(R.string.auth_key),
-                getString(R.string.auth_secret));
-        // chatService.createSession();
+        chatService = new FakeChatService();
     }
 
     public static ChatService getChatService() {
