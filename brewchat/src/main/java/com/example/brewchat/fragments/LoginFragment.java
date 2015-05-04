@@ -10,12 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ToggleButton;
 
+import com.example.brewchat.Application;
+import com.example.brewchat.ChatService;
+import com.example.brewchat.FakeChatService;
 import com.example.brewchat.R;
 import com.example.brewchat.interfaces.LoginListener;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Fragment that host login/register activities
@@ -84,5 +89,20 @@ public class LoginFragment extends Fragment {
 
     public void updateTextFields(String username){
         usernameEditText.setText(username);
+    }
+
+    @OnClick(R.id.fake_toggleButton)
+    @SuppressWarnings("unused")
+    public void onFakeToggleClicked(View view) {
+        boolean on = ((ToggleButton) view).isChecked();
+
+        if (on) {
+            Application.chatService = new FakeChatService();
+        } else {
+            Application.chatService = new ChatService(getActivity().getApplicationContext(),
+                    getString(R.string.app_id),
+                    getString(R.string.auth_key),
+                    getString(R.string.auth_secret));
+        }
     }
 }

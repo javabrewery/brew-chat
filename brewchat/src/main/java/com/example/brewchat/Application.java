@@ -9,7 +9,7 @@ public class Application extends android.app.Application {
 
     private static final String TAG = Application.class.getSimpleName();
 
-    private static ChatService chatService;
+    public static IChatService chatService;
 
     @Override
     public void onCreate() {
@@ -38,10 +38,13 @@ public class Application extends android.app.Application {
             Log.d(TAG, "Stetho and StrictMode Initialized");
         }
 
-        chatService = new FakeChatService();
+        chatService = new ChatService(getApplicationContext(),
+                getString(R.string.app_id),
+                getString(R.string.auth_key),
+                getString(R.string.auth_secret));
     }
 
-    public static ChatService getChatService() {
+    public static IChatService getChatService() {
         return Application.chatService;
     }
 }

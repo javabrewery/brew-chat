@@ -9,10 +9,11 @@ import com.example.brewchat.events.UserSignedUpEvent;
 import com.example.brewchat.events.UsersLoadedEvent;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import de.greenrobot.event.EventBus;
 
-public class FakeChatService implements ChatService {
+public class FakeChatService implements IChatService {
 
     static final int DEFAULT_DELAY = 1 * 1000;
 
@@ -54,7 +55,15 @@ public class FakeChatService implements ChatService {
 
                 ArrayList<User> users = new ArrayList<>();
 
-                users.add(new User(1, "Fake User"));
+                User user = new User();
+                user.setId(1);
+                user.setName("Fake User");
+                user.setEmail("fake@email.com");
+                user.setLogin("Fake");
+                user.setLastRequestAt(new Date());
+                users.add(user);
+
+                users.add(user);
 
                 EventBus.getDefault().post(new UsersLoadedEvent(users));
             }
