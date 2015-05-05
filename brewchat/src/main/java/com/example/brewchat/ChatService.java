@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.example.brewchat.events.AuthenticationErrorEvent;
 import com.example.brewchat.events.ChatServiceinitedEvent;
-import com.example.brewchat.events.UsersLoadingErrorEvent;
 import com.example.brewchat.events.CreateChatError;
 import com.example.brewchat.events.GetGroupChatsErrorEvent;
 import com.example.brewchat.events.GetGroupChatsEvent;
@@ -15,6 +14,7 @@ import com.example.brewchat.events.RegisterUserError;
 import com.example.brewchat.events.UserLoggedEvent;
 import com.example.brewchat.events.UserSignedUpEvent;
 import com.example.brewchat.events.UsersLoadedEvent;
+import com.example.brewchat.events.UsersLoadingErrorEvent;
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.model.QBSession;
 import com.quickblox.chat.QBChat;
@@ -86,41 +86,17 @@ public class ChatService implements ConnectionListener,
                     chatService = QBChatService.getInstance();
                     chatService.addConnectionListener(ChatService.this);
                 }
-
                 EventBus.getDefault().post(new ChatServiceinitedEvent());
-
             }
         }).start();
+
     }
 
-    public void login(String username, String password) {
-        final QBUser user = new QBUser(username, password);
-
-        QBAuth.createSession(user, new QBEntityCallbackImpl<QBSession>() {
+    public void createSession() {
+        QBAuth.createSession(new QBEntityCallbackImpl<QBSession>() {
             @Override
             public void onSuccess(QBSession session, Bundle params) {
                 Log.d(TAG, session + " " + params);
-
-                user.setId(session.getUserId());
-                QBChatService.getInstance().login(user, new QBEntityCallbackImpl() {
-                    @Override
-                    public void onSuccess() {
-
-                        EventBus.getDefault().post(new UserLoggedEvent());
-
-                        try {
-                            QBChatService.getInstance().startAutoSendPresence(30);
-                        } catch (SmackException.NotLoggedInException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onError(List errors) {
-                        Log.d(TAG, errors.toString());
-                        EventBus.getDefault().post(new AuthenticationErrorEvent(errors));
-                    }
-                });
             }
 
             @Override
@@ -129,9 +105,29 @@ public class ChatService implements ConnectionListener,
                 EventBus.getDefault().post(new AuthenticationErrorEvent(errors));
             }
         });
-
-
     }
+
+    public void login(String username, String password) {
+        final QBUser user = new QBUser(username, password);
+        QBUsers.signIn(user, new QBEntityCallbackImpl<QBUser>() {
+            @Override
+            public void onSuccess(QBUser qbUser, Bundle bundle) {
+                EventBus.getDefault().post(new UserLoggedEvent());
+                try {
+                    QBChatService.getInstance().startAutoSendPresence(30);
+                } catch (SmackException.NotLoggedInException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(List errors) {
+                Log.d(TAG, errors.toString());
+                EventBus.getDefault().post(new AuthenticationErrorEvent(errors));
+            }
+        });
+    }
+
 
     public void logout() {
         try {
@@ -192,6 +188,7 @@ public class ChatService implements ConnectionListener,
     //Basic Sign up
     public void register(String username, String password) {
         final QBUser user = new QBUser(username, password);
+        createSession();
         QBUsers.signUp(user, new QBEntityCallbackImpl<QBUser>() {
             @Override
             public void onSuccess(QBUser user, Bundle args) {

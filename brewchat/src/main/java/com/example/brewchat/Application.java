@@ -42,6 +42,7 @@ public class Application extends android.app.Application {
                 getString(R.string.app_id),
                 getString(R.string.auth_key),
                 getString(R.string.auth_secret));
+        chatService.createSession();
     }
 
     public static ChatService getChatService() {
