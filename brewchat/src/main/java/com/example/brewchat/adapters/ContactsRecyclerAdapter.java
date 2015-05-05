@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.brewchat.R;
-import com.quickblox.users.model.QBUser;
+import com.example.brewchat.domain.User;
 
 import java.util.List;
 
@@ -20,9 +20,9 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
 
     private Context context;
     private LayoutInflater inflater;
-    private List<QBUser> entryList;
+    private List<User> entryList;
 
-    public ContactsRecyclerAdapter(Context context, List<QBUser> contacts) {
+    public ContactsRecyclerAdapter(Context context, List<User> contacts) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         entryList = contacts;
@@ -36,10 +36,10 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        QBUser entry = entryList.get(position);
+        User entry = entryList.get(position);
         String name;
         // Graceful decline into less friendly name displays.
-        if (entry.getFullName() != null) name = entry.getFullName();
+        if (entry.getName() != null) name = entry.getName();
         else if (entry.getEmail() != null) name = entry.getEmail();
         else name = entry.getLogin();
         holder.contactName.setText(name);

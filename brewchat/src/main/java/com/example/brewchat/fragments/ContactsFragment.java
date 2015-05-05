@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.brewchat.R;
 import com.example.brewchat.adapters.ContactsRecyclerAdapter;
-import com.quickblox.users.model.QBUser;
+import com.example.brewchat.domain.User;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class ContactsFragment extends Fragment {
 
     RecyclerView recyclerView;
     private boolean attached = false;
-    List<QBUser> delayedUpdatedContacts = null;
+    List<User> delayedUpdatedContacts = null;
 
     public ContactsFragment() {
         // Required empty public constructor
@@ -58,7 +58,7 @@ public class ContactsFragment extends Fragment {
     }
 
 
-    public void setContacts(List<QBUser> contacts) {
+    public void setContacts(List<User> contacts) {
         if (attached)
             recyclerView.setAdapter(new ContactsRecyclerAdapter(getActivity(), contacts));
         else

@@ -4,9 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.brewchat.domain.User;
 import com.example.brewchat.events.AuthenticationErrorEvent;
 import com.example.brewchat.events.ChatServiceinitedEvent;
-import com.example.brewchat.events.UsersLoadingErrorEvent;
 import com.example.brewchat.events.CreateChatError;
 import com.example.brewchat.events.GetGroupChatsErrorEvent;
 import com.example.brewchat.events.GetGroupChatsEvent;
@@ -15,6 +15,7 @@ import com.example.brewchat.events.RegisterUserError;
 import com.example.brewchat.events.UserLoggedEvent;
 import com.example.brewchat.events.UserSignedUpEvent;
 import com.example.brewchat.events.UsersLoadedEvent;
+import com.example.brewchat.events.UsersLoadingErrorEvent;
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.model.QBSession;
 import com.quickblox.chat.QBChat;
@@ -169,19 +170,31 @@ public class ChatService implements ConnectionListener,
         ArrayList<Integer> userIds = new ArrayList<>(roster.getEntries().size());
         for (QBRosterEntry user : roster.getEntries()) userIds.add(user.getUserId());
         if (roster.getEntries().size() == 0)
-            EventBus.getDefault().post(new UsersLoadedEvent(new ArrayList<QBUser>()));
+            // Arraylist's internal algorithm defaults to reserving 10 slots in memory,
+            // so here we just force it to reserve 0 slots for our empty list.
+            EventBus.getDefault().post(new UsersLoadedEvent(new ArrayList<User>(0)));
 
         QBUsers.getUsersByIDs(userIds, new QBPagedRequestBuilder(userIds.size(), 1),
                 new QBEntityCallbackImpl<ArrayList<QBUser>>() {
                     @Override
-                    public void onSuccess(ArrayList<QBUser> result, Bundle params) {
-                        super.onSuccess(result, params);
-                        EventBus.getDefault().post(new UsersLoadedEvent(result));
+                    public void onSuccess(ArrayList<QBUser> results, Bundle params) {
+                        super.onSuccess(results, params);
+                        ArrayList<User> users = new ArrayList<>(results.size());
+                        for (QBUser result : results) {
+                            // There mus be a more efficient, or at least better looking, way of doing this...
+                            User user = new User();
+                            user.setId(result.getId());
+                            user.setName(result.getFullName());
+                            user.setEmail(result.getEmail());
+                            user.setLogin(result.getLogin());
+                            user.setLastRequestAt(result.getLastRequestAt());
+                            users.add(user);
+                        }
+                        EventBus.getDefault().post(new UsersLoadedEvent(users));
                     }
 
                     @Override
                     public void onError(List<String> errors) {
-                        // TODO send out error event
                         super.onError(errors);
                         EventBus.getDefault().post(new UsersLoadingErrorEvent(errors));
                     }

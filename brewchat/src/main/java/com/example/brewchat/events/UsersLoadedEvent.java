@@ -1,6 +1,6 @@
 package com.example.brewchat.events;
 
-import com.quickblox.users.model.QBUser;
+import com.example.brewchat.domain.User;
 
 import java.util.List;
 
@@ -8,13 +8,13 @@ import java.util.List;
  * Created by jon on 29/04/15.
  */
 public class UsersLoadedEvent {
-    private List<QBUser> users;
+    private List<User> users;
 
-    public UsersLoadedEvent(List<QBUser> users) {
+    public UsersLoadedEvent(List<User> users) {
         this.users = users;
     }
 
-    public List<QBUser> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 }
