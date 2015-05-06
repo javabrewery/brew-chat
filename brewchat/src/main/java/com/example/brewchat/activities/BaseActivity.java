@@ -59,7 +59,7 @@ public class BaseActivity extends AppCompatActivity {
 
     @SuppressWarnings("unused")
     public void onEventMainThread(MessageReceivedEvent event) {
-        Toast.makeText(this, "Message received from " + event.getMessage().getSender().getName(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Message received from " + event.getMessage().getSender().getBestDisplayableName(), Toast.LENGTH_LONG).show();
     }
 
 }

@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.example.brewchat.R;
 import com.example.brewchat.domain.ChatHistory;
+import com.example.brewchat.domain.ChatMessage;
+import com.example.brewchat.domain.User;
 
 /**
  * Created by jon on 22/04/15.
@@ -33,13 +35,18 @@ public class ChatHistoryRecyclerAdapter extends RecyclerView.Adapter<ChatHistory
 
     @Override
     public void onBindViewHolder(ChatHistoryViewHolder holder, int position) {
-        holder.username.setText(history.getMessages().get(position).getSender().getName());
+        holder.username.setText(history.getMessages().get(position).getSender().getBestDisplayableName());
         holder.message.setText(history.getMessages().get(position).getMessage());
     }
 
     @Override
     public int getItemCount() {
         return history.getMessages().size();
+    }
+
+    public void addMessage(User user, String message) {
+        history.addChatMessage(new ChatMessage(user, message));
+        notifyDataSetChanged();
     }
 
     class ChatHistoryViewHolder extends RecyclerView.ViewHolder {

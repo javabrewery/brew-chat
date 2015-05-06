@@ -31,7 +31,7 @@ public class ContactsActivity extends BaseActivity {
         contactsFragment = new ContactsFragment();
         navigationDrawerFragment = new NavigationDrawerFragment();
 
-        ((Application) getApplicationContext()).getChatService().loadContacts();
+        Application.getChatService().loadContacts();
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.contacts_container, contactsFragment)

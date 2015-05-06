@@ -1,6 +1,7 @@
 package com.example.brewchat.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.brewchat.Application;
 import com.example.brewchat.R;
+import com.example.brewchat.activities.ChatActivity;
 import com.example.brewchat.domain.User;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final User entry = entryList.get(position);
+        User entry = entryList.get(position);
         String name;
         // Graceful decline into less friendly name displays.
         if (entry.getName() != null) name = entry.getName();
@@ -45,12 +46,7 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
         else name = entry.getLogin();
         holder.contactName.setText(name);
 
-        holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Application.getChatService().sendMessage(entry, "Hello world!");
-            }
-        });
+        holder.view.setOnClickListener(new OnContactClickListener(entry));
 
         // TODO look into contact images. Maybe via gravitar? https://en.gravatar.com/site/implement
         holder.contactImage.setImageResource(R.drawable.ic_account_box_grey_800_48dp);
@@ -72,6 +68,23 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
             this.view = view;
             contactImage = (ImageView) view.findViewById(R.id.contact_image);
             contactName = (TextView) view.findViewById(R.id.contact_name);
+        }
+    }
+
+    class OnContactClickListener implements View.OnClickListener {
+
+        private User user;
+
+        public OnContactClickListener(User user) {
+            this.user = user;
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(context, ChatActivity.class);
+            intent.putExtra(ChatActivity.EXTRA_IS_PRIVATE_CHAT, true);
+            intent.putExtra(ChatActivity.EXTRA_PRIVATE_CHAT_USER, user);
+            context.startActivity(intent);
         }
     }
 

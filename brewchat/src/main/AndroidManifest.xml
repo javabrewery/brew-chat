@@ -24,7 +24,7 @@
             android:label="@string/title_activity_chat_manager" >
         </activity>
         <activity
-            android:name=".activities.GroupChatActivity"
+            android:name=".activities.ChatActivity"
             android:label="@string/title_activity_group_chat" >
         </activity>
         <activity

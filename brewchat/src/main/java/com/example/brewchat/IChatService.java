@@ -19,4 +19,8 @@ public interface IChatService {
     void addChatGroup(String title, ArrayList<Integer> userIds);
 
     void sendMessage(User user, String message);
+
+    void getPrivateChatHistory(User user);
+
+    User getCurrentUser();
 }

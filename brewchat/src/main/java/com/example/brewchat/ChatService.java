@@ -75,6 +75,8 @@ public class ChatService implements IChatService,
 
     static final String TAG = ChatService.class.toString();
 
+    protected User currentUser=null;
+
     public ChatService(final Context context, final String appId, final String authKey, final String authSecret) {
         new Thread(new Runnable() {
             @Override
@@ -107,6 +109,12 @@ public class ChatService implements IChatService,
                     public void onSuccess() {
                         QBChatService.getInstance().getPrivateChatManager()
                                 .addPrivateChatManagerListener(ChatService.this);
+                        currentUser = new User();
+                        currentUser.setName(user.getFullName());
+                        currentUser.setEmail(user.getEmail());
+                        currentUser.setLogin(user.getLogin());
+                        currentUser.setLastRequestAt(user.getLastRequestAt());
+                        currentUser.setId(user.getId());
                         EventBus.getDefault().post(new UserLoggedEvent());
                     }
 
@@ -262,6 +270,14 @@ public class ChatService implements IChatService,
         });
     }
 
+    public void getPrivateChatHistory(User user){
+        // TODO figure out how to make this work
+    }
+
+    public User getCurrentUser(){
+        return currentUser;
+    }
+
     // ConnectionListener
 
     @Override
@@ -344,7 +360,6 @@ public class ChatService implements IChatService,
         }
         // Bracket hell ->
         EventBus.getDefault().post(new MessageReceivedEvent(new ChatMessage(u, qbChatMessage.getBody())));
-
         Log.d(TAG, "processMessage: " + qbChat + " " + qbChatMessage);
     }
 
