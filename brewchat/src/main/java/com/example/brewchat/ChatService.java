@@ -179,8 +179,7 @@ public class ChatService implements ConnectionListener,
                 QBUsers.signUp(user, new QBEntityCallbackImpl<QBUser>() {
                     @Override
                     public void onSuccess(QBUser user, Bundle args) {
-                        UserSignedUpEvent userSignedUpEvent = new UserSignedUpEvent(user.getLogin());
-                        EventBus.getDefault().post(userSignedUpEvent);
+                        EventBus.getDefault().post(new UserSignedUpEvent(user.getLogin()));
                         Log.d(TAG, "User signed up");
                     }
 
