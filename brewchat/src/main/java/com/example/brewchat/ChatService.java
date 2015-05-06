@@ -92,26 +92,12 @@ public class ChatService implements ConnectionListener,
 
     }
 
-    public void createSession() {
-        QBAuth.createSession(new QBEntityCallbackImpl<QBSession>() {
+    public void login(String username, String password) {
+        final QBUser user = new QBUser(username, password);
+        QBAuth.createSession(user, new QBEntityCallbackImpl<QBSession>() {
             @Override
             public void onSuccess(QBSession session, Bundle params) {
                 Log.d(TAG, session + " " + params);
-            }
-
-            @Override
-            public void onError(List errors) {
-                Log.d(TAG, errors.toString());
-                EventBus.getDefault().post(new AuthenticationErrorEvent(errors));
-            }
-        });
-    }
-
-    public void login(String username, String password) {
-        final QBUser user = new QBUser(username, password);
-        QBUsers.signIn(user, new QBEntityCallbackImpl<QBUser>() {
-            @Override
-            public void onSuccess(QBUser qbUser, Bundle bundle) {
                 EventBus.getDefault().post(new UserLoggedEvent());
                 try {
                     QBChatService.getInstance().startAutoSendPresence(30);
@@ -185,25 +171,35 @@ public class ChatService implements ConnectionListener,
         );
     }
 
-    //Basic Sign up
     public void register(String username, String password) {
         final QBUser user = new QBUser(username, password);
-        createSession();
-        QBUsers.signUp(user, new QBEntityCallbackImpl<QBUser>() {
+        QBAuth.createSession(new QBEntityCallbackImpl<QBSession>() {
             @Override
-            public void onSuccess(QBUser user, Bundle args) {
-                UserSignedUpEvent userSignedUpEvent = new UserSignedUpEvent(user.getLogin());
-                EventBus.getDefault().post(userSignedUpEvent);
-                Log.d(TAG, "User signed up");
+            public void onSuccess(QBSession session, Bundle params) {
+                QBUsers.signUp(user, new QBEntityCallbackImpl<QBUser>() {
+                    @Override
+                    public void onSuccess(QBUser user, Bundle args) {
+                        UserSignedUpEvent userSignedUpEvent = new UserSignedUpEvent(user.getLogin());
+                        EventBus.getDefault().post(userSignedUpEvent);
+                        Log.d(TAG, "User signed up");
+                    }
+
+                    @Override
+                    public void onError(List<String> errors) {
+
+                        EventBus.getDefault().post(new RegisterUserError(errors));
+                        Log.e(TAG, "Error in signup");
+                    }
+                });
             }
 
             @Override
-            public void onError(List<String> errors) {
-
-                EventBus.getDefault().post(new RegisterUserError(errors));
-                Log.e(TAG, "Error in signup");
+            public void onError(List errors) {
+                Log.d(TAG, errors.toString());
+                EventBus.getDefault().post(new AuthenticationErrorEvent(errors));
             }
         });
+
 
     }
 
