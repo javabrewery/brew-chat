@@ -1,5 +1,7 @@
 package com.example.brewchat;
 
+import com.example.brewchat.domain.User;
+
 import java.util.ArrayList;
 
 public interface IChatService {
@@ -15,4 +17,6 @@ public interface IChatService {
     void getChatDialogs();
 
     void addChatGroup(String title, ArrayList<Integer> userIds);
+
+    void sendMessage(User user, String message);
 }

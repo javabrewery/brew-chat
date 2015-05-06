@@ -109,4 +109,9 @@ public class FakeChatService implements IChatService {
             }
         }).start();
     }
+
+    @Override
+    public void sendMessage(User user, String message) {
+        // Do nothing.
+    }
 }

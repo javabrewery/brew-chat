@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.brewchat.domain.ChatGroup;
+import com.example.brewchat.domain.ChatMessage;
 import com.example.brewchat.domain.User;
 import com.example.brewchat.events.AuthenticationErrorEvent;
 import com.example.brewchat.events.ChatServiceinitedEvent;
@@ -12,6 +13,7 @@ import com.example.brewchat.events.CreateChatError;
 import com.example.brewchat.events.GetGroupChatsErrorEvent;
 import com.example.brewchat.events.GetGroupChatsEvent;
 import com.example.brewchat.events.GroupChatCreatedEvent;
+import com.example.brewchat.events.MessageReceivedEvent;
 import com.example.brewchat.events.RegisterUserError;
 import com.example.brewchat.events.UserLoggedEvent;
 import com.example.brewchat.events.UserSignedUpEvent;
@@ -24,6 +26,7 @@ import com.quickblox.chat.QBChatService;
 import com.quickblox.chat.QBGroupChat;
 import com.quickblox.chat.QBGroupChatManager;
 import com.quickblox.chat.QBPrivateChat;
+import com.quickblox.chat.QBPrivateChatManager;
 import com.quickblox.chat.QBRoster;
 import com.quickblox.chat.exception.QBChatException;
 import com.quickblox.chat.listeners.QBGroupChatManagerListener;
@@ -42,6 +45,7 @@ import com.quickblox.chat.model.QBPrivacyListItem;
 import com.quickblox.chat.model.QBRosterEntry;
 import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.core.QBSettings;
+import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.request.QBPagedRequestBuilder;
 import com.quickblox.core.request.QBRequestGetBuilder;
 import com.quickblox.users.QBUsers;
@@ -50,6 +54,7 @@ import com.quickblox.users.model.QBUser;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPConnection;
+import org.jivesoftware.smack.XMPPException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -96,7 +101,20 @@ public class ChatService implements IChatService,
         QBAuth.createSession(user, new QBEntityCallbackImpl<QBSession>() {
             @Override
             public void onSuccess(QBSession session, Bundle params) {
-                EventBus.getDefault().post(new UserLoggedEvent());
+                user.setId(session.getUserId());
+                QBChatService.getInstance().login(user, new QBEntityCallbackImpl() {
+                    @Override
+                    public void onSuccess() {
+                        QBChatService.getInstance().getPrivateChatManager()
+                                .addPrivateChatManagerListener(ChatService.this);
+                        EventBus.getDefault().post(new UserLoggedEvent());
+                    }
+
+                    @Override
+                    public void onError(List errors) {
+                        EventBus.getDefault().post(new AuthenticationErrorEvent(errors));
+                    }
+                });
                 try {
                     QBChatService.getInstance().startAutoSendPresence(30);
                 } catch (SmackException.NotLoggedInException e) {
@@ -142,6 +160,18 @@ public class ChatService implements IChatService,
         });
     }
 
+    public void sendMessage(User user, String message) {
+        QBPrivateChatManager privateChatManager = QBChatService.getInstance().getPrivateChatManager();
+        QBPrivateChat chat = privateChatManager.getChat(user.getId());
+        if (chat == null) chat = privateChatManager.createChat(user.getId(), this);
+        try {
+            chat.sendMessage(message);
+        } catch (XMPPException | SmackException.NotConnectedException e) {
+            // TODO something better
+            e.printStackTrace();
+        }
+    }
+
     public void loadContacts() {
         QBRoster roster = QBChatService.getInstance().getRoster();
         ArrayList<Integer> userIds = new ArrayList<>(roster.getEntries().size());
@@ -177,6 +207,11 @@ public class ChatService implements IChatService,
                     }
                 }
         );
+    }
+
+    // Internal use only. Run from background thread only!
+    private QBUser getUserById(int id) throws QBResponseException {
+        return QBUsers.getUser(id);
     }
 
     public void register(String username, String password) {
@@ -294,6 +329,22 @@ public class ChatService implements IChatService,
 
     @Override
     public void processMessage(QBChat qbChat, QBChatMessage qbChatMessage) {
+        User u = null;
+        try {
+            QBUser sender = getUserById(qbChatMessage.getSenderId());
+            u = new User();
+            u.setId(sender.getId());
+            u.setLastRequestAt(u.getLastRequestAt());
+            u.setLogin(sender.getLogin());
+            u.setEmail(sender.getEmail());
+            u.setName(sender.getFullName());
+        } catch (QBResponseException e) {
+            e.printStackTrace();
+            return;
+        }
+        // Bracket hell ->
+        EventBus.getDefault().post(new MessageReceivedEvent(new ChatMessage(u, qbChatMessage.getBody())));
+
         Log.d(TAG, "processMessage: " + qbChat + " " + qbChatMessage);
     }
 
@@ -328,6 +379,8 @@ public class ChatService implements IChatService,
 
     @Override
     public void chatCreated(QBPrivateChat qbPrivateChat, boolean b) {
+        qbPrivateChat.addIsTypingListener(this);
+        qbPrivateChat.addMessageListener(this);
         Log.d(TAG, "chatCreated: " + qbPrivateChat + " " + b);
     }
 

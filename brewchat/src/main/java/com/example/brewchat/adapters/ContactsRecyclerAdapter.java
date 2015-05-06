@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.brewchat.Application;
 import com.example.brewchat.R;
 import com.example.brewchat.domain.User;
 
@@ -36,13 +37,20 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        User entry = entryList.get(position);
+        final User entry = entryList.get(position);
         String name;
         // Graceful decline into less friendly name displays.
         if (entry.getName() != null) name = entry.getName();
         else if (entry.getEmail() != null) name = entry.getEmail();
         else name = entry.getLogin();
         holder.contactName.setText(name);
+
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Application.getChatService().sendMessage(entry, "Hello world!");
+            }
+        });
 
         // TODO look into contact images. Maybe via gravitar? https://en.gravatar.com/site/implement
         holder.contactImage.setImageResource(R.drawable.ic_account_box_grey_800_48dp);
@@ -61,6 +69,7 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
 
         public ViewHolder(View view) {
             super(view);
+            this.view = view;
             contactImage = (ImageView) view.findViewById(R.id.contact_image);
             contactName = (TextView) view.findViewById(R.id.contact_name);
         }
