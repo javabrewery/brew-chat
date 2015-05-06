@@ -9,7 +9,7 @@ public class Application extends android.app.Application {
 
     private static final String TAG = Application.class.getSimpleName();
 
-    private static ChatService chatService;
+    public static IChatService chatService;
 
     @Override
     public void onCreate() {
@@ -42,10 +42,9 @@ public class Application extends android.app.Application {
                 getString(R.string.app_id),
                 getString(R.string.auth_key),
                 getString(R.string.auth_secret));
-        // chatService.createSession();
     }
 
-    public static ChatService getChatService() {
+    public static IChatService getChatService() {
         return Application.chatService;
     }
 }

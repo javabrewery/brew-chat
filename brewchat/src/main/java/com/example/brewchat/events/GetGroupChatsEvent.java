@@ -1,6 +1,6 @@
 package com.example.brewchat.events;
 
-import com.quickblox.chat.model.QBDialog;
+import com.example.brewchat.domain.ChatGroup;
 
 import java.util.ArrayList;
 
@@ -10,13 +10,13 @@ import java.util.ArrayList;
  * Created by josh on 4/28/15.
  */
 public class GetGroupChatsEvent {
-    private ArrayList<QBDialog> chatGroups;
+    private ArrayList<ChatGroup> chatGroups;
 
-    public ArrayList<QBDialog> getChatGroups() {
+    public ArrayList<ChatGroup> getChatGroups() {
         return chatGroups;
     }
 
-    public GetGroupChatsEvent(ArrayList<QBDialog> chatGroups) {
+    public GetGroupChatsEvent(ArrayList<ChatGroup> chatGroups) {
         this.chatGroups = chatGroups;
     }
 }

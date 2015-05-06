@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.brewchat.domain.ChatGroup;
 import com.example.brewchat.domain.User;
 import com.example.brewchat.events.AuthenticationErrorEvent;
 import com.example.brewchat.events.ChatServiceinitedEvent;
@@ -41,7 +42,6 @@ import com.quickblox.chat.model.QBPrivacyListItem;
 import com.quickblox.chat.model.QBRosterEntry;
 import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.core.QBSettings;
-import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.request.QBPagedRequestBuilder;
 import com.quickblox.core.request.QBRequestGetBuilder;
 import com.quickblox.users.QBUsers;
@@ -57,7 +57,8 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
-public class ChatService implements ConnectionListener,
+public class ChatService implements IChatService,
+        ConnectionListener,
         QBGroupChatManagerListener,
         QBParticipantListener,
         QBIsTypingListener,
@@ -68,8 +69,6 @@ public class ChatService implements ConnectionListener,
         QBSubscriptionListener {
 
     static final String TAG = ChatService.class.toString();
-
-    QBChatService chatService;
 
     public ChatService(final Context context, final String appId, final String authKey, final String authSecret) {
         new Thread(new Runnable() {
@@ -84,8 +83,7 @@ public class ChatService implements ConnectionListener,
 
                 if (!QBChatService.isInitialized()) {
                     QBChatService.init(context);
-                    chatService = QBChatService.getInstance();
-                    chatService.addConnectionListener(ChatService.this);
+                    QBChatService.getInstance().addConnectionListener(ChatService.this);
                 }
                 EventBus.getDefault().post(new ChatServiceinitedEvent());
             }
@@ -98,7 +96,6 @@ public class ChatService implements ConnectionListener,
         QBAuth.createSession(user, new QBEntityCallbackImpl<QBSession>() {
             @Override
             public void onSuccess(QBSession session, Bundle params) {
-                Log.d(TAG, session + " " + params);
                 EventBus.getDefault().post(new UserLoggedEvent());
                 try {
                     QBChatService.getInstance().startAutoSendPresence(30);
@@ -109,7 +106,6 @@ public class ChatService implements ConnectionListener,
 
             @Override
             public void onError(List errors) {
-                Log.d(TAG, errors.toString());
                 EventBus.getDefault().post(new AuthenticationErrorEvent(errors));
             }
         });
@@ -134,20 +130,19 @@ public class ChatService implements ConnectionListener,
         groupChatManager.createDialog(dialog, new QBEntityCallbackImpl<QBDialog>() {
             @Override
             public void onSuccess(QBDialog dialog, Bundle args) {
-                GroupChatCreatedEvent groupChatCreatedEvent = new GroupChatCreatedEvent(dialog);
-                EventBus.getDefault().post(groupChatCreatedEvent);
-                Log.d(TAG, "Created new Group Chat");
+                ChatGroup chatGroup = new ChatGroup(dialog.getName(), dialog.getOccupants());
+
+                EventBus.getDefault().post(new GroupChatCreatedEvent(chatGroup));
             }
 
             @Override
             public void onError(List<String> errors) {
                 EventBus.getDefault().post(new CreateChatError(errors));
-                Log.e(TAG, "Error in creating Group Chat");
             }
         });
     }
 
-    public void loadContacts() throws QBResponseException {
+    public void loadContacts() {
         QBRoster roster = QBChatService.getInstance().getRoster();
         ArrayList<Integer> userIds = new ArrayList<>(roster.getEntries().size());
         for (QBRosterEntry user : roster.getEntries()) userIds.add(user.getUserId());
@@ -172,12 +167,12 @@ public class ChatService implements ConnectionListener,
                             user.setLastRequestAt(result.getLastRequestAt());
                             users.add(user);
                         }
+
                         EventBus.getDefault().post(new UsersLoadedEvent(users));
                     }
 
                     @Override
                     public void onError(List<String> errors) {
-                        super.onError(errors);
                         EventBus.getDefault().post(new UsersLoadingErrorEvent(errors));
                     }
                 }
@@ -193,26 +188,20 @@ public class ChatService implements ConnectionListener,
                     @Override
                     public void onSuccess(QBUser user, Bundle args) {
                         EventBus.getDefault().post(new UserSignedUpEvent(user.getLogin()));
-                        Log.d(TAG, "User signed up");
                     }
 
                     @Override
                     public void onError(List<String> errors) {
-
                         EventBus.getDefault().post(new RegisterUserError(errors));
-                        Log.e(TAG, "Error in signup");
                     }
                 });
             }
 
             @Override
             public void onError(List errors) {
-                Log.d(TAG, errors.toString());
                 EventBus.getDefault().post(new AuthenticationErrorEvent(errors));
             }
         });
-
-
     }
 
     public void getChatDialogs() {
@@ -222,7 +211,13 @@ public class ChatService implements ConnectionListener,
         QBChatService.getChatDialogs(null, requestGetBuilder, new QBEntityCallbackImpl<ArrayList<QBDialog>>() {
             @Override
             public void onSuccess(ArrayList<QBDialog> dialogs, Bundle args) {
-                EventBus.getDefault().post(new GetGroupChatsEvent(dialogs));
+                ArrayList<ChatGroup> chatGroups = new ArrayList<>();
+
+                for (QBDialog dialog : dialogs) {
+                    chatGroups.add(new ChatGroup(dialog.getName(), dialog.getOccupants()));
+                }
+
+                EventBus.getDefault().post(new GetGroupChatsEvent(chatGroups));
             }
 
             @Override
@@ -339,18 +334,18 @@ public class ChatService implements ConnectionListener,
     // QBRosterListener
 
     @Override
-    public void entriesDeleted(Collection<Integer> integers) {
-        Log.d(TAG, "entriesDeleted: " + integers);
+    public void entriesDeleted(Collection<Integer> collection) {
+        Log.d(TAG, "entriesDeleted: " + collection);
     }
 
     @Override
-    public void entriesAdded(Collection<Integer> integers) {
-        Log.d(TAG, "entriesAdded: " + integers);
+    public void entriesAdded(Collection<Integer> collection) {
+        Log.d(TAG, "entriesAdded: " + collection);
     }
 
     @Override
-    public void entriesUpdated(Collection<Integer> integers) {
-        Log.d(TAG, "entriesUpdated: " + integers);
+    public void entriesUpdated(Collection<Integer> collection) {
+        Log.d(TAG, "entriesUpdated: " + collection);
     }
 
     @Override

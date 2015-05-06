@@ -9,16 +9,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.brewchat.R;
+import com.example.brewchat.activities.ContactsActivity;
 import com.example.brewchat.events.UserLogoutEvent;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
-import com.example.brewchat.activities.ContactsActivity;
-
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class NavigationDrawerFragment extends Fragment {
     @InjectView(R.id.logout_button)
@@ -44,6 +41,5 @@ public class NavigationDrawerFragment extends Fragment {
     public void logout() {
         EventBus.getDefault().post(new UserLogoutEvent());
     }
-
 
 }

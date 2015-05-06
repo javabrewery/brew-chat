@@ -101,7 +101,7 @@ public class ChatManagerActivity extends BaseActivity implements AddChatGroupLis
     @SuppressWarnings("unused")
     public void onEventMainThread(GroupChatCreatedEvent event) {
         Toast.makeText(this, getString(R.string.chat_created_toast), Toast.LENGTH_LONG).show();
-        chatManagerFragment.addChatGroup(event.getDialog());
+        chatManagerFragment.addChatGroup(event.getChatGroup());
     }
 
     @SuppressWarnings("unused")

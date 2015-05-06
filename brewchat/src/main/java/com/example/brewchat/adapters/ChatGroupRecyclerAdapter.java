@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.brewchat.R;
 import com.example.brewchat.activities.GroupChatActivity;
-import com.quickblox.chat.model.QBDialog;
+import com.example.brewchat.domain.ChatGroup;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ public class ChatGroupRecyclerAdapter extends RecyclerView.Adapter<ChatGroupRecy
 
     Context context;
     LayoutInflater inflater;
-    ArrayList<QBDialog> chatGroups = new ArrayList<>();
+    ArrayList<ChatGroup> chatGroups = new ArrayList<>();
 
     public ChatGroupRecyclerAdapter(Context context) {
         this.context = context;
@@ -38,17 +38,17 @@ public class ChatGroupRecyclerAdapter extends RecyclerView.Adapter<ChatGroupRecy
 
     @Override
     public void onBindViewHolder(ChatGroupRecyclerAdapter.MyViewHolder holder, int position) {
-        QBDialog currentChatGroup = chatGroups.get(position);
-        holder.title.setText(currentChatGroup.getName());
+        ChatGroup currentChatGroup = chatGroups.get(position);
+        holder.title.setText(currentChatGroup.getTitle());
 //        holder.description.setText(currentChatGroup.);
         holder.itemView.setOnClickListener(new JoinChatClickListener(position));
     }
 
-    public void addChatGroup(QBDialog chatGroup){
+    public void addChatGroup(ChatGroup chatGroup){
         chatGroups.add(chatGroup);
     }
 
-    public void setChatGroupList(ArrayList<QBDialog> chatGroupList){
+    public void setChatGroupList(ArrayList<ChatGroup> chatGroupList){
         chatGroups.addAll(chatGroupList);
     }
 

@@ -7,6 +7,14 @@
     android:background="#FFFFFF"
     tools:context=".MainActivity">
 
+    <ToggleButton
+        android:id="@+id/fake_toggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fake_chat_service"
+        android:textOff="@string/fake_chat_service_off"
+        android:textOn="@string/fake_chat_service_on" />
+
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"

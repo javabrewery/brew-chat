@@ -40,4 +40,10 @@
     <string name="logout">Logout</string>
 
     <string name="title_activity_contacts">Contacts</string>
+
+<!-- Fake Strings -->
+    <string name="fake_chat_service">Fake chat service</string>
+    <string name="fake_chat_service_off">Fake Service OFF</string>
+    <string name="fake_chat_service_on">Fake Service ON </string>
+
 </resources>

@@ -1,6 +1,6 @@
 package com.example.brewchat.events;
 
-import com.quickblox.chat.model.QBDialog;
+import com.example.brewchat.domain.ChatGroup;
 
 /**
  * Event for notifying creation of new QB chat group
@@ -9,14 +9,14 @@ import com.quickblox.chat.model.QBDialog;
  */
 public class GroupChatCreatedEvent{
 
-    private QBDialog dialog;
+    private ChatGroup chatGroup;
 
-    public GroupChatCreatedEvent(QBDialog dialog){
-        this.dialog = dialog;
+    public GroupChatCreatedEvent(ChatGroup chatGroup){
+        this.chatGroup = chatGroup;
     }
 
-    public QBDialog getDialog() {
-        return dialog;
+    public ChatGroup getChatGroup() {
+        return chatGroup;
     }
 
 }
