@@ -15,6 +15,7 @@ import com.example.brewchat.domain.ChatGroup;
 import com.example.brewchat.domain.ChatHistory;
 import com.example.brewchat.domain.ChatMessage;
 import com.example.brewchat.domain.User;
+import com.example.brewchat.events.GroupMessageReceivedEvent;
 import com.example.brewchat.events.MessageReceivedEvent;
 
 import butterknife.ButterKnife;
@@ -49,7 +50,9 @@ public class ChatActivity extends BaseActivity {
             messageText.setText("");
             adapter.addMessage(Application.chatService.getCurrentUser(), message);
         } else if (chatGroup != null) {
-            // TODO: group chat mode
+            Application.getChatService().sendMessage(chatGroup, message);
+            messageText.setText("");
+            adapter.addMessage(Application.getChatService().getCurrentUser(), message);
         }
     }
 
@@ -78,6 +81,17 @@ public class ChatActivity extends BaseActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if (chatGroup != null) Application.getChatService().joinChatGroup(chatGroup);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_group_chat, menu);
         return true;
@@ -98,6 +112,12 @@ public class ChatActivity extends BaseActivity {
         ChatMessage message = event.getMessage();
         if (otherPerson != null && otherPerson.getId() == message.getSender().getId()) {
             adapter.addMessage(otherPerson, message.getMessage());
+        }
+    }
+
+    public void onEventMainThread(GroupMessageReceivedEvent event) {
+        if (chatGroup != null && event.getGroupId() == chatGroup.getId()) {
+            adapter.addMessage(event.getMessage().getSender(), event.getMessage().getMessage());
         }
     }
 
