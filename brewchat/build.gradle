@@ -33,6 +33,11 @@ android {
         apiKey System.getenv("TESTFAIRY_KEY")
     }
 
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
 }
 
 dependencies {
@@ -44,6 +49,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'org.codehaus.jackson:jackson-core-asl:1.1.0'
+    compile 'org.apache.commons:commons-collections4:4.0'
     compile files('libs/quickblox-android-sdk-chat-2.2.1.jar')
     compile files('libs/quickblox-android-sdk-core-2.2.1.jar')
 }

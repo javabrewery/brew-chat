@@ -6,18 +6,20 @@ import java.util.ArrayList;
 /**
  * Business Object for tracking chat groups
  * Currently has some dummy values for injection into UI
- *
+ * <p/>
  * Created by Josh
  */
 
 public class ChatGroup implements Serializable {
 
+    private int id;
     private String title;
     private String chatInfo;
     private ChatHistory history = new ChatHistory();
     private ArrayList<Integer> chatUsers;
 
-    public ChatGroup(String title, ArrayList<Integer> chatUsers){
+    public ChatGroup(int id, String title, ArrayList<Integer> chatUsers) {
+        this.setId(id);
         this.title = title;
         this.chatUsers = chatUsers;
     }
@@ -46,4 +48,11 @@ public class ChatGroup implements Serializable {
         this.history = history;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
