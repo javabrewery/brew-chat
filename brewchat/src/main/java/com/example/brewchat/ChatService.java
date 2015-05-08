@@ -398,55 +398,37 @@ public class ChatService implements IChatService,
 
     @Override
     public void processMessage(QBChat qbChat, QBChatMessage qbChatMessage) {
+        Log.d(TAG, "processMessage: " + qbChat + " " + qbChatMessage);
         // TODO THIS IS A MESS! CLEAN IT BEFORE PUSHING!
-        User u = null;
+        QBUser sender = null;
+        try {
+            sender = getUserById(qbChatMessage.getSenderId());
+        } catch (QBResponseException e) {
+            e.printStackTrace();
+            return;
+        }
+        User u = new User();
+        u.setId(sender.getId());
+        u.setLastRequestAt(u.getLastRequestAt());
+        u.setLogin(sender.getLogin());
+        u.setEmail(sender.getEmail());
+        u.setName(sender.getFullName());
         if (qbChat instanceof QBPrivateChat) {
             try {
-                try {
-                    ((QBPrivateChat) qbChat).readMessage(qbChatMessage.getId());
-                } catch (XMPPException | SmackException.NotConnectedException e) {
-                    e.printStackTrace();
-                }
-                QBUser sender = getUserById(qbChatMessage.getSenderId());
-                u = new User();
-                u.setId(sender.getId());
-                u.setLastRequestAt(u.getLastRequestAt());
-                u.setLogin(sender.getLogin());
-                u.setEmail(sender.getEmail());
-                u.setName(sender.getFullName());
-            } catch (QBResponseException e) {
-                e.printStackTrace();
-                return;
-            }
-        } else if (qbChat instanceof QBGroupChat) {
-            QBGroupChat qbGroupChat = (QBGroupChat) qbChat;
-            QBUser sender = null;
-            try {
-                sender = getUserById(qbChatMessage.getSenderId());
-            } catch (QBResponseException e) {
+                ((QBPrivateChat) qbChat).readMessage(qbChatMessage.getId());
+            } catch (XMPPException | SmackException.NotConnectedException e) {
+                // If there's a problem, it's not a big deal. we can still continue on.
                 e.printStackTrace();
             }
-            u = new User();
-            u.setId(sender.getId());
-            u.setLastRequestAt(u.getLastRequestAt());
-            u.setLogin(sender.getLogin());
-            u.setEmail(sender.getEmail());
-            u.setName(sender.getFullName());
-            EventBus.getDefault().post(
-                    new GroupMessageReceivedEvent(
-                            keyMap.getKey(qbGroupChat.getJid()),
-                            new ChatMessage(u, qbChatMessage.getBody()
-                            )
-                    )
-            );
-        } else {
             EventBus.getDefault().post(
                     new MessageReceivedEvent(
-                            new ChatMessage(u, qbChatMessage.getBody())
-                    )
-            );
+                            new ChatMessage(u, qbChatMessage.getBody())));
+        } else if (qbChat instanceof QBGroupChat) {
+            QBGroupChat qbGroupChat = (QBGroupChat) qbChat;
+            EventBus.getDefault().post(
+                    new GroupMessageReceivedEvent(keyMap.getKey(qbGroupChat.getJid()),
+                            new ChatMessage(u, qbChatMessage.getBody())));
         }
-        Log.d(TAG, "processMessage: " + qbChat + " " + qbChatMessage);
     }
 
     @Override
