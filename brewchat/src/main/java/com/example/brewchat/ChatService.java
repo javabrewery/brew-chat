@@ -398,29 +398,54 @@ public class ChatService implements IChatService,
 
     @Override
     public void processMessage(QBChat qbChat, QBChatMessage qbChatMessage) {
+        // TODO THIS IS A MESS! CLEAN IT BEFORE PUSHING!
         User u = null;
-        try {
-            QBUser sender = getUserById(qbChatMessage.getSenderId());
+        if (qbChat instanceof QBPrivateChat) {
+            try {
+                try {
+                    ((QBPrivateChat) qbChat).readMessage(qbChatMessage.getId());
+                } catch (XMPPException | SmackException.NotConnectedException e) {
+                    e.printStackTrace();
+                }
+                QBUser sender = getUserById(qbChatMessage.getSenderId());
+                u = new User();
+                u.setId(sender.getId());
+                u.setLastRequestAt(u.getLastRequestAt());
+                u.setLogin(sender.getLogin());
+                u.setEmail(sender.getEmail());
+                u.setName(sender.getFullName());
+            } catch (QBResponseException e) {
+                e.printStackTrace();
+                return;
+            }
+        } else if (qbChat instanceof QBGroupChat) {
+            QBGroupChat qbGroupChat = (QBGroupChat) qbChat;
+            QBUser sender = null;
+            try {
+                sender = getUserById(qbChatMessage.getSenderId());
+            } catch (QBResponseException e) {
+                e.printStackTrace();
+            }
             u = new User();
             u.setId(sender.getId());
             u.setLastRequestAt(u.getLastRequestAt());
             u.setLogin(sender.getLogin());
             u.setEmail(sender.getEmail());
             u.setName(sender.getFullName());
-        } catch (QBResponseException e) {
-            e.printStackTrace();
-            return;
-        }
-        if (qbChat instanceof QBGroupChat) {
-            QBGroupChat qbGroupChat = (QBGroupChat) qbChat;
             EventBus.getDefault().post(
                     new GroupMessageReceivedEvent(
                             keyMap.getKey(qbGroupChat.getJid()),
                             new ChatMessage(u, qbChatMessage.getBody()
                             )
-                    ));
-        } else
-            EventBus.getDefault().post(new MessageReceivedEvent(new ChatMessage(u, qbChatMessage.getBody())));
+                    )
+            );
+        } else {
+            EventBus.getDefault().post(
+                    new MessageReceivedEvent(
+                            new ChatMessage(u, qbChatMessage.getBody())
+                    )
+            );
+        }
         Log.d(TAG, "processMessage: " + qbChat + " " + qbChatMessage);
     }
 
