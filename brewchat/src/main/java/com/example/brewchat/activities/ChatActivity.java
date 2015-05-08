@@ -112,12 +112,14 @@ public class ChatActivity extends BaseActivity {
         ChatMessage message = event.getMessage();
         if (otherPerson != null && otherPerson.getId() == message.getSender().getId()) {
             adapter.addMessage(otherPerson, message.getMessage());
+            messagesRecyclerView.scrollToPosition(adapter.getItemCount()-1);
         }
     }
 
     public void onEventMainThread(GroupMessageReceivedEvent event) {
         if (chatGroup != null && event.getGroupId() == chatGroup.getId()) {
             adapter.addMessage(event.getMessage().getSender(), event.getMessage().getMessage());
+            messagesRecyclerView.scrollToPosition(adapter.getItemCount()-1);
         }
     }
 
