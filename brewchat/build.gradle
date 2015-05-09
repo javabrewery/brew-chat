@@ -31,6 +31,8 @@ android {
 
     testfairyConfig {
         apiKey System.getenv("TESTFAIRY_KEY")
+        iconWatermark true
+        autoUpdate true
     }
 
 }
