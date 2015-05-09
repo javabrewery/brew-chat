@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.example.brewchat.Application;
 import com.example.brewchat.R;
+import com.example.brewchat.events.MessageReceivedEvent;
 import com.example.brewchat.events.UserLogoutEvent;
 
 import de.greenrobot.event.EventBus;
@@ -54,6 +55,11 @@ public class BaseActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     public void onEventMainThread(UserLogoutEvent event) {
         displayLogoutConfimationDialog();
+    }
+
+    @SuppressWarnings("unused")
+    public void onEventMainThread(MessageReceivedEvent event) {
+        Toast.makeText(this, "Message received from " + event.getMessage().getSender().getBestDisplayableName(), Toast.LENGTH_LONG).show();
     }
 
 }

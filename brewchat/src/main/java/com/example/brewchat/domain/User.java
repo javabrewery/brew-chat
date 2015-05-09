@@ -17,10 +17,14 @@ public class User implements Serializable {
     public User() {
     }
 
-    public int getId() { return id;}
+    public int getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -52,4 +56,14 @@ public class User implements Serializable {
     public void setLastRequestAt(Date lastRequestAt) {
         this.lastRequestAt = lastRequestAt;
     }
+
+    public String getBestDisplayableName() {
+        String best;
+        if (name != null) best = name;
+        else if (login != null) best = login;
+        else if (email != null) best = email;
+        else best = id + "";
+        return best;
+    }
+
 }

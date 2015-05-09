@@ -109,4 +109,23 @@ public class FakeChatService implements IChatService {
             }
         }).start();
     }
+
+    @Override
+    public void sendMessage(User user, String message) {
+        // Do nothing.
+    }
+
+    @Override
+    public void getPrivateChatHistory(User user) {
+    }
+
+    public User getCurrentUser() {
+        User user = new User();
+        user.setId(1);
+        user.setName("Fake User");
+        user.setEmail("fake@email.com");
+        user.setLogin("Fake");
+        user.setLastRequestAt(new Date());
+        return user;
+    }
 }
