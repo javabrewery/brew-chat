@@ -9,8 +9,8 @@ public class GroupMessageReceivedEvent {
     private int groupId;
     private ChatMessage message;
 
-    public GroupMessageReceivedEvent(int groupId,ChatMessage message) {
-        this.groupId=groupId;
+    public GroupMessageReceivedEvent(int groupId, ChatMessage message) {
+        this.groupId = groupId;
         this.message = message;
     }
 
