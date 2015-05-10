@@ -12,8 +12,7 @@ before_script:
 script:
 - ./gradlew build check
 after_success:
-- BRANCH=`git rev-parse --abbrev-ref HEAD`
-- if [ "$BRANCH" == "master" ]; then ./gradlew testfairyDebug; fi
+- if [ "$TRAVIS_BRANCH" == "master" ]; then ./gradlew testfairyDebug; fi
 env:
   global:
     secure: ZLrpCizsXYAhODX5LbP+M9t74FS80UCo/5QU/WQhWimJURXNAj94mVH8+/3ZQrUYZmK0xuF0kB34dA28fK3suv3+QOvDuvoRk7wwrrchPrcYTvw8RTrt1z3Aqw9sBKbx+Epq89WFY/Q7H/Coz1/gn8gEDccZnh1L2N9tzkTxHlM=
