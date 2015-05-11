@@ -2,11 +2,13 @@ package com.example.brewchat.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.brewchat.Application;
 import com.example.brewchat.R;
 import com.example.brewchat.domain.ChatHistory;
 import com.example.brewchat.domain.ChatMessage;
@@ -35,8 +37,16 @@ public class ChatHistoryRecyclerAdapter extends RecyclerView.Adapter<ChatHistory
 
     @Override
     public void onBindViewHolder(ChatHistoryViewHolder holder, int position) {
-        holder.username.setText(history.getMessages().get(position).getSender().getBestDisplayableName());
-        holder.message.setText(history.getMessages().get(position).getMessage());
+        ChatMessage message = history.getMessages().get(position);
+        if(message.getSender().getId() == Application.getChatService().getCurrentUser().getId()) {
+            holder.username.setGravity(Gravity.END);
+            holder.message.setGravity(Gravity.END);
+        } else {
+            holder.username.setGravity(Gravity.START);
+            holder.message.setGravity(Gravity.START);
+        }
+        holder.message.setText(message.getMessage());
+        holder.username.setText(message.getSender().getBestDisplayableName());
     }
 
     @Override
