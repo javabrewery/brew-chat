@@ -123,7 +123,8 @@ public class ChatService implements IChatService,
                             .addPrivateChatManagerListener(ChatService.this);
                         QBChatService.getInstance().getGroupChatManager()
                             .addGroupChatManagerListener(ChatService.this);
-                        currentUser = convertToUser(user);;
+                        currentUser = convertToUser(user);
+                        ;
                         EventBus.getDefault().post(new UserLoggedEvent());
                     }
 
@@ -182,7 +183,7 @@ public class ChatService implements IChatService,
         QBPrivateChat chat = privateChatManager.getChat(user.getId());
         if(chat == null) chat = privateChatManager.createChat(user.getId(), this);
         try {
-            chat.sendMessage(message);
+            chat.sendMessage(convertToQBChatMessage(message));
         } catch(XMPPException | SmackException.NotConnectedException e) {
             // TODO something better
             e.printStackTrace();
@@ -195,7 +196,7 @@ public class ChatService implements IChatService,
         String jid = keyMap.get(group.getId());
         QBGroupChat groupChat = chatMap.get(jid);
         try {
-            groupChat.sendMessage(message);
+            groupChat.sendMessage(convertToQBChatMessage(message));
         } catch(XMPPException | SmackException.NotConnectedException e) {
             e.printStackTrace();
         }
@@ -238,6 +239,16 @@ public class ChatService implements IChatService,
         user.setLogin(qbUser.getLogin());
         user.setLastRequestAt(qbUser.getLastRequestAt());
         return user;
+    }
+
+    private QBChatMessage convertToQBChatMessage(String message) {
+        QBChatMessage qbChatMessage = new QBChatMessage();
+        qbChatMessage.setBody(message);
+        qbChatMessage.setMarkable(true);
+        qbChatMessage.setSaveToHistory(true);
+        qbChatMessage.setProperty("save_to_history", "1");
+
+        return qbChatMessage;
     }
 
     public void joinChatGroup(ChatGroup chatGroup) {
@@ -394,7 +405,6 @@ public class ChatService implements IChatService,
     @Override
     public void processMessage(QBChat qbChat, QBChatMessage qbChatMessage) {
         Log.d(TAG, "processMessage: " + qbChat + " " + qbChatMessage);
-        // TODO THIS IS A MESS! CLEAN IT BEFORE PUSHING!
         QBUser sender = null;
         try {
             sender = getUserById(qbChatMessage.getSenderId());

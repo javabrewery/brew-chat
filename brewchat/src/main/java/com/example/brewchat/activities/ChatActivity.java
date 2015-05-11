@@ -41,15 +41,15 @@ public class ChatActivity extends BaseActivity {
     @OnClick(R.id.send_button)
     void onClick() {
         String message = messageText.getText().toString();
-        if (message.equals("")) {
+        if(message.equals("")) {
             Toast.makeText(this, "You must enter a message to send", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (otherPerson != null) {
+        if(otherPerson != null) {
             Application.getChatService().sendMessage(otherPerson, message);
             messageText.setText("");
             adapter.addMessage(Application.chatService.getCurrentUser(), message);
-        } else if (chatGroup != null) {
+        } else if(chatGroup != null) {
             Application.getChatService().sendMessage(chatGroup, message);
             messageText.setText("");
             adapter.addMessage(Application.getChatService().getCurrentUser(), message);
@@ -64,12 +64,12 @@ public class ChatActivity extends BaseActivity {
         messagesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         ChatHistory history;
-        if (getIntent().getBooleanExtra(EXTRA_IS_PRIVATE_CHAT, false)) {
+        if(getIntent().getBooleanExtra(EXTRA_IS_PRIVATE_CHAT, false)) {
             chatGroup = null;
             otherPerson = (User) getIntent().getSerializableExtra(EXTRA_PRIVATE_CHAT_USER);
-            if (otherPerson == null)
+            if(otherPerson == null)
                 throw new IllegalArgumentException("Must provide a user to private chat with if " +
-                        "using EXTRA_IS_PRIVATE_CHAT=true");
+                    "using EXTRA_IS_PRIVATE_CHAT=true");
             // TODO figure out a way to get the private chat history
             history = new ChatHistory();
         } else {
@@ -83,7 +83,7 @@ public class ChatActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (chatGroup != null) Application.getChatService().joinChatGroup(chatGroup);
+        if(chatGroup != null) Application.getChatService().joinChatGroup(chatGroup);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class ChatActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if(id == R.id.action_settings) {
             return true;
         }
 
@@ -110,16 +110,17 @@ public class ChatActivity extends BaseActivity {
 
     public void onEventMainThread(MessageReceivedEvent event) {
         ChatMessage message = event.getMessage();
-        if (otherPerson != null && otherPerson.getId() == message.getSender().getId()) {
+        if(otherPerson != null && otherPerson.getId() == message.getSender().getId()) {
             adapter.addMessage(otherPerson, message.getMessage());
-            messagesRecyclerView.scrollToPosition(adapter.getItemCount()-1);
+            messagesRecyclerView.scrollToPosition(adapter.getItemCount() - 1);
         }
     }
 
     public void onEventMainThread(GroupMessageReceivedEvent event) {
-        if (chatGroup != null && event.getGroupId() == chatGroup.getId()) {
+        if(chatGroup != null && event.getGroupId() == chatGroup.getId() &&
+            event.getMessage().getSender().getId() != Application.getChatService().getCurrentUser().getId()) {
             adapter.addMessage(event.getMessage().getSender(), event.getMessage().getMessage());
-            messagesRecyclerView.scrollToPosition(adapter.getItemCount()-1);
+            messagesRecyclerView.scrollToPosition(adapter.getItemCount() - 1);
         }
     }
 
