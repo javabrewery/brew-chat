@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.brewchat.Application;
+import com.example.brewchat.PreferenceManager;
 import com.example.brewchat.R;
 import com.example.brewchat.events.AuthenticationErrorEvent;
 import com.example.brewchat.events.RegisterUserError;
@@ -19,21 +20,32 @@ import com.example.brewchat.interfaces.LoginListener;
 import com.example.brewchat.interfaces.RegisterDialogListener;
 
 public class LoginActivity extends BaseActivity implements RegisterDialogListener,
-        LoginListener{
+        LoginListener {
 
     LoginFragment loginFragment;
+
+    private boolean saveCredentials = false;
+    private String username = null;
+    private String password = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
         if (savedInstanceState == null) {
+            autoLogin();
             loginFragment = new LoginFragment();
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.login_screen_frame, loginFragment)
                     .commit();
         }
+    }
+
+    private void autoLogin() {
+        username = PreferenceManager.loadPreference("username");
+        password = PreferenceManager.loadPreference("password");
+        if (username != null && password != null) buttonAuth(username, password, true);
     }
 
     @Override
@@ -54,7 +66,12 @@ public class LoginActivity extends BaseActivity implements RegisterDialogListene
         return super.onOptionsItemSelected(item);
     }
 
-    public void buttonAuth(String username, String password) {
+    public void buttonAuth(String username, String password, boolean saveCredentials) {
+        this.saveCredentials = saveCredentials;
+        if (saveCredentials) {
+            this.username = username;
+            this.password = password;
+        }
         Application.getChatService().login(username, password);
     }
 
@@ -70,18 +87,22 @@ public class LoginActivity extends BaseActivity implements RegisterDialogListene
 
     @SuppressWarnings("unused")
     public void onEventMainThread(UserLoggedEvent event) {
+        if (saveCredentials) {
+            PreferenceManager.savePreference("username", username);
+            PreferenceManager.savePreference("password", password);
+        }
         Intent intent = new Intent(this, ChatManagerActivity.class);
         startActivity(intent);
     }
 
     @SuppressWarnings("unused")
     public void onEventMainThread(UserSignedUpEvent event) {
-        Toast.makeText(this,getString(R.string.account_created_toast),Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.account_created_toast), Toast.LENGTH_LONG).show();
         loginFragment.updateTextFields(event.getUsername());
     }
 
     @SuppressWarnings("unused")
-    public void onEventMainThread(AuthenticationErrorEvent event){
+    public void onEventMainThread(AuthenticationErrorEvent event) {
         Toast.makeText(this, getString(R.string.login_error_toast), Toast.LENGTH_LONG).show();
     }
 
