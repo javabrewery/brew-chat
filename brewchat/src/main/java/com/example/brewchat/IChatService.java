@@ -28,4 +28,6 @@ public interface IChatService {
     User getCurrentUser();
 
     void joinChatGroup(ChatGroup group);
+
+    ChatGroup getChatGroup(int id);
 }

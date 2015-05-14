@@ -138,4 +138,9 @@ public class FakeChatService implements IChatService {
     public void joinChatGroup(ChatGroup group) {
 
     }
+
+    @Override
+    public ChatGroup getChatGroup(int id) {
+        return new ChatGroup(id, "Fake group", new ArrayList<Integer>());
+    }
 }

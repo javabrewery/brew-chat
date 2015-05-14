@@ -11,6 +11,8 @@ public class Application extends android.app.Application {
 
     public static IChatService chatService;
 
+    private static Notifier notifier;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -44,6 +46,8 @@ public class Application extends android.app.Application {
                 getString(R.string.auth_secret));
 
         PreferenceManager.init(this);
+
+        notifier = Notifier.getInstance(this);
     }
 
     public static IChatService getChatService() {

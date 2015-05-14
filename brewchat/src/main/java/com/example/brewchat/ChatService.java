@@ -69,15 +69,15 @@ import java.util.Random;
 import de.greenrobot.event.EventBus;
 
 public class ChatService implements IChatService,
-    ConnectionListener,
-    QBGroupChatManagerListener,
-    QBParticipantListener,
-    QBIsTypingListener,
-    QBMessageListener,
-    QBPrivacyListListener,
-    QBPrivateChatManagerListener,
-    QBRosterListener,
-    QBSubscriptionListener {
+        ConnectionListener,
+        QBGroupChatManagerListener,
+        QBParticipantListener,
+        QBIsTypingListener,
+        QBMessageListener,
+        QBPrivacyListListener,
+        QBPrivateChatManagerListener,
+        QBRosterListener,
+        QBSubscriptionListener {
 
     static final String TAG = ChatService.class.toString();
 
@@ -96,11 +96,11 @@ public class ChatService implements IChatService,
 
                 QBSettings.getInstance().fastConfigInit(appId, authKey, authSecret);
 
-                if(BuildConfig.DEBUG) {
+                if (BuildConfig.DEBUG) {
                     QBChatService.setDebugEnabled(true);
                 }
 
-                if(!QBChatService.isInitialized()) {
+                if (!QBChatService.isInitialized()) {
                     QBChatService.init(context);
                     QBChatService.getInstance().addConnectionListener(ChatService.this);
                 }
@@ -120,9 +120,9 @@ public class ChatService implements IChatService,
                     @Override
                     public void onSuccess() {
                         QBChatService.getInstance().getPrivateChatManager()
-                            .addPrivateChatManagerListener(ChatService.this);
+                                .addPrivateChatManagerListener(ChatService.this);
                         QBChatService.getInstance().getGroupChatManager()
-                            .addGroupChatManagerListener(ChatService.this);
+                                .addGroupChatManagerListener(ChatService.this);
                         currentUser = convertToUser(user);
                         ;
                         EventBus.getDefault().post(new UserLoggedEvent());
@@ -135,7 +135,7 @@ public class ChatService implements IChatService,
                 });
                 try {
                     QBChatService.getInstance().startAutoSendPresence(30);
-                } catch(SmackException.NotLoggedInException e) {
+                } catch (SmackException.NotLoggedInException e) {
                     e.printStackTrace();
                 }
             }
@@ -150,7 +150,7 @@ public class ChatService implements IChatService,
     public void logout() {
         try {
             QBChatService.getInstance().logout();
-        } catch(SmackException.NotConnectedException e) {
+        } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
         }
     }
@@ -181,10 +181,10 @@ public class ChatService implements IChatService,
     public void sendMessage(User user, String message) {
         QBPrivateChatManager privateChatManager = QBChatService.getInstance().getPrivateChatManager();
         QBPrivateChat chat = privateChatManager.getChat(user.getId());
-        if(chat == null) chat = privateChatManager.createChat(user.getId(), this);
+        if (chat == null) chat = privateChatManager.createChat(user.getId(), this);
         try {
             chat.sendMessage(convertToQBChatMessage(message));
-        } catch(XMPPException | SmackException.NotConnectedException e) {
+        } catch (XMPPException | SmackException.NotConnectedException e) {
             // TODO something better
             e.printStackTrace();
         }
@@ -197,7 +197,7 @@ public class ChatService implements IChatService,
         QBGroupChat groupChat = chatMap.get(jid);
         try {
             groupChat.sendMessage(convertToQBChatMessage(message));
-        } catch(XMPPException | SmackException.NotConnectedException e) {
+        } catch (XMPPException | SmackException.NotConnectedException e) {
             e.printStackTrace();
         }
     }
@@ -205,29 +205,29 @@ public class ChatService implements IChatService,
     public void loadContacts() {
         QBRoster roster = QBChatService.getInstance().getRoster();
         ArrayList<Integer> userIds = new ArrayList<>(roster.getEntries().size());
-        for(QBRosterEntry user : roster.getEntries()) userIds.add(user.getUserId());
-        if(roster.getEntries().size() == 0)
+        for (QBRosterEntry user : roster.getEntries()) userIds.add(user.getUserId());
+        if (roster.getEntries().size() == 0)
             // Arraylist's internal algorithm defaults to reserving 10 slots in memory,
             // so here we just force it to reserve 0 slots for our empty list.
             EventBus.getDefault().post(new UsersLoadedEvent(new ArrayList<User>(0)));
 
         QBUsers.getUsersByIDs(userIds, new QBPagedRequestBuilder(userIds.size(), 1),
-            new QBEntityCallbackImpl<ArrayList<QBUser>>() {
-                @Override
-                public void onSuccess(ArrayList<QBUser> results, Bundle params) {
-                    super.onSuccess(results, params);
-                    ArrayList<User> users = new ArrayList<>(results.size());
-                    for(QBUser result : results) users.add(convertToUser(result));
+                new QBEntityCallbackImpl<ArrayList<QBUser>>() {
+                    @Override
+                    public void onSuccess(ArrayList<QBUser> results, Bundle params) {
+                        super.onSuccess(results, params);
+                        ArrayList<User> users = new ArrayList<>(results.size());
+                        for (QBUser result : results) users.add(convertToUser(result));
 
 
-                    EventBus.getDefault().post(new UsersLoadedEvent(users));
+                        EventBus.getDefault().post(new UsersLoadedEvent(users));
+                    }
+
+                    @Override
+                    public void onError(List<String> errors) {
+                        EventBus.getDefault().post(new UsersLoadingErrorEvent(errors));
+                    }
                 }
-
-                @Override
-                public void onError(List<String> errors) {
-                    EventBus.getDefault().post(new UsersLoadingErrorEvent(errors));
-                }
-            }
         );
     }
 
@@ -254,20 +254,32 @@ public class ChatService implements IChatService,
     public void joinChatGroup(ChatGroup chatGroup) {
         QBGroupChatManager manager = QBChatService.getInstance().getGroupChatManager();
         QBGroupChat groupChat;
-        if(manager.getGroupChat(keyMap.get(chatGroup.getId())) != null) {
+        if (manager.getGroupChat(keyMap.get(chatGroup.getId())) != null) {
             groupChat = manager.getGroupChat(keyMap.get(chatGroup.getId()));
         } else {
             groupChat = manager.createGroupChat(keyMap.get(chatGroup.getId()));
         }
         chatMap.put(groupChat.getJid(), groupChat);
-        if(!groupChat.isJoined()) {
+        if (!groupChat.isJoined()) {
             try {
                 groupChat.join(new DiscussionHistory());
                 groupChat.addMessageListener(this);
-            } catch(XMPPException | SmackException e) {
+            } catch (XMPPException | SmackException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public ChatGroup getChatGroup(int id) {
+        QBGroupChatManager manager = QBChatService.getInstance().getGroupChatManager();
+        String jid = keyMap.get(id);
+        QBGroupChat qbGroupChat = chatMap.get(jid);
+        return convertToChatGroup(qbGroupChat);
+    }
+
+    private ChatGroup convertToChatGroup(QBGroupChat groupChat) {
+        return new ChatGroup(-1, "Not implemented", new ArrayList<Integer>()); // TODO figure out how to do this
     }
 
     // Internal use only. Run from background thread only!
@@ -311,7 +323,7 @@ public class ChatService implements IChatService,
                 keyMap = new DualHashBidiMap<Integer, String>();
                 chatMap = new HashMap<String, QBGroupChat>();
 
-                for(QBDialog dialog : dialogs) {
+                for (QBDialog dialog : dialogs) {
                     int id = random.nextInt();
                     keyMap.put(id, dialog.getRoomJid());
 
@@ -408,26 +420,26 @@ public class ChatService implements IChatService,
         QBUser sender = null;
         try {
             sender = getUserById(qbChatMessage.getSenderId());
-        } catch(QBResponseException e) {
+        } catch (QBResponseException e) {
             e.printStackTrace();
             return;
         }
         User u = convertToUser(sender);
-        if(qbChat instanceof QBPrivateChat) {
+        if (qbChat instanceof QBPrivateChat) {
             try {
                 ((QBPrivateChat) qbChat).readMessage(qbChatMessage.getId());
-            } catch(XMPPException | SmackException.NotConnectedException e) {
+            } catch (XMPPException | SmackException.NotConnectedException e) {
                 // If there's a problem, it's not a big deal. we can still continue on.
                 e.printStackTrace();
             }
             EventBus.getDefault().post(
-                new MessageReceivedEvent(
-                    new ChatMessage(u, qbChatMessage.getBody())));
-        } else if(qbChat instanceof QBGroupChat) {
+                    new MessageReceivedEvent(
+                            new ChatMessage(u, qbChatMessage.getBody())));
+        } else if (qbChat instanceof QBGroupChat) {
             QBGroupChat qbGroupChat = (QBGroupChat) qbChat;
             EventBus.getDefault().post(
-                new GroupMessageReceivedEvent(keyMap.getKey(qbGroupChat.getJid()),
-                    new ChatMessage(u, qbChatMessage.getBody())));
+                    new GroupMessageReceivedEvent(keyMap.getKey(qbGroupChat.getJid()),
+                            new ChatMessage(u, qbChatMessage.getBody())));
         }
     }
 
