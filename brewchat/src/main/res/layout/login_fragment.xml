@@ -76,4 +76,12 @@
         android:layout_above="@+id/login_button"
         android:layout_centerHorizontal="true"
         android:onClick="showRegisterDialog"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/remember_login"
+        android:id="@+id/remember_checkbox"
+        android:layout_above="@+id/register_button"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

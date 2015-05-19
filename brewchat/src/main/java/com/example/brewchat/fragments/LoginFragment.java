@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ToggleButton;
 
@@ -36,6 +37,8 @@ public class LoginFragment extends Fragment {
     EditText usernameEditText;
     @InjectView(R.id.login_password_edittext)
     EditText passwordEditText;
+    @InjectView(R.id.remember_checkbox)
+    CheckBox rememberCheckBox;
 
     LoginListener loginListener;
 
@@ -82,7 +85,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 loginListener.buttonAuth(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                        passwordEditText.getText().toString(), rememberCheckBox.isChecked());
             }
         });
     }

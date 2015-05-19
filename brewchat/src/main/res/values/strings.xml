@@ -45,5 +45,6 @@
     <string name="fake_chat_service">Fake chat service</string>
     <string name="fake_chat_service_off">Fake Service OFF</string>
     <string name="fake_chat_service_on">Fake Service ON </string>
+    <string name="remember_login">Remember login</string>
 
 </resources>
