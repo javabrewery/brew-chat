@@ -28,6 +28,7 @@ You will need to have git installed on your system and it must be definded as a 
 We use <a href="https://github.com/javabrewery/brew-chat"> Github</a>, <a href ="https://trello.com/b/L1Z2bkka/brew-chat"> Trello </a>, <a href ="https://thejavabrewery.slack.com/"> Slack </a>, Google Hangouts for pair programming, TestFairy for beta testing and Travis.<br/></br>
 </li>
 </ul>
+* [Travis Build Info](https://travis-ci.org/javabrewery/brew-chat)
 * [Latest Build](https://community.testfairy.com/join/v9LITRNC)
 * [Trello Board](https://trello.com/b/L1Z2bkka/brew-chat)
 * [Slack Chat](https://thejavabrewery.slack.com)
