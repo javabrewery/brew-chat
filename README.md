@@ -11,17 +11,17 @@ First, you have to create a personal copy of the project for yourself, in order 
 
 * ### How to compile it?
 
-1. Download and install [Android Studio](http://developer.android.com/sdk/index.html)
-2. Clone the project or a fork of it to your local development machine
-3.  Import the project into Android Studio
-4. Click on Sync Project with Gradle files to download all the dependencies
-5. Open the SDK manager to install the required Android SDK Tools and Android SDK Build-tools
-6. Build the project
+  1. Download and install [Android Studio](http://developer.android.com/sdk/index.html)
+  2. Clone the project or a fork of it to your local development machine
+  3.  Import the project into Android Studio
+  4. Click on Sync Project with Gradle files to download all the dependencies
+  5. Open the SDK manager to install the required Android SDK Tools and Android SDK Build-tools
+  6. Build the project
 
-You will need to have git installed on your system and it must be definded as a PATH variable if you are using windows.<br/></br>
+  You will need to have git installed on your system and it must be definded as a PATH variable if you are using windows.
 
 * ### What tools are being used and where can be found?
-We use [Github](https://github.com/javabrewery/brew-chat),  [Trello](https://trello.com/b/L1Z2bkka/brew-chat),  [Slack](https://thejavabrewery.slack.com/), Google Hangouts for pair programming, TestFairy for beta testing and Travis.<br/></br>
+We use [Github](https://github.com/javabrewery/brew-chat),  [Trello](https://trello.com/b/L1Z2bkka/brew-chat),  [Slack](https://thejavabrewery.slack.com/), Google Hangouts for pair programming, TestFairy for beta testing and Travis.
 
 * [Travis Build Info](https://travis-ci.org/javabrewery/brew-chat)
 * [Latest Build](https://community.testfairy.com/join/v9LITRNC)
