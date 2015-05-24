@@ -1,9 +1,10 @@
-package com.example.brewchat;
+package com.example.brewchat.chatservices;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.brewchat.BuildConfig;
 import com.example.brewchat.domain.ChatGroup;
 import com.example.brewchat.domain.ChatMessage;
 import com.example.brewchat.domain.User;
@@ -22,7 +23,6 @@ import com.example.brewchat.events.UsersLoadingErrorEvent;
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.model.QBSession;
 import com.quickblox.chat.QBChat;
-import com.quickblox.chat.QBChatService;
 import com.quickblox.chat.QBGroupChat;
 import com.quickblox.chat.QBGroupChatManager;
 import com.quickblox.chat.QBPrivateChat;
@@ -62,7 +62,7 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
-public class ChatService implements IChatService,
+public class QBChatService implements IChatService,
         ConnectionListener,
         QBGroupChatManagerListener,
         QBParticipantListener,
@@ -73,11 +73,11 @@ public class ChatService implements IChatService,
         QBRosterListener,
         QBSubscriptionListener {
 
-    static final String TAG = ChatService.class.toString();
+    static final String TAG = QBChatService.class.toString();
 
     protected User currentUser=null;
 
-    public ChatService(final Context context, final String appId, final String authKey, final String authSecret) {
+    public QBChatService(final Context context, final String appId, final String authKey, final String authSecret) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -85,12 +85,12 @@ public class ChatService implements IChatService,
                 QBSettings.getInstance().fastConfigInit(appId, authKey, authSecret);
 
                 if (BuildConfig.DEBUG) {
-                    QBChatService.setDebugEnabled(true);
+                    com.quickblox.chat.QBChatService.setDebugEnabled(true);
                 }
 
-                if (!QBChatService.isInitialized()) {
-                    QBChatService.init(context);
-                    QBChatService.getInstance().addConnectionListener(ChatService.this);
+                if (!com.quickblox.chat.QBChatService.isInitialized()) {
+                    com.quickblox.chat.QBChatService.init(context);
+                    com.quickblox.chat.QBChatService.getInstance().addConnectionListener(QBChatService.this);
                 }
                 EventBus.getDefault().post(new ChatServiceinitedEvent());
             }
@@ -104,11 +104,11 @@ public class ChatService implements IChatService,
             @Override
             public void onSuccess(QBSession session, Bundle params) {
                 user.setId(session.getUserId());
-                QBChatService.getInstance().login(user, new QBEntityCallbackImpl() {
+                com.quickblox.chat.QBChatService.getInstance().login(user, new QBEntityCallbackImpl() {
                     @Override
                     public void onSuccess() {
-                        QBChatService.getInstance().getPrivateChatManager()
-                                .addPrivateChatManagerListener(ChatService.this);
+                        com.quickblox.chat.QBChatService.getInstance().getPrivateChatManager()
+                                .addPrivateChatManagerListener(QBChatService.this);
                         currentUser = new User();
                         currentUser.setName(user.getFullName());
                         currentUser.setEmail(user.getEmail());
@@ -124,7 +124,7 @@ public class ChatService implements IChatService,
                     }
                 });
                 try {
-                    QBChatService.getInstance().startAutoSendPresence(30);
+                    com.quickblox.chat.QBChatService.getInstance().startAutoSendPresence(30);
                 } catch (SmackException.NotLoggedInException e) {
                     e.printStackTrace();
                 }
@@ -140,7 +140,7 @@ public class ChatService implements IChatService,
 
     public void logout() {
         try {
-            QBChatService.getInstance().logout();
+            com.quickblox.chat.QBChatService.getInstance().logout();
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
         }
@@ -152,7 +152,7 @@ public class ChatService implements IChatService,
         dialog.setType(QBDialogType.GROUP);
         dialog.setOccupantsIds(userIds);
 
-        QBGroupChatManager groupChatManager = QBChatService.getInstance().getGroupChatManager();
+        QBGroupChatManager groupChatManager = com.quickblox.chat.QBChatService.getInstance().getGroupChatManager();
         groupChatManager.createDialog(dialog, new QBEntityCallbackImpl<QBDialog>() {
             @Override
             public void onSuccess(QBDialog dialog, Bundle args) {
@@ -169,7 +169,7 @@ public class ChatService implements IChatService,
     }
 
     public void sendMessage(User user, String message) {
-        QBPrivateChatManager privateChatManager = QBChatService.getInstance().getPrivateChatManager();
+        QBPrivateChatManager privateChatManager = com.quickblox.chat.QBChatService.getInstance().getPrivateChatManager();
         QBPrivateChat chat = privateChatManager.getChat(user.getId());
         if (chat == null) chat = privateChatManager.createChat(user.getId(), this);
         try {
@@ -181,7 +181,7 @@ public class ChatService implements IChatService,
     }
 
     public void loadContacts() {
-        QBRoster roster = QBChatService.getInstance().getRoster();
+        QBRoster roster = com.quickblox.chat.QBChatService.getInstance().getRoster();
         ArrayList<Integer> userIds = new ArrayList<>(roster.getEntries().size());
         for (QBRosterEntry user : roster.getEntries()) userIds.add(user.getUserId());
         if (roster.getEntries().size() == 0)
@@ -251,7 +251,7 @@ public class ChatService implements IChatService,
         QBRequestGetBuilder requestGetBuilder = new QBRequestGetBuilder();
         requestGetBuilder.setPagesLimit(100);
 
-        QBChatService.getChatDialogs(null, requestGetBuilder, new QBEntityCallbackImpl<ArrayList<QBDialog>>() {
+        com.quickblox.chat.QBChatService.getChatDialogs(null, requestGetBuilder, new QBEntityCallbackImpl<ArrayList<QBDialog>>() {
             @Override
             public void onSuccess(ArrayList<QBDialog> dialogs, Bundle args) {
                 ArrayList<ChatGroup> chatGroups = new ArrayList<>();

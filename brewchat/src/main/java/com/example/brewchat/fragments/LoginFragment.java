@@ -14,8 +14,8 @@ import android.widget.EditText;
 import android.widget.ToggleButton;
 
 import com.example.brewchat.Application;
-import com.example.brewchat.ChatService;
-import com.example.brewchat.FakeChatService;
+import com.example.brewchat.chatservices.QBChatService;
+import com.example.brewchat.chatservices.FakeChatService;
 import com.example.brewchat.R;
 import com.example.brewchat.interfaces.LoginListener;
 
@@ -102,7 +102,7 @@ public class LoginFragment extends Fragment {
         if (on) {
             Application.chatService = new FakeChatService();
         } else {
-            Application.chatService = new ChatService(getActivity().getApplicationContext(),
+            Application.chatService = new QBChatService(getActivity().getApplicationContext(),
                     getString(R.string.app_id),
                     getString(R.string.auth_key),
                     getString(R.string.auth_secret));

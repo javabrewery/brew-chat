@@ -1,4 +1,4 @@
-package com.example.brewchat;
+package com.example.brewchat.chatservices;
 
 import com.example.brewchat.domain.ChatGroup;
 import com.example.brewchat.domain.User;

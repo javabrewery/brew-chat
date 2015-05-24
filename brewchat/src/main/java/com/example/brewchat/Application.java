@@ -3,6 +3,8 @@ package com.example.brewchat;
 import android.os.StrictMode;
 import android.util.Log;
 
+import com.example.brewchat.chatservices.IChatService;
+import com.example.brewchat.chatservices.QBChatService;
 import com.facebook.stetho.Stetho;
 
 public class Application extends android.app.Application {
@@ -38,7 +40,7 @@ public class Application extends android.app.Application {
             Log.d(TAG, "Stetho and StrictMode Initialized");
         }
 
-        chatService = new ChatService(getApplicationContext(),
+        chatService = new QBChatService(getApplicationContext(),
                 getString(R.string.app_id),
                 getString(R.string.auth_key),
                 getString(R.string.auth_secret));
