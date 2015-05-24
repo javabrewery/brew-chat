@@ -61,7 +61,10 @@ public class ChatActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         ButterKnife.inject(this);
-        messagesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        LinearLayoutManager layoutManager=new LinearLayoutManager(this);
+        layoutManager.setReverseLayout(true);
+        messagesRecyclerView.setLayoutManager(layoutManager);
 
         ChatHistory history;
         if(getIntent().getBooleanExtra(EXTRA_IS_PRIVATE_CHAT, false)) {
@@ -120,7 +123,6 @@ public class ChatActivity extends BaseActivity {
         if(chatGroup != null && event.getGroupId() == chatGroup.getId() &&
             event.getMessage().getSender().getId() != Application.getChatService().getCurrentUser().getId()) {
             adapter.addMessage(event.getMessage().getSender(), event.getMessage().getMessage());
-            messagesRecyclerView.scrollToPosition(adapter.getItemCount() - 1);
         }
     }
 

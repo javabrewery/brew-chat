@@ -44,8 +44,9 @@ public class ChatManagerFragment extends Fragment {
 
         //Fill with mocked data for testing UI
         adapter = new ChatGroupRecyclerAdapter(getActivity());
+        LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(layoutManager);
 
         return layout;
     }
