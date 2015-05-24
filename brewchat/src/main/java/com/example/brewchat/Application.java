@@ -4,6 +4,7 @@ import android.os.StrictMode;
 import android.util.Log;
 
 import com.example.brewchat.chatservices.IChatService;
+import com.example.brewchat.chatservices.IRCChatService;
 import com.example.brewchat.chatservices.QBChatService;
 import com.facebook.stetho.Stetho;
 
@@ -39,11 +40,13 @@ public class Application extends android.app.Application {
 
             Log.d(TAG, "Stetho and StrictMode Initialized");
         }
-
+/*
         chatService = new QBChatService(getApplicationContext(),
                 getString(R.string.app_id),
                 getString(R.string.auth_key),
                 getString(R.string.auth_secret));
+*/
+        chatService = new IRCChatService();
 
         PreferenceManager.init(this);
     }

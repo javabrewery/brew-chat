@@ -24,6 +24,11 @@ android {
 
     }
 
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
     lintOptions {
         abortOnError true
         textReport true
@@ -48,4 +53,6 @@ dependencies {
     compile 'org.codehaus.jackson:jackson-core-asl:1.1.0'
     compile files('libs/quickblox-android-sdk-chat-2.2.1.jar')
     compile files('libs/quickblox-android-sdk-core-2.2.1.jar')
+    compile 'org.pircbotx:pircbotx:2.0.1'
+    compile 'org.slf4j:slf4j-android:1.7.12'
 }

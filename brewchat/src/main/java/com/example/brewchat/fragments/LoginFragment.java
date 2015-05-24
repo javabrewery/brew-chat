@@ -14,9 +14,9 @@ import android.widget.EditText;
 import android.widget.ToggleButton;
 
 import com.example.brewchat.Application;
-import com.example.brewchat.chatservices.QBChatService;
-import com.example.brewchat.chatservices.FakeChatService;
 import com.example.brewchat.R;
+import com.example.brewchat.chatservices.FakeChatService;
+import com.example.brewchat.chatservices.QBChatService;
 import com.example.brewchat.interfaces.LoginListener;
 
 import butterknife.ButterKnife;
