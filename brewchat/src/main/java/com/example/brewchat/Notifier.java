@@ -54,6 +54,9 @@ public class Notifier {
 
     public void onEvent(GroupMessageReceivedEvent event) {
         ChatMessage message = event.getMessage();
+        // Don't show a notification if we're the sender (happens with group chats)
+        if (message.getSender().getId() == Application.getChatService().getCurrentUser().getId())
+            return;
         int notificationId = message.getSender().getId();
 
         Intent intent = new Intent(context, ChatActivity.class);
