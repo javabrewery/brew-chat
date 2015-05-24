@@ -1,6 +1,6 @@
 TODO before merging with master:
 make chat history visible in newly reopened chat (ie when clicking on notification)
-don't show notificaion when message gotten back in chat group from self
+DONE don't show notificaion when message gotten back in chat group from self
 show notifications from group chats when not viewing group chats
 stack notifications when applicable
-make notification icons white on all android versions supported
+DONE make notification icons white on all android versions supported

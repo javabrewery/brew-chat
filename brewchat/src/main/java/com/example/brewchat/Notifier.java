@@ -76,7 +76,7 @@ public class Notifier {
                 .setAutoCancel(true)
                 .setContentTitle("Message from " + message.getSender().getBestDisplayableName())
                 .setContentText(message.getMessage())
-                .setSmallIcon(R.drawable.ic_mms_grey_800_24dp)
+                .setSmallIcon(R.drawable.ic_mms_white_24dp)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContentIntent(action)
                 .build();
