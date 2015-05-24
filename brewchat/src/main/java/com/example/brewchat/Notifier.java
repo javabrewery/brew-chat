@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
@@ -54,7 +55,7 @@ public class Notifier {
 
     public void onEvent(GroupMessageReceivedEvent event) {
         ChatMessage message = event.getMessage();
-        // Don't show a notification if we're the sender (happens with group chats)
+        // Don't show a notification if we're the sender
         if (message.getSender().getId() == Application.getChatService().getCurrentUser().getId())
             return;
         int notificationId = message.getSender().getId();
@@ -76,6 +77,7 @@ public class Notifier {
                 .setContentTitle("Message from " + message.getSender().getBestDisplayableName())
                 .setContentText(message.getMessage())
                 .setSmallIcon(R.drawable.ic_mms_grey_800_24dp)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContentIntent(action)
                 .build();
     }
