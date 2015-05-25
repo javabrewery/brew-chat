@@ -1,87 +1,67 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="#FFFFFF"
     tools:context=".MainActivity">
 
-    <ToggleButton
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/java_android" />
+
+    <Spinner
         android:id="@+id/fake_toggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/fake_chat_service"
-        android:textOff="@string/fake_chat_service_off"
-        android:textOn="@string/fake_chat_service_on" />
-
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:id="@+id/imageView"
-        android:src="@mipmap/java_android"
-        android:scaleType="fitCenter"
-        android:layout_marginTop="45dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/brew_chat_title"
-        android:id="@+id/textView"
-        android:layout_alignTop="@+id/imageView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="38dp"
-        android:textSize="50sp"
-        android:fontFamily=""/>
+        android:text="@string/fake_chat_service" />
 
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="@string/username_hint_string"
-        android:ems="10"
         android:id="@+id/login_username_edittext"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true" />
-
-    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
+        android:ems="10"
+        android:hint="@string/username_hint_string"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/login_password_edittext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/password_hint_string"
-        android:id="@+id/login_password_edittext"
-        android:layout_below="@+id/login_username_edittext"
-        android:layout_alignLeft="@+id/login_username_edittext"
-        android:layout_alignStart="@+id/login_username_edittext" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/login_string"
-        android:id="@+id/login_button"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/register_button_text"
-        android:id="@+id/register_button"
-        android:layout_above="@+id/login_button"
-        android:layout_centerHorizontal="true"
-        android:onClick="showRegisterDialog"/>
+        android:inputType="textPassword" />
 
     <CheckBox
+        android:id="@+id/remember_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/remember_login"
-        android:id="@+id/remember_checkbox"
-        android:layout_above="@+id/register_button"
-        android:layout_centerHorizontal="true" />
-</RelativeLayout>
+        android:text="@string/remember_login" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_string" />
+
+        <Button
+            android:id="@+id/register_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showRegisterDialog"
+            android:text="@string/register_button_text" />
+    </LinearLayout>
+
+</LinearLayout>
