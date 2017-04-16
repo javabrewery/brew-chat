@@ -92,7 +92,7 @@ public class FakeChatService implements IChatService {
                 ArrayList<Integer> ids = new ArrayList<>();
                 ids.add(1);
 
-                chatGroups.add(new ChatGroup("Fake Group", ids));
+                chatGroups.add(new ChatGroup(1, "Fake Group", ids));
 
                 EventBus.getDefault().post(new GetGroupChatsEvent(chatGroups));
             }
@@ -105,7 +105,7 @@ public class FakeChatService implements IChatService {
             public void run() {
                 delay(DEFAULT_DELAY);
 
-                EventBus.getDefault().post(new GroupChatCreatedEvent(new ChatGroup("Group", userIds)));
+                EventBus.getDefault().post(new GroupChatCreatedEvent(new ChatGroup(1, "Group", userIds)));
             }
         }).start();
     }
@@ -113,6 +113,11 @@ public class FakeChatService implements IChatService {
     @Override
     public void sendMessage(User user, String message) {
         // Do nothing.
+    }
+
+    @Override
+    public void sendMessage(ChatGroup group, String message) {
+
     }
 
     @Override
@@ -127,5 +132,10 @@ public class FakeChatService implements IChatService {
         user.setLogin("Fake");
         user.setLastRequestAt(new Date());
         return user;
+    }
+
+    @Override
+    public void joinChatGroup(ChatGroup group) {
+
     }
 }
